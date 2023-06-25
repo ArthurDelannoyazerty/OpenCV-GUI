@@ -9,6 +9,8 @@ HEIGHT_UPPER_FRAME = 150
 HEIGHT_TILES = HEIGHT_UPPER_FRAME - 50
 WIDTH_TILES = 150
 
+# TODO actions transformers
+
 class Transformer():
     """An objet that transform a given image with the specified transforamtion with opencv"""
     def __init__(self):
@@ -40,43 +42,55 @@ class ClickableFrame(QFrame):
     def mousePressEvent(self, event):
         self.clicked.emit(self.index)
 
+class PipelineItem():
+    def __init__(self, img_array, str_transformation=""):
+        self.img_array = img_array
+        self.str_transformation = str_transformation
+    
+    def get_pixmap(self):
+        height, width, channel = self.img_array.shape
+        bytes_per_line = channel * width
+        qimage = QImage(self.img_array.data, width, height, bytes_per_line, QImage.Format_RGB888)
+        pixmap = QPixmap.fromImage(qimage)
+        return pixmap
+    
+    def execute_transform(self, transform_object):
+        transform_object.transform(self.img_array, self.str_transformation)
+
+class Pipeline(list):
+    def __init__(self, transformer):
+        self.transformer = transformer
+
+    def update_from_index(self, index=1):
+        if index<1 or index>=len(self):
+            raise Exception("Wrong index to update pipeline, index sent : " + str(index) + ". Valid index : [1, "+ str(len(self)) + "]")
+        for index in range(index, len(self)):
+            item = self[index-1]
+            self[index] = item.execute_transform(self.transformer)
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
         self.transformer = Transformer()
-
-        self.transformations = []
-        self.img_arrays = []
+        self.pipeline = Pipeline(self.transformer)
         self.index_current_img = -1
 
         self.setGeometry(100, 100, 700, 700)
-
         self.initiate_frames()
+        self.resizeEvent = self.resize_main_image_event
 
-        self.resizeEvent = self.customResizeEvent
 
     def initiate_frames(self):
         """Create the main QFrame"""
-        central_widget = QFrame()
-        layout = QVBoxLayout(central_widget)
 
-        self.initiate_upper_frame()
-        self.initiate_lower_frame()
+        # Upper Frame --------------------------------------------------------------------
+        upper_frame = QFrame()
+        upper_frame.setFrameShape(QFrame.StyledPanel)
+        upper_frame.setFixedHeight(HEIGHT_UPPER_FRAME)
 
-        layout.addWidget(self.upper_frame)
-        layout.addWidget(self.lower_frame)
-
-        self.setCentralWidget(central_widget)
-    
-    def initiate_upper_frame(self):
-        """Create the upper frame with its child"""
-        self.upper_frame = QFrame()
-        self.upper_frame.setFrameShape(QFrame.StyledPanel)
-        self.upper_frame.setFixedHeight(HEIGHT_UPPER_FRAME)
-
-        layout_frame1 = QHBoxLayout(self.upper_frame)
+        layout_frame1 = QHBoxLayout(upper_frame)
 
         self.scroll_area = QScrollArea()
         self.scroll_area.setWidgetResizable(True)
@@ -85,12 +99,11 @@ class MainWindow(QMainWindow):
         container_upper_widget = QWidget(self.scroll_area)
         self.container_upper_layout = QVBoxLayout(container_upper_widget)
         self.scroll_area.setWidget(container_upper_widget)
-    
-    def initiate_lower_frame(self):
-        """Create the lower frame with its child"""
-        self.lower_frame = QFrame()
-        self.lower_frame.setFrameShape(QFrame.StyledPanel)
-        frame2_layout = QHBoxLayout(self.lower_frame)
+
+        # Lower Frame --------------------------------------------------------------------
+        lower_frame = QFrame()
+        lower_frame.setFrameShape(QFrame.StyledPanel)
+        frame2_layout = QHBoxLayout(lower_frame)
         
         self.image_frame = QFrame()
         image_frame_layout = QVBoxLayout(self.image_frame)
@@ -100,31 +113,42 @@ class MainWindow(QMainWindow):
         image_frame_layout.addWidget(self.image)
         self.image_frame.hide()
         
-        self.import_button = QPushButton("Importer une image")
+        self.import_button = QPushButton("Import Image")
         self.import_button.clicked.connect(self.open_image_dialog)
 
-        self.right_transform_parameters_frame = QFrame()
-        self.right_transform_parameters_frame.setFrameShape(QFrame.StyledPanel)
-        self.right_transform_parameters_frame.setFixedWidth(WIDTH_RIGHT_FRAME)
-        self.layout_transform_parameters = QVBoxLayout(self.right_transform_parameters_frame)
+        pipeline_manage_layout = QFrame()
+        pipeline_manage_layout.setFrameShape(QFrame.StyledPanel)
+        pipeline_manage_layout.setFixedWidth(WIDTH_RIGHT_FRAME)
+        self.pipeline_manage_layout = QVBoxLayout(pipeline_manage_layout)
         
-        self.right_transform_manage_frame = QFrame()
-        self.right_transform_manage_frame.setFrameShape(QFrame.StyledPanel)
-        self.right_transform_manage_frame.setFixedWidth(WIDTH_RIGHT_FRAME)
+        transformation_manage_frame = QFrame()
+        transformation_manage_frame.setFrameShape(QFrame.StyledPanel)
+        transformation_manage_frame.setFixedWidth(WIDTH_RIGHT_FRAME)
+        self.transformation_manage_layout = QVBoxLayout(transformation_manage_frame)
 
         frame2_layout.addWidget(self.image_frame)
         frame2_layout.addWidget(self.import_button)
-        frame2_layout.addWidget(self.right_transform_parameters_frame)
-        frame2_layout.addWidget(self.right_transform_manage_frame)
+        frame2_layout.addWidget(pipeline_manage_layout)
+        frame2_layout.addWidget(transformation_manage_frame)
+
+        # Main Frame --------------------------------------------------------------------
+        central_widget = QFrame()
+        main_layout = QVBoxLayout(central_widget)
+        main_layout.addWidget(upper_frame)
+        main_layout.addWidget(lower_frame)
+
+        self.setCentralWidget(central_widget)
+
 
     def refresh_upper_transformation(self):
         """Update the pipeline of image at the top of the window"""
-        for index, img in enumerate(self.img_arrays):
-            pixmap = self.numpy_array_to_pixmap(img)
-            frame = ClickableFrame(index)
+        for i in range(len(self.pipeline)):
+            pixmap = self.pipeline[i].get_pixmap()
+            frame = ClickableFrame(i)
             frame.setFixedSize(QSize(WIDTH_TILES, HEIGHT_TILES))
             frame.setFrameShape(QFrame.Box)
             frame.clicked.connect(self.frame_clicked)
+            if i==self.index_current_img : frame.setStyleSheet("background-color: green;")
 
             layout = QVBoxLayout(frame)
 
@@ -132,20 +156,11 @@ class MainWindow(QMainWindow):
             pixmap_label.setPixmap(pixmap.scaled(WIDTH_TILES, HEIGHT_TILES, Qt.AspectRatioMode.KeepAspectRatio))
             layout.addWidget(pixmap_label)
 
-            index_label = QLabel(f"Index: {index}")
+            index_label = QLabel(f"Index: {i}")
             index_label.setAlignment(Qt.AlignCenter)
             layout.addWidget(index_label)
 
             self.container_upper_layout.addWidget(frame)
-
-        # self.container_upper.update()
-
-    def numpy_array_to_pixmap(self, numpy_array):
-        height, width, channel = numpy_array.shape
-        bytes_per_line = channel * width
-        qimage = QImage(numpy_array.data, width, height, bytes_per_line, QImage.Format_RGB888)
-        pixmap = QPixmap.fromImage(qimage)
-        return pixmap
 
     def frame_clicked(self, index):
         """Print a message (index) when clicking on the pipeline of images"""
@@ -159,23 +174,22 @@ class MainWindow(QMainWindow):
         file_name, _ = QFileDialog.getOpenFileName(self, "Choisir une image", "", "Images (*.png *.jpg *.jpeg *.bmp)", options=options)
 
         if file_name:
-            img_arrays = cv.imread(file_name, cv.IMREAD_COLOR)
-            img_arrays = cv.cvtColor(img_arrays, cv.COLOR_BGR2RGB)
+            img_array = cv.imread(file_name, cv.IMREAD_COLOR)
+            img_array = cv.cvtColor(img_array, cv.COLOR_BGR2RGB)
             self.index_current_img = 0
-            self.img_arrays.append(img_arrays)
+            self.pipeline.append(PipelineItem(img_array))
             self.update_image_show()
 
             self.import_button.hide()
             self.image_frame.setHidden(False)
-            self.customResizeEvent(None)
+            self.resize_main_image_event(None)
 
             self.refresh_upper_transformation()
             self.add_insert_add_transformation()
             self.add_transform_buttons()  
             self.index_current_img = 0
-        # TODO menu déroulantpour choisir autre image + update from 0
 
-    def customResizeEvent(self, event):
+    def resize_main_image_event(self, event):
         """Change the size of the main image we the main window is resized"""
         if self.index_current_img == -1:
             return
@@ -183,7 +197,7 @@ class MainWindow(QMainWindow):
         frame_height = self.image_frame.height() - 20   # magic number because of the margin of the parent QFrame
         frame_width = self.image_frame.width() - 20
 
-        pixmap = self.numpy_array_to_pixmap(self.img_arrays[self.index_current_img])
+        pixmap = self.get_current_pixmap()
         pixmap_ratio = pixmap.width() / pixmap.height()
         frame_ratio = frame_width / frame_height
     
@@ -197,20 +211,23 @@ class MainWindow(QMainWindow):
 
         super().resizeEvent(event)
     
-    def update_image_show(self):
-        """Show the image based on the "index_current_img" """
-        if 0 <= self.index_current_img < len(self.img_arrays):
-            current_img_arrays = self.img_arrays[self.index_current_img]
-            pixmap = self.numpy_array_to_pixmap(current_img_arrays)
-            self.image.setPixmap(pixmap.scaledToWidth(self.image_frame.width(), Qt.SmoothTransformation))
-            self.image.setAlignment(Qt.AlignCenter)
+    def get_current_pixmap(self):
+        return self.pipeline[self.index_current_img].get_pixmap()
 
-            text_dimension = str(current_img_arrays.shape).replace("(","").replace(")","").split(", ")
-            text_dimension = "h : " + text_dimension[0] + ", w : " + text_dimension[1] + ", c : " + text_dimension[2]
-            label_dimension = QLabel()
-            label_dimension.setText(text_dimension)
-            label_dimension.setFixedHeight(15)
-            self.image_frame.layout().addWidget(label_dimension)
+    def update_image_show(self):
+        """Show the main image based on the "index_current_img" """
+        if self.index_current_img<0 or self.index_current_img>=len(self.pipeline):
+            raise Exception("Wrong index to update pipeline, index sent : " + str(self.index_current_img) + ". Valid index : [0, "+ str(len(self.pipeline)) + "]")
+        pixmap = self.get_current_pixmap()
+        self.image.setPixmap(pixmap.scaledToWidth(self.image_frame.width(), Qt.SmoothTransformation))
+        self.image.setAlignment(Qt.AlignCenter)
+
+        text_dimension = str(self.pipeline[self.index_current_img].img_array.shape).replace("(","").replace(")","").split(", ")
+        text_dimension = "h : " + text_dimension[0] + ", w : " + text_dimension[1] + ", c : " + text_dimension[2]
+        label_dimension = QLabel()
+        label_dimension.setText(text_dimension)
+        label_dimension.setFixedHeight(15)
+        self.image_frame.layout().addWidget(label_dimension)
     
     def add_insert_add_transformation(self):
         """Add a QFrame that contains the choice to add of insert a transformation in the pipeline"""
@@ -223,7 +240,7 @@ class MainWindow(QMainWindow):
         self.b2 = QRadioButton("Insert")
 
         layout.addWidget(self.b2)
-        self.layout_transform_parameters.addWidget(frame)
+        self.pipeline_manage_layout.addWidget(frame)
 
     def add_transform_buttons(self):
         """Add the buttons to transform the image (blur, grayscale, ...) in a QFrame"""
@@ -240,19 +257,7 @@ class MainWindow(QMainWindow):
             button.clicked.connect(transform_func)
             layout.addWidget(button)
         
-        self.layout_transform_parameters.addWidget(frame)
-
-
-    def update_pipeline(self, index_start=1):
-        if 1 <= index_start <= len(self.img_arrays):
-            for index in range(index_start, len(self.img_arrays)):
-                img_before = self.img_arrays[index-1]
-                transformed_img = self.transformer.transform(img_before, self.transformations[index-1])
-                if index<len(self.img_arrays):
-                    self.img_arrays[index] = transformed_img
-                else:
-                    self.img_arrays.append(transformed_img)
-                    # increment current_index done in "alert_custom()"
+        self.pipeline_manage_layout.addWidget(frame)
 
 
     def alert_custom(self, string_transformation):
