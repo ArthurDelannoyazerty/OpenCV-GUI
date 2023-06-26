@@ -90,21 +90,22 @@ class MainWindow(QMainWindow):
         upper_frame.setFrameShape(QFrame.StyledPanel)
         upper_frame.setFixedHeight(HEIGHT_UPPER_FRAME)
 
-        layout_frame1 = QHBoxLayout(upper_frame)
+        upper_layout = QHBoxLayout(upper_frame)
 
-        self.scroll_area = QScrollArea()
-        self.scroll_area.setWidgetResizable(True)
-        layout_frame1.addWidget(self.scroll_area)
+        scroll_area_pipeline = QScrollArea()
+        scroll_area_pipeline.setWidgetResizable(True)
+        upper_layout.addWidget(scroll_area_pipeline)
 
-        container_upper_widget = QWidget(self.scroll_area)
+        container_upper_widget = QWidget(scroll_area_pipeline)
         self.container_upper_layout = QVBoxLayout(container_upper_widget)
-        self.scroll_area.setWidget(container_upper_widget)
+        scroll_area_pipeline.setWidget(container_upper_widget)
 
         # Lower Frame --------------------------------------------------------------------
         lower_frame = QFrame()
         lower_frame.setFrameShape(QFrame.StyledPanel)
         frame2_layout = QHBoxLayout(lower_frame)
         
+        # ----- Left frame  --------------------------------------------------------------
         self.image_frame = QFrame()
         image_frame_layout = QVBoxLayout(self.image_frame)
         self.image = QLabel()
@@ -116,19 +117,44 @@ class MainWindow(QMainWindow):
         self.import_button = QPushButton("Import Image")
         self.import_button.clicked.connect(self.open_image_dialog)
 
-        pipeline_manage_layout = QFrame()
-        pipeline_manage_layout.setFrameShape(QFrame.StyledPanel)
-        pipeline_manage_layout.setFixedWidth(WIDTH_RIGHT_FRAME)
-        self.pipeline_manage_layout = QVBoxLayout(pipeline_manage_layout)
+        # ----- Middle frame  --------------------------------------------------------------
+        pipeline_manage_frame = QFrame()
+        pipeline_manage_frame.setFrameShape(QFrame.StyledPanel)
+        pipeline_manage_frame.setFixedWidth(WIDTH_RIGHT_FRAME)
+        self.pipeline_manage_layout = QVBoxLayout(pipeline_manage_frame)
+
+        # ------|------ Mode manage ---------------------------------------------------------
+        btn_change_current = QRadioButton("Change")
+        btn_change_current.setChecked(True)
+        self.btn_add_current = QRadioButton("Add")
+        self.frame_mode_manage = QFrame()
+        self.frame_mode_manage.setFixedHeight(40)
+        mode_manage_layout = QHBoxLayout(self.frame_mode_manage)
+        mode_manage_layout.addWidget(btn_change_current)
+        mode_manage_layout.addWidget(self.btn_add_current)
+
+        self.frame_mode_manage.hide()
+        self.pipeline_manage_layout.addWidget(self.frame_mode_manage)
+
+        # ------|------ Buttons transformations available -----------------------------------
+        scroll_area_transformation_pipeline = QScrollArea()
+        scroll_area_transformation_pipeline.setWidgetResizable(True)
+        self.pipeline_manage_layout.addWidget(scroll_area_transformation_pipeline)
+
+        self.container_transformation_buttons_widget = QWidget(scroll_area_transformation_pipeline)
+        self.pipeline_manage_layout = QVBoxLayout(self.container_transformation_buttons_widget)
+        scroll_area_transformation_pipeline.setWidget(self.container_transformation_buttons_widget)
         
+        # ----- Right frame  --------------------------------------------------------------
         transformation_manage_frame = QFrame()
         transformation_manage_frame.setFrameShape(QFrame.StyledPanel)
         transformation_manage_frame.setFixedWidth(WIDTH_RIGHT_FRAME)
         self.transformation_manage_layout = QVBoxLayout(transformation_manage_frame)
 
+
         frame2_layout.addWidget(self.image_frame)
         frame2_layout.addWidget(self.import_button)
-        frame2_layout.addWidget(pipeline_manage_layout)
+        frame2_layout.addWidget(pipeline_manage_frame)
         frame2_layout.addWidget(transformation_manage_frame)
 
         # Main Frame --------------------------------------------------------------------
@@ -185,8 +211,8 @@ class MainWindow(QMainWindow):
             self.resize_main_image_event(None)
 
             self.refresh_upper_transformation()
-            self.add_insert_add_transformation()
-            self.add_transform_buttons()  
+            self.frame_mode_manage.setHidden(False)
+            self.update_transformation_buttons()  
             self.index_current_img = 0
 
     def resize_main_image_event(self, event):
@@ -229,40 +255,31 @@ class MainWindow(QMainWindow):
         label_dimension.setFixedHeight(15)
         self.image_frame.layout().addWidget(label_dimension)
     
-    def add_insert_add_transformation(self):
-        """Add a QFrame that contains the choice to add of insert a transformation in the pipeline"""
-        frame = QFrame()
-        layout = QHBoxLayout(frame)
-        self.b1 = QRadioButton("Add")
-        self.b1.setChecked(True)
-        layout.addWidget(self.b1)
-            
-        self.b2 = QRadioButton("Insert")
-
-        layout.addWidget(self.b2)
-        self.pipeline_manage_layout.addWidget(frame)
-
-    def add_transform_buttons(self):
-        """Add the buttons to transform the image (blur, grayscale, ...) in a QFrame"""
-        frame = QFrame()
-        layout = QVBoxLayout(frame)
-
+    def update_transformation_buttons(self):
         alert_transform_functions = {
             self.alert_colorchange: "Color Change",
             self.alert_gaussian_blur: "Gaussian Blur"
         }
 
+        # Find and delete the initial buttons
+        for i in reversed(range(self.pipeline_manage_layout.count())):
+            item = self.pipeline_manage_layout.itemAt(i)
+            if isinstance(item.widget(), QPushButton):
+                button = item.widget()
+                self.pipeline_manage_layout.removeWidget(button)
+                button.deleteLater()
+
         for index, (transform_func, string) in enumerate(alert_transform_functions.items()):
+            # TODO add condition from image if a transformation cannotbe done
             button = QPushButton(string)
             button.clicked.connect(transform_func)
-            layout.addWidget(button)
-        
-        self.pipeline_manage_layout.addWidget(frame)
+            self.pipeline_manage_layout.addWidget(button)
+            
 
 
     def alert_custom(self, string_transformation):
         """Add a string in "transformations" that represent the transformations of the pixmaps"""
-        insert = self.b2.isChecked()
+        insert = self.btn_add_current.isChecked()
         if len(self.transformations)<=self.index_current_img:
             self.transformations.append(string_transformation)
             self.index_current_img += 1
@@ -278,6 +295,7 @@ class MainWindow(QMainWindow):
 
     def alert_colorchange(self):
         """Send a string to "alert_custom" that contains info about the new transformation"""
+        self.update_transformation_buttons()
         self.alert_custom("colorchange_RGB2GRAY")
 
     def alert_gaussian_blur(self):
