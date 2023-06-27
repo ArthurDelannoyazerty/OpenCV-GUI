@@ -1,8 +1,14 @@
 import sys
 from PySide6.QtWidgets import QApplication, QMainWindow, QRadioButton, QVBoxLayout, QHBoxLayout, QLabel, QFrame, QPushButton, QFileDialog, QWidget, QScrollArea
 from PySide6.QtGui import QPixmap, Qt, QImage
-from PySide6.QtCore import Qt, QSize, Signal
+from PySide6.QtCore import Qt, QSize
 import cv2 as cv
+
+from transformermanager import TransformerManager
+from transformer import Transformer
+from clickableframe import ClickableFrame
+from pipelineitem import PipelineItem
+from pipeline import Pipeline
 
 WIDTH_RIGHT_FRAME = 200
 HEIGHT_UPPER_FRAME = 150
@@ -11,70 +17,13 @@ WIDTH_TILES = 150
 
 # TODO actions transformers
 
-class Transformer():
-    """An objet that transform a given image with the specified transforamtion with opencv"""
-    def __init__(self):
-        self.dict_func_opencv = {
-                "gaussianblur" : cv.GaussianBlur,
-                "colorchange" : cv.cvtColor
-            }
-    
-    def get_parameters(transform_string):
-        list = transform_string.split("_")
-        for index, element in enumerate(list):
-            list[index] = int(element) if element.isnumeric() else element
-
-    
-    def transform(self, img_array, transform_string):
-        print("transform")
-        parameters = self.get_parameters(transform_string)
-        img_arrays_transformed =  self.dict_func_opencv.get(parameters[0], lambda: 'Invalid')(img_array, *parameters[1:])
-        return img_arrays_transformed
-
-class ClickableFrame(QFrame):
-    """pipeline object"""
-    clicked = Signal(int)
-
-    def __init__(self, index):
-        super().__init__()
-        self.index = index
-
-    def mousePressEvent(self, event):
-        self.clicked.emit(self.index)
-
-class PipelineItem():
-    def __init__(self, img_array, str_transformation=""):
-        self.img_array = img_array
-        self.str_transformation = str_transformation
-    
-    def get_pixmap(self):
-        height, width, channel = self.img_array.shape
-        bytes_per_line = channel * width
-        qimage = QImage(self.img_array.data, width, height, bytes_per_line, QImage.Format_RGB888)
-        pixmap = QPixmap.fromImage(qimage)
-        return pixmap
-    
-    def execute_transform(self, transform_object):
-        transform_object.transform(self.img_array, self.str_transformation)
-
-class Pipeline(list):
-    def __init__(self, transformer):
-        self.transformer = transformer
-
-    def update_from_index(self, index=1):
-        if index<1 or index>=len(self):
-            raise Exception("Wrong index to update pipeline, index sent : " + str(index) + ". Valid index : [1, "+ str(len(self)) + "]")
-        for index in range(index, len(self)):
-            item = self[index-1]
-            self[index] = item.execute_transform(self.transformer)
-
-
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
         self.transformer = Transformer()
         self.pipeline = Pipeline(self.transformer)
+        self.transformer_manager = TransformerManager(self, self.pipeline)
         self.index_current_img = -1
 
         self.setGeometry(100, 100, 700, 700)
@@ -124,7 +73,7 @@ class MainWindow(QMainWindow):
         self.pipeline_manage_layout = QVBoxLayout(pipeline_manage_frame)
 
         # ------|------ Mode manage ---------------------------------------------------------
-        btn_change_current = QRadioButton("Change")
+        btn_change_current = QRadioButton("Change After")
         btn_change_current.setChecked(True)
         self.btn_add_current = QRadioButton("Add")
         self.frame_mode_manage = QFrame()
@@ -256,10 +205,7 @@ class MainWindow(QMainWindow):
         self.image_frame.layout().addWidget(label_dimension)
     
     def update_transformation_buttons(self):
-        alert_transform_functions = {
-            self.alert_colorchange: "Color Change",
-            self.alert_gaussian_blur: "Gaussian Blur"
-        }
+        alert_transform_functions = self.transformer_manager.dict
 
         # Find and delete the initial buttons
         for i in reversed(range(self.pipeline_manage_layout.count())):
@@ -269,38 +215,12 @@ class MainWindow(QMainWindow):
                 self.pipeline_manage_layout.removeWidget(button)
                 button.deleteLater()
 
-        for index, (transform_func, string) in enumerate(alert_transform_functions.items()):
+        for _, (transform_func, string) in enumerate(alert_transform_functions.items()):
             # TODO add condition from image if a transformation cannotbe done
             button = QPushButton(string)
             button.clicked.connect(transform_func)
             self.pipeline_manage_layout.addWidget(button)
             
-
-
-    def alert_custom(self, string_transformation):
-        """Add a string in "transformations" that represent the transformations of the pixmaps"""
-        insert = self.btn_add_current.isChecked()
-        if len(self.transformations)<=self.index_current_img:
-            self.transformations.append(string_transformation)
-            self.index_current_img += 1
-        elif insert:
-            self.transformations.insert(self.index_current_img, string_transformation)
-        elif not insert:
-            self.transformations[self.index_current_img] = string_transformation
-            self.index_current_img += 1
-        self.update_pipeline(self.index_current_img)
-        self.update_image_show()
-        print(string_transformation)
-
-
-    def alert_colorchange(self):
-        """Send a string to "alert_custom" that contains info about the new transformation"""
-        self.update_transformation_buttons()
-        self.alert_custom("colorchange_RGB2GRAY")
-
-    def alert_gaussian_blur(self):
-        """Send a string to "alert_custom" that contains info about the new transformation"""
-        self.alert_custom("gaussianblur_default")
 
 
 if __name__ == '__main__':
