@@ -23,13 +23,12 @@ class MainWindow(QMainWindow):
 
         self.transformer = Transformer()
         self.pipeline = Pipeline(self.transformer)
-        self.transformer_manager = TransformerManager(self, self.pipeline)
+        self.transformer_manager = TransformerManager(self, self.pipeline, self.transformer)
         self.index_current_img = -1
 
         self.setGeometry(100, 100, 700, 700)
         self.initiate_frames()
         self.resizeEvent = self.resize_main_image_event
-
 
     def initiate_frames(self):
         """Create the main QFrame"""
@@ -39,14 +38,14 @@ class MainWindow(QMainWindow):
         upper_frame.setFrameShape(QFrame.StyledPanel)
         upper_frame.setFixedHeight(HEIGHT_UPPER_FRAME)
 
-        upper_layout = QHBoxLayout(upper_frame)
+        upper_layout = QVBoxLayout(upper_frame)
 
         scroll_area_pipeline = QScrollArea()
         scroll_area_pipeline.setWidgetResizable(True)
         upper_layout.addWidget(scroll_area_pipeline)
 
         container_upper_widget = QWidget(scroll_area_pipeline)
-        self.container_upper_layout = QVBoxLayout(container_upper_widget)
+        self.container_upper_layout = QHBoxLayout(container_upper_widget)
         scroll_area_pipeline.setWidget(container_upper_widget)
 
         # Lower Frame --------------------------------------------------------------------
@@ -62,6 +61,10 @@ class MainWindow(QMainWindow):
         self.image.setMinimumSize(1, 1)
         image_frame_layout.addWidget(self.image)
         self.image_frame.hide()
+
+        self.image_shape_label = QLabel()
+        self.image_shape_label.setFixedHeight(15)
+        image_frame_layout.addWidget(self.image_shape_label)
         
         self.import_button = QPushButton("Import Image")
         self.import_button.clicked.connect(self.open_image_dialog)
@@ -114,9 +117,16 @@ class MainWindow(QMainWindow):
 
         self.setCentralWidget(central_widget)
 
-
     def refresh_upper_transformation(self):
         """Update the pipeline of image at the top of the window"""
+        # Find and delete the initial buttons
+        for i in reversed(range(self.container_upper_layout.count())):
+            item = self.container_upper_layout.itemAt(i)
+            if isinstance(item.widget(), ClickableFrame):
+                button = item.widget()
+                self.container_upper_layout.removeWidget(button)
+                button.deleteLater()
+
         for i in range(len(self.pipeline)):
             pixmap = self.pipeline[i].get_pixmap()
             frame = ClickableFrame(i)
@@ -199,14 +209,9 @@ class MainWindow(QMainWindow):
 
         text_dimension = str(self.pipeline[self.index_current_img].img_array.shape).replace("(","").replace(")","").split(", ")
         text_dimension = "h : " + text_dimension[0] + ", w : " + text_dimension[1] + ", c : " + text_dimension[2]
-        label_dimension = QLabel()
-        label_dimension.setText(text_dimension)
-        label_dimension.setFixedHeight(15)
-        self.image_frame.layout().addWidget(label_dimension)
+        self.image_shape_label.setText(text_dimension)
     
     def update_transformation_buttons(self):
-        alert_transform_functions = self.transformer_manager.dict
-
         # Find and delete the initial buttons
         for i in reversed(range(self.pipeline_manage_layout.count())):
             item = self.pipeline_manage_layout.itemAt(i)
@@ -215,11 +220,14 @@ class MainWindow(QMainWindow):
                 self.pipeline_manage_layout.removeWidget(button)
                 button.deleteLater()
 
-        for _, (transform_func, string) in enumerate(alert_transform_functions.items()):
-            # TODO add condition from image if a transformation cannotbe done
-            button = QPushButton(string)
-            button.clicked.connect(transform_func)
-            self.pipeline_manage_layout.addWidget(button)
+        list_transformation = list(self.transformer.commands.keys())
+        for index, transformation in enumerate(list_transformation):
+            condition_str = self.transformer.commands[transformation]['condition']
+            image = self.pipeline[self.index_current_img].img_array             # used for eval(condition)
+            if eval(condition_str):
+                button = QPushButton(transformation)
+                button.clicked.connect(self.transformer_manager.list_function_transformation[index])
+                self.pipeline_manage_layout.addWidget(button)
             
 
 
