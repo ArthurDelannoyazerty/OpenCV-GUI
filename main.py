@@ -148,6 +148,10 @@ class MainWindow(QMainWindow):
     def frame_clicked(self, index):
         """Print a message (index) when clicking on the pipeline of images"""
         print(f"Frame clicked: {index}")
+        self.index_current_img = index
+        self.refresh_upper_transformation()
+        self.update_image_show()
+        self.update_transformation_buttons
 
     def open_image_dialog(self):
         """Open a Choose File dialog box to choose the image"""
@@ -161,11 +165,10 @@ class MainWindow(QMainWindow):
             img_array = cv.cvtColor(img_array, cv.COLOR_BGR2RGB)
             self.index_current_img = 0
             self.pipeline.append(PipelineItem(img_array))
-            self.update_image_show()
 
             self.import_button.hide()
             self.image_frame.setHidden(False)
-            self.resize_main_image_event(None)
+            self.update_image_show()
 
             self.refresh_upper_transformation()
             self.frame_mode_manage.setHidden(False)
@@ -211,6 +214,8 @@ class MainWindow(QMainWindow):
         if len(split_shape_values)==3:
             text_dimension += ", c : " + split_shape_values[2]
         self.image_shape_label.setText(text_dimension)
+
+        self.resize_main_image_event(None)
     
     def update_transformation_buttons(self):
         # Find and delete the initial buttons
