@@ -15,8 +15,6 @@ HEIGHT_UPPER_FRAME = 150
 HEIGHT_TILES = HEIGHT_UPPER_FRAME - 50
 WIDTH_TILES = 150
 
-# TODO actions transformers
-
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -206,9 +204,12 @@ class MainWindow(QMainWindow):
         pixmap = self.get_current_pixmap()
         self.image.setPixmap(pixmap.scaledToWidth(self.image_frame.width(), Qt.SmoothTransformation))
         self.image.setAlignment(Qt.AlignCenter)
-
-        text_dimension = str(self.pipeline[self.index_current_img].img_array.shape).replace("(","").replace(")","").split(", ")
-        text_dimension = "h : " + text_dimension[0] + ", w : " + text_dimension[1] + ", c : " + text_dimension[2]
+        
+        shape = self.pipeline[self.index_current_img].img_array.shape
+        split_shape_values = str(shape).replace("(","").replace(")","").split(", ")
+        text_dimension = "h : " + split_shape_values[0] + ", w : " + split_shape_values[1]
+        if len(split_shape_values)==3:
+            text_dimension += ", c : " + split_shape_values[2]
         self.image_shape_label.setText(text_dimension)
     
     def update_transformation_buttons(self):
