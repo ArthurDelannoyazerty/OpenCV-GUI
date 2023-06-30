@@ -1,5 +1,7 @@
 from pipelineitem import PipelineItem
 from transformationitem import TransformationItem
+from PySide6.QtWidgets import QApplication, QMessageBox
+
 
 class TransformerManager():
     def __init__(self, main_window, pipeline, transformer):
@@ -17,17 +19,32 @@ class TransformerManager():
         transformation_item = TransformationItem(key_command, dict_parameters)
         new_item = PipelineItem(None, transformation_item)
 
-        insert = self.main_window.btn_add_current.isChecked()
+        add_after = self.main_window.btn_add_after.isChecked()
         is_current_last = len(self.pipeline)-1==self.main_window.index_current_img
         if is_current_last:
             self.pipeline.append(new_item)
             self.main_window.index_current_img += 1
-        elif insert:
-            self.pipeline.insert(self.main_window.index_current_img, new_item)
-        elif not insert:
-            self.pipeline[self.main_window.index_current_img] = new_item
+        elif add_after:
+            self.pipeline.insert(self.main_window.index_current_img+1, new_item)
+        elif not add_after:
+            self.pipeline[self.main_window.index_current_img+1] = new_item
             self.main_window.index_current_img += 1
-        self.pipeline.update_from_index(self.main_window.index_current_img)
+        try:
+            self.pipeline.update_from_index(self.main_window.index_current_img)
+        except:
+            # TODO undo the change if error in pipeline transformation
+            # Create a QMessageBox
+            message_box = QMessageBox()
+            message_box.setWindowTitle("Error")
+            message_box.setText("An error occurred in the pipeline, please reboot the program")
+
+            # Set the message box icon and buttons
+            message_box.setIcon(QMessageBox.Critical)
+            message_box.setStandardButtons(QMessageBox.Ok)
+
+            # Show the message box
+            message_box.exec()
+            raise Exception("An error occured in the pipeline, reboot the program.")
         self.main_window.refresh_upper_transformation()
         self.main_window.update_image_show()
         self.main_window.update_transformation_buttons()

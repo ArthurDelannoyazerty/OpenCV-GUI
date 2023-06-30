@@ -74,14 +74,14 @@ class MainWindow(QMainWindow):
         self.pipeline_manage_layout = QVBoxLayout(pipeline_manage_frame)
 
         # ------|------ Mode manage ---------------------------------------------------------
-        btn_change_current = QRadioButton("Change After")
-        btn_change_current.setChecked(True)
-        self.btn_add_current = QRadioButton("Add")
+        btn_change_current = QRadioButton("Change next")
+        self.btn_add_after = QRadioButton("Add")
+        self.btn_add_after.setChecked(True)
         self.frame_mode_manage = QFrame()
         self.frame_mode_manage.setFixedHeight(40)
         mode_manage_layout = QHBoxLayout(self.frame_mode_manage)
         mode_manage_layout.addWidget(btn_change_current)
-        mode_manage_layout.addWidget(self.btn_add_current)
+        mode_manage_layout.addWidget(self.btn_add_after)
 
         self.frame_mode_manage.hide()
         self.pipeline_manage_layout.addWidget(self.frame_mode_manage)
@@ -147,11 +147,11 @@ class MainWindow(QMainWindow):
 
     def frame_clicked(self, index):
         """Print a message (index) when clicking on the pipeline of images"""
-        print(f"Frame clicked: {index}")
         self.index_current_img = index
         self.refresh_upper_transformation()
         self.update_image_show()
-        self.update_transformation_buttons
+        self.update_transformation_buttons()
+        print(f"Frame clicked: {index}")
 
     def open_image_dialog(self):
         """Open a Choose File dialog box to choose the image"""
