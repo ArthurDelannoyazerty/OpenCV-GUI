@@ -15,21 +15,21 @@ class Transformer():
                     'menu':{
                         'number_menu': 1,
                         'menu0': {
-                            'name': 'Choose the conversion',
+                            'name': 'Color conversion',
                             'variable_name': 'colorspace_mode',
-                            'menu_item':[
-                                ('Grayscale',  cv.COLOR_BGR2GRAY),
-                                ('HSV to RGB', cv.COLOR_HSV2RGB),
-                                ('LAB to RGB', cv.COLOR_LAB2RGB),
-                                ('BGR to RGB', cv.COLOR_BGR2RGB),
-                                ('RGB to BGR', cv.COLOR_RGB2BGR),
-                                ('BGR to HSV', cv.COLOR_BGR2HSV),
-                                ('HSV to BGR', cv.COLOR_HSV2BGR),
-                                ('BGR to LAB', cv.COLOR_BGR2LAB),
-                                ('LAB to BGR', cv.COLOR_LAB2BGR),
-                                ('RGB to YUV', cv.COLOR_RGB2YUV),
-                                ('YUV to RGB', cv.COLOR_YUV2RGB)
-                            ]
+                            'menu_item':{
+                                'Grayscale' : cv.COLOR_BGR2GRAY,
+                                'HSV to RGB': cv.COLOR_HSV2RGB,
+                                'LAB to RGB': cv.COLOR_LAB2RGB,
+                                'BGR to RGB': cv.COLOR_BGR2RGB,
+                                'RGB to BGR': cv.COLOR_RGB2BGR,
+                                'BGR to HSV': cv.COLOR_BGR2HSV,
+                                'HSV to BGR': cv.COLOR_HSV2BGR,
+                                'BGR to LAB': cv.COLOR_BGR2LAB,
+                                'LAB to BGR': cv.COLOR_LAB2BGR,
+                                'RGB to YUV': cv.COLOR_RGB2YUV,
+                                'YUV to RGB': cv.COLOR_YUV2RGB
+                            }
                         }
                     }
                 }
@@ -64,7 +64,6 @@ class Transformer():
         return list
 
     def transform(self, item_before, item_current):
-        print("transform")
         img_array_to_transform = item_before.img_array
         transform_item = item_current.transformation_item
 

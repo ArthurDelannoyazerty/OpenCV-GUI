@@ -48,6 +48,7 @@ class TransformerManager():
         self.main_window.refresh_upper_transformation()
         self.main_window.update_image_show()
         self.main_window.update_transformation_buttons()
+        self.main_window.update_transformation_parameters_frame()
     
     def get_default_transformation_parameters(self, key_command):
         dict_gui = self.transformer.commands[key_command]['gui']
@@ -62,7 +63,7 @@ class TransformerManager():
         for i in range(dict_gui['menu']['number_menu']):
             current_slider = dict_gui['menu']['menu'+str(i)]
             var_name = current_slider['variable_name']
-            default_value = current_slider['menu_item'][0][1]
+            default_value = list(current_slider['menu_item'].values())[0]
             dict_default_values[var_name] = default_value
         
         return dict_default_values

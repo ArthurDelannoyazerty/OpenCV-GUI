@@ -1,5 +1,5 @@
 import sys
-from PySide6.QtWidgets import QApplication, QMainWindow, QRadioButton, QVBoxLayout, QHBoxLayout, QLabel, QFrame, QPushButton, QFileDialog, QWidget, QScrollArea
+from PySide6.QtWidgets import QApplication, QComboBox, QMainWindow, QRadioButton, QVBoxLayout, QHBoxLayout, QLabel, QFrame, QPushButton, QFileDialog, QWidget, QScrollArea
 from PySide6.QtGui import QPixmap, Qt, QImage
 from PySide6.QtCore import Qt, QSize
 import cv2 as cv
@@ -9,15 +9,19 @@ from transformer import Transformer
 from clickableframe import ClickableFrame
 from pipelineitem import PipelineItem
 from pipeline import Pipeline
+from sliderwithtext import SliderWithText
+from menuwithtext import MenuWithText
 
 WIDTH_RIGHT_FRAME = 200
-HEIGHT_UPPER_FRAME = 150
-HEIGHT_TILES = HEIGHT_UPPER_FRAME - 50
+HEIGHT_UPPER_FRAME = 170
+HEIGHT_TILES = HEIGHT_UPPER_FRAME - 60
 WIDTH_TILES = 150
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+
+        self.current_parameters_widget = []
 
         self.transformer = Transformer()
         self.pipeline = Pipeline(self.transformer)
@@ -49,7 +53,7 @@ class MainWindow(QMainWindow):
         # Lower Frame --------------------------------------------------------------------
         lower_frame = QFrame()
         lower_frame.setFrameShape(QFrame.StyledPanel)
-        frame2_layout = QHBoxLayout(lower_frame)
+        lower_layout = QHBoxLayout(lower_frame)
         
         # ----- Left frame  --------------------------------------------------------------
         self.image_frame = QFrame()
@@ -92,20 +96,28 @@ class MainWindow(QMainWindow):
         self.pipeline_manage_layout.addWidget(scroll_area_transformation_pipeline)
 
         self.container_transformation_buttons_widget = QWidget(scroll_area_transformation_pipeline)
-        self.pipeline_manage_layout = QVBoxLayout(self.container_transformation_buttons_widget)
+        self.container_transformation_buttons_layout = QVBoxLayout(self.container_transformation_buttons_widget)
         scroll_area_transformation_pipeline.setWidget(self.container_transformation_buttons_widget)
         
         # ----- Right frame  --------------------------------------------------------------
-        transformation_manage_frame = QFrame()
-        transformation_manage_frame.setFrameShape(QFrame.StyledPanel)
-        transformation_manage_frame.setFixedWidth(WIDTH_RIGHT_FRAME)
-        self.transformation_manage_layout = QVBoxLayout(transformation_manage_frame)
+        transformation_parameters_frame = QFrame()
+        transformation_parameters_frame.setFrameShape(QFrame.StyledPanel)
+        transformation_parameters_frame.setFixedWidth(WIDTH_RIGHT_FRAME)
+        self.transformation_parameters_layout = QVBoxLayout(transformation_parameters_frame)
+        
+        scroll_area_transformation_parameters = QScrollArea()
+        scroll_area_transformation_parameters.setWidgetResizable(True)
+        self.transformation_parameters_layout.addWidget(scroll_area_transformation_parameters)
 
+        self.container_transformation_parameters = QWidget(scroll_area_transformation_parameters)
+        self.container_transformation_parameters_layout = QVBoxLayout(self.container_transformation_parameters)
+        scroll_area_transformation_parameters.setWidget(self.container_transformation_parameters)
 
-        frame2_layout.addWidget(self.image_frame)
-        frame2_layout.addWidget(self.import_button)
-        frame2_layout.addWidget(pipeline_manage_frame)
-        frame2_layout.addWidget(transformation_manage_frame)
+        # ----
+        lower_layout.addWidget(self.image_frame)
+        lower_layout.addWidget(self.import_button)
+        lower_layout.addWidget(pipeline_manage_frame)
+        lower_layout.addWidget(transformation_parameters_frame)
 
         # Main Frame --------------------------------------------------------------------
         central_widget = QFrame()
@@ -115,15 +127,59 @@ class MainWindow(QMainWindow):
 
         self.setCentralWidget(central_widget)
 
+    def delete_all_from_layout(self, layout):
+        for i in reversed(range(layout.count())):
+            item = layout.itemAt(i)
+            widget = item.widget()
+            layout.removeWidget(widget)
+            widget.deleteLater()
+
+    def update_transformation_parameters_frame(self):
+        self.delete_all_from_layout(self.container_transformation_parameters_layout)
+
+        if self.index_current_img==0:
+            print("todo btn open")
+        else:
+            self.current_parameters_widget = []
+
+            name_current_transformation = self.pipeline[self.index_current_img].transformation_item.name
+            command = self.transformer.commands[name_current_transformation]
+
+            for i in range(command['gui']['slider']['number_slider']):
+                slider_parameters = command['gui']['slider']['slider'+str(i)]
+                slider_value = self.pipeline[self.index_current_img].transformation_item.parameters[slider_parameters['variable_name']]
+                frame_slider = SliderWithText(slider_parameters, slider_value, self.value_changed_parameters)
+                self.container_transformation_parameters_layout.addWidget(frame_slider)
+                self.current_parameters_widget.append(frame_slider)
+        
+            for i in range(command['gui']['menu']['number_menu']):
+                menu_parameters = command['gui']['menu']['menu'+str(i)]
+                value_in_pipeline = self.pipeline[self.index_current_img].transformation_item.parameters[menu_parameters['variable_name']]
+                list_values_menu = list(menu_parameters['menu_item'].values())
+                index_in_menu = list_values_menu.index(value_in_pipeline)
+                frame_menu = MenuWithText(menu_parameters, index_in_menu, self.value_changed_parameters)
+                self.container_transformation_parameters_layout.addWidget(frame_menu)
+                self.current_parameters_widget.append(frame_menu)
+            
+            
+    def value_changed_parameters(self):
+        new_parameters = dict()
+        for widget in self.current_parameters_widget:
+            variable_name = widget.parameters['variable_name']
+            value = widget.value
+            new_parameters[variable_name] = value
+        self.pipeline[self.index_current_img].transformation_item.parameters = new_parameters
+        self.pipeline.update_from_index(self.index_current_img)
+        self.refresh_upper_transformation()
+        self.update_image_show()
+        self.update_transformation_buttons()
+
+
+
+
     def refresh_upper_transformation(self):
         """Update the pipeline of image at the top of the window"""
-        # Find and delete the initial buttons
-        for i in reversed(range(self.container_upper_layout.count())):
-            item = self.container_upper_layout.itemAt(i)
-            if isinstance(item.widget(), ClickableFrame):
-                button = item.widget()
-                self.container_upper_layout.removeWidget(button)
-                button.deleteLater()
+        self.delete_all_from_layout(self.container_upper_layout)
 
         for i in range(len(self.pipeline)):
             pixmap = self.pipeline[i].get_pixmap()
@@ -151,6 +207,7 @@ class MainWindow(QMainWindow):
         self.refresh_upper_transformation()
         self.update_image_show()
         self.update_transformation_buttons()
+        self.update_transformation_parameters_frame()
         print(f"Frame clicked: {index}")
 
     def open_image_dialog(self):
@@ -174,6 +231,7 @@ class MainWindow(QMainWindow):
             self.frame_mode_manage.setHidden(False)
             self.update_transformation_buttons()  
             self.index_current_img = 0
+            self.update_transformation_parameters_frame()
 
     def resize_main_image_event(self, event):
         """Change the size of the main image we the main window is resized"""
@@ -218,13 +276,7 @@ class MainWindow(QMainWindow):
         self.resize_main_image_event(None)
     
     def update_transformation_buttons(self):
-        # Find and delete the initial buttons
-        for i in reversed(range(self.pipeline_manage_layout.count())):
-            item = self.pipeline_manage_layout.itemAt(i)
-            if isinstance(item.widget(), QPushButton):
-                button = item.widget()
-                self.pipeline_manage_layout.removeWidget(button)
-                button.deleteLater()
+        self.delete_all_from_layout(self.container_transformation_buttons_layout)
 
         list_transformation = list(self.transformer.commands.keys())
         for index, transformation in enumerate(list_transformation):
@@ -233,7 +285,7 @@ class MainWindow(QMainWindow):
             if eval(condition_str):
                 button = QPushButton(transformation)
                 button.clicked.connect(self.transformer_manager.list_function_transformation[index])
-                self.pipeline_manage_layout.addWidget(button)
+                self.container_transformation_buttons_layout.addWidget(button)
             
 
 

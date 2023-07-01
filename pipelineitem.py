@@ -11,10 +11,6 @@ class PipelineItem():
         qpixmap = QPixmap.fromImage(qimage)
         return qpixmap
 
-        
-
-
-    
     # from https://gist.github.com/fepegar/c85e1c64c36934628507588037dba41b
     def toQImage(self, im, copy=False):
         gray_color_table = [qRgb(i, i, i) for i in range(256)]

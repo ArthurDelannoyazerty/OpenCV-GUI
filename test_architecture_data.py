@@ -54,7 +54,7 @@ command_dict = {
         }
 
 
-for i in range(1):
+for i in range(0):
     exec('a=1')
 
 
