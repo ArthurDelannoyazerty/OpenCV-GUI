@@ -19,16 +19,21 @@ class Transformer():
                             'variable_name': 'colorspace_mode',
                             'menu_item':{
                                 'Grayscale' : cv.COLOR_BGR2GRAY,
-                                'HSV to RGB': cv.COLOR_HSV2RGB,
-                                'LAB to RGB': cv.COLOR_LAB2RGB,
-                                'BGR to RGB': cv.COLOR_BGR2RGB,
                                 'RGB to BGR': cv.COLOR_RGB2BGR,
-                                'BGR to HSV': cv.COLOR_BGR2HSV,
-                                'HSV to BGR': cv.COLOR_HSV2BGR,
-                                'BGR to LAB': cv.COLOR_BGR2LAB,
-                                'LAB to BGR': cv.COLOR_LAB2BGR,
+                                'RGB to HSV': cv.COLOR_RGB2HSV,
                                 'RGB to YUV': cv.COLOR_RGB2YUV,
-                                'YUV to RGB': cv.COLOR_YUV2RGB
+                                'RGB to LAB': cv.COLOR_RGB2LAB,
+                                'BGR to RGB': cv.COLOR_BGR2RGB,
+                                'BGR to HSV': cv.COLOR_BGR2HSV,
+                                'BGR to YUV': cv.COLOR_BGR2YUV,
+                                'BGR to LAB': cv.COLOR_BGR2LAB,
+                                'HSV to RGB': cv.COLOR_HSV2RGB,
+                                'HSV to BGR': cv.COLOR_HSV2BGR,
+                                'HSV to BGR': cv.COLOR_HSV2BGR,
+                                'YUV to RGB': cv.COLOR_YUV2RGB,
+                                'YUV to BGR': cv.COLOR_YUV2BGR,
+                                'LAB to RGB': cv.COLOR_LAB2RGB,
+                                'LAB to BGR': cv.COLOR_LAB2BGR
                             }
                         }
                     }
@@ -45,7 +50,7 @@ class Transformer():
                             'name': 'Kernel Size',
                             'variable_name': 'kernel_size',
                             'min_value': 1,
-                            'max_value': 21,
+                            'max_value': 51,
                             'step':2,
                             'default_value': 3
                         }

@@ -41,7 +41,7 @@ command_dict = {
                             'name': 'Kernel Size',
                             'variable_name': 'kernel_size',
                             'min_value': 1,
-                            'max_value': 21,
+                            'max_value': 101,
                             'step':2,
                             'default_value': 3
                         }
