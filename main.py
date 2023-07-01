@@ -195,7 +195,13 @@ class MainWindow(QMainWindow):
             pixmap_label.setPixmap(pixmap.scaled(WIDTH_TILES, HEIGHT_TILES, Qt.AspectRatioMode.KeepAspectRatio))
             layout.addWidget(pixmap_label)
 
-            index_label = QLabel(f"Index: {i}")
+            transformation_item = self.pipeline[i].transformation_item
+            text = ""
+            if transformation_item==None:
+                text = "Original Image"
+            else:
+                text = transformation_item.name
+            index_label = QLabel(text)
             index_label.setAlignment(Qt.AlignCenter)
             layout.addWidget(index_label)
 
