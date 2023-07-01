@@ -138,7 +138,10 @@ class MainWindow(QMainWindow):
         self.delete_all_from_layout(self.container_transformation_parameters_layout)
 
         if self.index_current_img==0:
-            print("todo btn open")
+            btn = QPushButton()
+            btn.setText("Change Image")
+            btn.clicked.connect(self.change_original_image)
+            self.container_transformation_parameters_layout.addWidget(btn)
         else:
             self.current_parameters_widget = []
 
@@ -174,6 +177,20 @@ class MainWindow(QMainWindow):
         self.update_image_show()
         self.update_transformation_buttons()
 
+    def change_original_image(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.ReadOnly
+        file_name, _ = QFileDialog.getOpenFileName(self, "Choisir une image", "", "Images (*.png *.jpg *.jpeg *.bmp)", options=options)
+
+        if file_name:
+            img_array = cv.imread(file_name, cv.IMREAD_COLOR)
+            img_array = cv.cvtColor(img_array, cv.COLOR_BGR2RGB)
+            self.pipeline[0].img_array = img_array
+            self.pipeline.update_from_index(1)
+            self.refresh_upper_transformation()
+            self.update_image_show()
+            self.update_transformation_buttons()
+            self.update_transformation_parameters_frame()
 
 
 
@@ -214,7 +231,6 @@ class MainWindow(QMainWindow):
         self.update_image_show()
         self.update_transformation_buttons()
         self.update_transformation_parameters_frame()
-        print(f"Frame clicked: {index}")
 
     def open_image_dialog(self):
         """Open a Choose File dialog box to choose the image"""
