@@ -73,8 +73,9 @@ class MainWindow(QMainWindow):
 
         # -----|-------- Description image frame------------------------------------------
         self.description_image_frame = QFrame()
-        self.description_image_layout = QHBoxLayout(self.description_image_frame)
         self.description_image_frame.setMaximumHeight(35)
+        self.description_image_layout = QHBoxLayout(self.description_image_frame)
+        self.description_image_layout.setAlignment(Qt.AlignRight)
         image_frame_layout.addWidget(self.description_image_frame)
 
         label_checkbox_show_last = QLabel()

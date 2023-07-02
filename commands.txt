@@ -506,5 +506,58 @@
                 }
             }
         }
+    },
+    'Adaptive Threshold 1D': {
+        'command': 'cv.adaptiveThreshold(image, max_value, adaptive_threshold, thresh_type, block_size, constant_mean)',
+        'number_parameters' : 6,
+        'condition': 'len(image.shape)==2',
+        'gui':{
+            'slider':{
+                'number_slider': 3,
+                'slider0': {
+                    'name': 'Max Value',
+                    'variable_name': 'max_value',
+                    'min_value': '0',
+                    'max_value': '255',
+                    'step':'1',
+                    'default_value': '255'
+                },
+                'slider1': {
+                    'name': 'Block Size',
+                    'variable_name': 'block_size',
+                    'min_value': '1',
+                    'max_value': 'int(min(len(image[0]), len(image))/4)',
+                    'step':'2',
+                    'default_value': '11'
+                },
+                'slider2': {
+                    'name': 'Constant',
+                    'variable_name': 'constant_mean',
+                    'min_value': '-10',
+                    'max_value': '10',
+                    'step':'1',
+                    'default_value': '0'
+                }
+            },
+            'menu':{
+                'number_menu': 2,
+                'menu0': {
+                    'name': 'Adaptive Threshold',
+                    'variable_name': 'adaptive_threshold',
+                    'menu_item':{
+                        'Thresh Mean' : cv.ADAPTIVE_THRESH_MEAN_C,
+                        'Gaussian Thresh Mean': cv.ADAPTIVE_THRESH_GAUSSIAN_C
+                    }
+                },
+                'menu1': {
+                    'name': 'Threshold Type',
+                    'variable_name': 'thresh_type',
+                    'menu_item':{
+                        'Binary' : cv.THRESH_BINARY,
+                        'Binary Inverted': cv.THRESH_BINARY_INV
+                    }
+                }
+            }
+        }
     }
 }
