@@ -19,6 +19,7 @@ class TransformerManager():
             self.alert_simple_blur,
             self.alert_gaussian_blur,
             self.alert_median_blur,
+            self.alert_bilateral_filtering,
             self.alert_threshold1d,
             self.alert_adaptive_threshold1d
         ]
@@ -133,12 +134,17 @@ class TransformerManager():
         key_command = list(self.main_window.transformer.commands.keys())[9]
         self.transformation_saver(key_command)
 
-    def alert_threshold1d(self):
+    def alert_bilateral_filtering(self):
         """Send a string to "transformation_saver" that contains info about the new transformation"""
         key_command = list(self.main_window.transformer.commands.keys())[10]
         self.transformation_saver(key_command)
 
-    def alert_adaptive_threshold1d(self):
+    def alert_threshold1d(self):
         """Send a string to "transformation_saver" that contains info about the new transformation"""
         key_command = list(self.main_window.transformer.commands.keys())[11]
+        self.transformation_saver(key_command)
+
+    def alert_adaptive_threshold1d(self):
+        """Send a string to "transformation_saver" that contains info about the new transformation"""
+        key_command = list(self.main_window.transformer.commands.keys())[12]
         self.transformation_saver(key_command)

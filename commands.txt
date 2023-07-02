@@ -508,6 +508,43 @@
             }
         }
     },
+    'Bilateral Filtering': {
+        'command': 'cv.bilateralFilter(image, diameter, sigma_color, sigma_space)',
+        'number_parameters': 4,
+        'condition': 'True',
+        'gui': {
+            'slider': {
+                'number_slider': 3,
+                'slider0': {
+                    'name': 'Diameter',
+                    'variable_name': 'diameter',
+                    'min_value': '1',
+                    'max_value': '51',
+                    'step':'1',
+                    'default_value': '5'
+                },
+                'slider1': {
+                    'name': 'Sigma Color',
+                    'variable_name': 'sigma_color',
+                    'min_value': '0',
+                    'max_value': '255',
+                    'step':'1',
+                    'default_value': '75'
+                },
+                'slider2': {
+                    'name': 'Sigma Space',
+                    'variable_name': 'sigma_space',
+                    'min_value': '0',
+                    'max_value': '255',
+                    'step':'1',
+                    'default_value': '75'
+                }
+            },
+            'menu': {
+                'number_menu': 0
+            }
+        }
+    },
     'Threshold 1D': {
         'command': 'cv.threshold(image, thresh_value, max_value, thresh_type)',
         'number_parameters' : 4,
