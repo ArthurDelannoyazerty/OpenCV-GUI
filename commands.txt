@@ -343,6 +343,51 @@
             }
         }
     },
+    'Crop': {
+        'command': 'image[y_begin:y_end, x_begin:x_end]',
+        'number_parameters': 5,
+        'condition': 'True',
+        'gui': {
+            'slider': {
+                'number_slider': 4,
+                'slider0': {
+                    'name': 'X Begin',
+                    'variable_name': 'x_begin',
+                    'min_value': '0',
+                    'max_value': 'len(image[0])-1',
+                    'step':'1',
+                    'default_value': '0'
+                },
+                'slider1': {
+                    'name': 'Y Begin',
+                    'variable_name': 'y_begin',
+                    'min_value': '0',
+                    'max_value': 'len(image)-1',
+                    'step':'1',
+                    'default_value': '0'
+                },
+                'slider2': {
+                    'name': 'X End',
+                    'variable_name': 'x_end',
+                    'min_value': '0',
+                    'max_value': 'len(image[0])',
+                    'step':'1',
+                    'default_value': 'len(image[0])-1'
+                },
+                'slider3': {
+                    'name': 'Y End',
+                    'variable_name': 'y_end',
+                    'min_value': '0',
+                    'max_value': 'len(image)',
+                    'step':'1',
+                    'default_value': 'len(image)-1'
+                }
+            },
+            'menu': {
+                'number_menu': 0
+            }
+        }
+    },
     'Change Colorspace': {
         'command': 'cv.cvtColor(image, colorspace_mode)',
         'number_parameters' : 2,

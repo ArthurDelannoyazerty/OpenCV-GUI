@@ -174,7 +174,7 @@ class MainWindow(QMainWindow):
 
             name_current_transformation = self.pipeline[self.index_current_img].transformation_item.name
             command = self.transformer.commands[name_current_transformation]
-            image = self.pipeline[self.index_current_img].img_array
+            image = self.pipeline[self.index_current_img-1].img_array
 
             for i in range(command['gui']['slider']['number_slider']):
                 slider_parameters = command['gui']['slider']['slider'+str(i)]

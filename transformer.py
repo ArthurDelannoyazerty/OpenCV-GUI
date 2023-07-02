@@ -25,12 +25,12 @@ class Transformer():
             
     def transform(self, item_before, item_current):
         img_array_to_transform = item_before.img_array
+        image = img_array_to_transform.copy()
         transform_item = item_current.transformation_item
 
         # Creation variable for the command
         for index, (key, value) in enumerate(transform_item.parameters.items()):
             exec(str(key) +  "=" + str(value))
         
-        image = img_array_to_transform.copy()
         img_arrays_transformed = eval(self.commands[transform_item.name]['command'])
-        return img_arrays_transformed
+        return img_arrays_transformed.copy()
