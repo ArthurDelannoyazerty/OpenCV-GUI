@@ -14,7 +14,7 @@ from pipeline import Pipeline
 from sliderwithtext import SliderWithText
 from menuwithtext import MenuWithText
 
-WIDTH_RIGHT_FRAME = 200
+WIDTH_RIGHT_FRAME = 220
 HEIGHT_UPPER_FRAME = 170
 HEIGHT_TILES = HEIGHT_UPPER_FRAME - 60
 WIDTH_TILES = 150

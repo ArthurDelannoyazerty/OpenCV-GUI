@@ -516,6 +516,35 @@
             }
         }
     },
+    'Add Speckle Noise': {
+        'command': 'image + image * np.random.normal(loc=mean/100, scale=std/100, size=image.shape).astype("uint8")',
+        'number_parameters': 2,
+        'condition': 'len(image.shape)==2',
+        'gui': {
+            'slider': {
+                'number_slider': 2,
+                'slider0': {
+                    'name': 'Standard deviation(*.01)',
+                    'variable_name': 'std',
+                    'min_value': '0',
+                    'max_value': '100',
+                    'step':'1',
+                    'default_value': '1'
+                },
+                'slider1': {
+                    'name': 'Mean(*.01)',
+                    'variable_name': 'mean',
+                    'min_value': '-127',
+                    'max_value': '128',
+                    'step':'1',
+                    'default_value': '0'
+                }
+            },
+            'menu': {
+                'number_menu': 0
+            }
+        }
+    },
     'Simple Blur': {
         'command': 'cv.blur(image, (kernel_size, kernel_size))',
         'number_parameters': 2,
