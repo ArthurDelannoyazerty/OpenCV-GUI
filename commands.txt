@@ -388,6 +388,28 @@
             }
         }
     },
+    'Select Channel': {
+        'command': 'image[:,:,channel]',
+        'number_parameters' : 2,
+        'condition': 'len(image.shape)==3',
+        'gui':{
+            'slider':{
+                'number_slider': 0
+            },
+            'menu':{
+                'number_menu': 1,
+                'menu0': {
+                    'name': 'Select channel',
+                    'variable_name': 'channel',
+                    'menu_item':{
+                        '0': 0,
+                        '1': 1,
+                        '2': 2
+                    }
+                }
+            }
+        }
+    },
     'Change Colorspace': {
         'command': 'cv.cvtColor(image, colorspace_mode)',
         'number_parameters' : 2,
