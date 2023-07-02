@@ -7,12 +7,12 @@ class PipelineItem():
         self.transformation_item = transformation_item
     
     def get_pixmap(self):
-        qimage = self.toQImage(self.img_array)
+        qimage = self.to_q_image(self.img_array)
         qpixmap = QPixmap.fromImage(qimage)
         return qpixmap
 
     # from https://gist.github.com/fepegar/c85e1c64c36934628507588037dba41b
-    def toQImage(self, im, copy=False):
+    def to_q_image(self, im, copy=False):
         gray_color_table = [qRgb(i, i, i) for i in range(256)]
         
         if im is None:

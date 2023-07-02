@@ -9,6 +9,7 @@ class TransformerManager():
         self.pipeline = pipeline
         self.transformer = transformer
         self.list_function_transformation = [
+            self.alert_draw_line,
             self.alert_colorspacechange,
             self.alert_gaussian_blur
         ]
@@ -25,7 +26,8 @@ class TransformerManager():
             self.pipeline.append(new_item)
             self.main_window.index_current_img += 1
         elif add_after:
-            self.pipeline.insert(self.main_window.index_current_img+1, new_item)
+            self.main_window.index_current_img += 1
+            self.pipeline.insert(self.main_window.index_current_img, new_item)
         elif not add_after:
             self.pipeline[self.main_window.index_current_img+1] = new_item
             self.main_window.index_current_img += 1
@@ -53,6 +55,8 @@ class TransformerManager():
     def get_default_transformation_parameters(self, key_command):
         dict_gui = self.transformer.commands[key_command]['gui']
         dict_default_values = dict()
+
+        image = self.pipeline[self.main_window.index_current_img].img_array
         
         for i in range(dict_gui['slider']['number_slider']):
             current_slider = dict_gui['slider']['slider'+str(i)]
@@ -70,12 +74,17 @@ class TransformerManager():
 
 
 
-    def alert_colorspacechange(self):
+    def alert_draw_line(self):
         """Send a string to "transformation_saver" that contains info about the new transformation"""
         key_command = list(self.main_window.transformer.commands.keys())[0]
         self.transformation_saver(key_command)
 
-    def alert_gaussian_blur(self):
+    def alert_colorspacechange(self):
         """Send a string to "transformation_saver" that contains info about the new transformation"""
         key_command = list(self.main_window.transformer.commands.keys())[1]
+        self.transformation_saver(key_command)
+
+    def alert_gaussian_blur(self):
+        """Send a string to "transformation_saver" that contains info about the new transformation"""
+        key_command = list(self.main_window.transformer.commands.keys())[2]
         self.transformation_saver(key_command)

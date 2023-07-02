@@ -1,5 +1,6 @@
 import cv2 as cv
 from PySide6.QtWidgets import QMessageBox
+import numpy as np
 
 class Transformer():
     """An objet that transform a given image with the specified transforamtion with opencv"""
@@ -21,13 +22,7 @@ class Transformer():
             message_box.setStandardButtons(QMessageBox.Ok)
             message_box.exec()
             raise SyntaxError("Error while loading commands, either file not found or error in parsing file.")
-    
-    def get_parameters(self, transform_string):
-        list = transform_string.split("_")
-        for index, element in enumerate(list):
-            list[index] = int(element) if element.isnumeric() else element
-        return list
-
+            
     def transform(self, item_before, item_current):
         img_array_to_transform = item_before.img_array
         transform_item = item_current.transformation_item
@@ -36,6 +31,6 @@ class Transformer():
         for index, (key, value) in enumerate(transform_item.parameters.items()):
             exec(str(key) +  "=" + str(value))
         
-        image = img_array_to_transform
+        image = img_array_to_transform.copy()
         img_arrays_transformed = eval(self.commands[transform_item.name]['command'])
         return img_arrays_transformed
