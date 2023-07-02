@@ -445,6 +445,27 @@
             }
         }
     },
+    'Simple Blur': {
+        'command': 'cv.blur(image, (kernel_size, kernel_size))',
+        'number_parameters': 2,
+        'condition': 'True',
+        'gui': {
+            'slider': {
+                'number_slider': 1,
+                'slider0': {
+                    'name': 'Kernel Size',
+                    'variable_name': 'kernel_size',
+                    'min_value': '1',
+                    'max_value': 'int(min(len(image[0]), len(image))/2)',
+                    'step':'2',
+                    'default_value': '3'
+                }
+            },
+            'menu': {
+                'number_menu': 0
+            }
+        }
+    },
     'Gaussian Blur': {
         'command': 'cv.GaussianBlur(image, (kernel_size, kernel_size), 0)',
         'number_parameters': 2,
