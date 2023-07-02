@@ -738,5 +738,57 @@
                 }
             }
         }
+    },
+    'Morph': {
+        'command': 'cv.morphologyEx(image, operation_type, cv.getStructuringElement(morph_type, (kernel_size, kernel_size)), iterations=iterations)',
+        'number_parameters' : 5,
+        'condition': 'len(image.shape)==2',
+        'gui':{
+            'slider':{
+                'number_slider': 2,
+                'slider0': {
+                    'name': 'Kernel Size',
+                    'variable_name': 'kernel_size',
+                    'min_value': '1',
+                    'max_value': '21',
+                    'step':'2',
+                    'default_value': '3'
+                },
+                'slider1': {
+                    'name': 'Iterations',
+                    'variable_name': 'iterations',
+                    'min_value': '1',
+                    'max_value': '10',
+                    'step':'1',
+                    'default_value': '1'
+                }
+            },
+            'menu':{
+                'number_menu': 2,
+                'menu0': {
+                    'name': 'Operation Type',
+                    'variable_name': 'operation_type',
+                    'menu_item':{
+                        'Erode' : cv.MORPH_ERODE,
+                        'Dilate': cv.MORPH_DILATE,
+                        'Open': cv.MORPH_OPEN,
+                        'Close': cv.MORPH_CLOSE,
+                        'Gradient': cv.MORPH_GRADIENT,
+                        'Top Hat': cv.MORPH_TOPHAT,
+                        'Black Hat': cv.MORPH_BLACKHAT,
+                        'Hit Miss': cv.MORPH_HITMISS
+                    }
+                },
+                'menu1': {
+                    'name': 'Kernel Type',
+                    'variable_name': 'morph_type',
+                    'menu_item':{
+                        'Rectangle' : cv.MORPH_RECT,
+                        'Cross': cv.MORPH_CROSS,
+                        'Ellipse': cv.MORPH_ELLIPSE
+                    }
+                }
+            }
+        }
     }
 }

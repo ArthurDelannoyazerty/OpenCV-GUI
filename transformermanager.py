@@ -25,7 +25,8 @@ class TransformerManager():
             self.alert_poisson_noise,
             self.alert_speckle_noise,
             self.alert_threshold1d,
-            self.alert_adaptive_threshold1d
+            self.alert_adaptive_threshold1d,
+            self.alert_morph
         ]
         
     def transformation_saver(self, key_command):
@@ -171,4 +172,9 @@ class TransformerManager():
     def alert_adaptive_threshold1d(self):
         """Send a string to "transformation_saver" that contains info about the new transformation"""
         key_command = list(self.main_window.transformer.commands.keys())[16]
+        self.transformation_saver(key_command)
+
+    def alert_morph(self):
+        """Send a string to "transformation_saver" that contains info about the new transformation"""
+        key_command = list(self.main_window.transformer.commands.keys())[17]
         self.transformation_saver(key_command)
