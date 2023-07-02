@@ -27,6 +27,8 @@ class TransformerManager():
             self.alert_threshold1d,
             self.alert_adaptive_threshold1d,
             self.alert_gradient_laplacian,
+            self.alert_gradient_sobel,
+            self.alert_gradient_canny,
             self.alert_morph
         ]
         
@@ -180,7 +182,17 @@ class TransformerManager():
         key_command = list(self.main_window.transformer.commands.keys())[17]
         self.transformation_saver(key_command)
 
-    def alert_morph(self):
+    def alert_gradient_sobel(self):
         """Send a string to "transformation_saver" that contains info about the new transformation"""
         key_command = list(self.main_window.transformer.commands.keys())[18]
+        self.transformation_saver(key_command)
+
+    def alert_gradient_canny(self):
+        """Send a string to "transformation_saver" that contains info about the new transformation"""
+        key_command = list(self.main_window.transformer.commands.keys())[19]
+        self.transformation_saver(key_command)
+
+    def alert_morph(self):
+        """Send a string to "transformation_saver" that contains info about the new transformation"""
+        key_command = list(self.main_window.transformer.commands.keys())[20]
         self.transformation_saver(key_command)

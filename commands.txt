@@ -742,7 +742,7 @@
     'GRADIENT - Laplacian': {
         'command': 'cv.Laplacian(image, cv.CV_64F, ksize=kernel_size).astype("uint8")',
         'number_parameters': 2,
-        'condition': 'True',
+        'condition': 'len(image.shape)==2',
         'gui': {
             'slider': {
                 'number_slider': 1,
@@ -757,6 +757,72 @@
             },
             'menu': {
                 'number_menu': 0
+            }
+        }
+    },
+    'GRADIENT - Sobel': {
+        'command': 'np.uint8(np.absolute(cv.Sobel(image, cv.CV_64F, dx, 1-dx, ksize=kernel_size)))',
+        'number_parameters': 4,
+        'condition': 'len(image.shape)==2',
+        'gui': {
+            'slider': {
+                'number_slider': 1,
+                'slider0': {
+                    'name': 'Kernel Size',
+                    'variable_name': 'kernel_size',
+                    'min_value': '1',
+                    'max_value': '15',
+                    'step':'2',
+                    'default_value': '1'
+                }
+            },
+            'menu': {
+                'number_menu': 1,
+                'menu0': {
+                    'name': 'Orientation',
+                    'variable_name': 'dx',
+                    'menu_item':{
+                        'Horizontal' : 0,
+                        'Vertical': 1
+                    }
+                }
+            }
+        }
+    },
+    'GRADIENT - Canny': {
+        'command': 'cv.Canny(image, thresh1, thresh2, L2gradient=norm_type)',
+        'number_parameters': 4,
+        'condition': 'len(image.shape)==2',
+        'gui': {
+            'slider': {
+                'number_slider': 2,
+                'slider0': {
+                    'name': 'Low Thresh',
+                    'variable_name': 'thresh1',
+                    'min_value': '0',
+                    'max_value': '255',
+                    'step':'1',
+                    'default_value': '85'
+                },
+                'slider1': {
+                    'name': 'High Thresh',
+                    'variable_name': 'thresh2',
+                    'min_value': '0',
+                    'max_value': '255',
+                    'step':'1',
+                    'default_value': '255'
+                }
+            },
+            'menu': {
+                'number_menu': 1,
+                'menu0': {
+                    'name': 'Norm Type',
+                    'variable_name': 'norm_type',
+                    'menu_item':{
+                        'L2': True,
+                        'L1' : False
+                    }
+                }
             }
         }
     },
