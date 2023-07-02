@@ -445,6 +445,77 @@
             }
         }
     },
+    'Add Gaussian Noise': {
+        'command': 'cv.add(image, np.random.normal(mean, std, image.shape), dtype=cv.CV_8U)',
+        'number_parameters': 3,
+        'condition': 'True',
+        'gui': {
+            'slider': {
+                'number_slider': 2,
+                'slider0': {
+                    'name': 'Standard deviation',
+                    'variable_name': 'std',
+                    'min_value': '0',
+                    'max_value': '50',
+                    'step':'1',
+                    'default_value': '1'
+                },
+                'slider1': {
+                    'name': 'Mean',
+                    'variable_name': 'mean',
+                    'min_value': '-127',
+                    'max_value': '128',
+                    'step':'1',
+                    'default_value': '0'
+                }
+            },
+            'menu': {
+                'number_menu': 0
+            }
+        }
+    },
+    'Add Salt And Pepper Noise': {
+        'command': 'np.where(np.random.random(image.shape) < (low_thresh/100), 0, np.where(np.random.random(image.shape) < (high_thresh/100), 255, image))',
+        'number_parameters': 3,
+        'condition': 'len(image.shape)==2',
+        'gui': {
+            'slider': {
+                'number_slider': 2,
+                'slider0': {
+                    'name': 'Pepper Thresh (%)',
+                    'variable_name': 'low_thresh',
+                    'min_value': '0',
+                    'max_value': '100',
+                    'step':'1',
+                    'default_value': '5'
+                },
+                'slider1': {
+                    'name': 'Salt Thresh (%)',
+                    'variable_name': 'high_thresh',
+                    'min_value': '0',
+                    'max_value': '100',
+                    'step':'1',
+                    'default_value': '5'
+                }
+            },
+            'menu': {
+                'number_menu': 0
+            }
+        }
+    },
+    'Add Poisson Noise': {
+        'command': 'np.random.poisson(image).astype("uint8")',
+        'number_parameters': 2,
+        'condition': 'len(image.shape)==2',
+        'gui': {
+            'slider': {
+                'number_slider': 0
+            },
+            'menu': {
+                'number_menu': 0
+            }
+        }
+    },
     'Simple Blur': {
         'command': 'cv.blur(image, (kernel_size, kernel_size))',
         'number_parameters': 2,
