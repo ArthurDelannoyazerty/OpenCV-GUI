@@ -1,7 +1,7 @@
 {
     'DRAWING - Line': {
         'command': 'cv.line(image, (x_begin, y_begin), (x_end, y_end), (red, green, blue), thickness, linetype)',
-        'number_parameters': 9,
+        'number_parameters': 10,
         'condition': 'True',
         'gui': {
             'slider': {
@@ -66,7 +66,7 @@
                     'name': 'Thickness',
                     'variable_name': 'thickness',
                     'min_value': '1',
-                    'max_value': '25',
+                    'max_value': 'min(len(image), len(image[0]))',
                     'step':'1',
                     'default_value': '4'
                 }
@@ -77,7 +77,264 @@
                     'name': 'Line Type',
                     'variable_name': 'linetype',
                     'menu_item':{
-                        'Filled' : cv.FILLED,
+                        '4 Connected Line': cv.LINE_4,
+                        '8 Connected Line': cv.LINE_8,
+                        'Antialised Line': cv.LINE_AA
+                    }
+                }
+            }
+        }
+    },
+    'DRAWING - Rectangle': {
+        'command': 'cv.rectangle(image, (x_begin, y_begin), (x_end, y_end), (red, green, blue), thickness, linetype)',
+        'number_parameters': 10,
+        'condition': 'True',
+        'gui': {
+            'slider': {
+                'number_slider': 8,
+                'slider0': {
+                    'name': 'X Begin',
+                    'variable_name': 'x_begin',
+                    'min_value': '0',
+                    'max_value': 'len(image[0])-1',
+                    'step':'1',
+                    'default_value': 'int(len(image[0])/4)'
+                },
+                'slider1': {
+                    'name': 'Y Begin',
+                    'variable_name': 'y_begin',
+                    'min_value': '0',
+                    'max_value': 'len(image)-1',
+                    'step':'1',
+                    'default_value': 'int(len(image)/4)'
+                },
+                'slider2': {
+                    'name': 'X End',
+                    'variable_name': 'x_end',
+                    'min_value': '0',
+                    'max_value': 'len(image[0])-1',
+                    'step':'1',
+                    'default_value': 'int(len(image[0])/4*3)'
+                },
+                'slider3': {
+                    'name': 'Y End',
+                    'variable_name': 'y_end',
+                    'min_value': '0',
+                    'max_value': 'len(image)-1',
+                    'step':'1',
+                    'default_value': 'int(len(image)/4*3)'
+                },
+                'slider4': {
+                    'name': 'Red',
+                    'variable_name': 'red',
+                    'min_value': '0',
+                    'max_value': '255',
+                    'step':'1',
+                    'default_value': '255'
+                },
+                'slider5': {
+                    'name': 'Green',
+                    'variable_name': 'green',
+                    'min_value': '0',
+                    'max_value': '255',
+                    'step':'1',
+                    'default_value': '0'
+                },
+                'slider6': {
+                    'name': 'Blue',
+                    'variable_name': 'blue',
+                    'min_value': '0',
+                    'max_value': '255',
+                    'step':'1',
+                    'default_value': '0'
+                },
+                'slider7': {
+                    'name': 'Thickness',
+                    'variable_name': 'thickness',
+                    'min_value': '-1',
+                    'max_value': 'min(len(image), len(image[0]))',
+                    'step':'1',
+                    'default_value': '4'
+                }
+            },
+            'menu': {
+                'number_menu': 1,
+                'menu0': {
+                    'name': 'Line Type',
+                    'variable_name': 'linetype',
+                    'menu_item':{
+                        '4 Connected Line': cv.LINE_4,
+                        '8 Connected Line': cv.LINE_8,
+                        'Antialised Line': cv.LINE_AA
+                    }
+                }
+            }
+        }
+    },
+    'DRAWING - Circle': {
+        'command': 'cv.circle(image, (x_center, y_center), radius, (red, green, blue), thickness, linetype)',
+        'number_parameters': 9,
+        'condition': 'True',
+        'gui': {
+            'slider': {
+                'number_slider': 7,
+                'slider0': {
+                    'name': 'X Center',
+                    'variable_name': 'x_center',
+                    'min_value': '0',
+                    'max_value': 'len(image[0])-1',
+                    'step':'1',
+                    'default_value': 'int(len(image[0])/2)'
+                },
+                'slider1': {
+                    'name': 'Y Center',
+                    'variable_name': 'y_center',
+                    'min_value': '0',
+                    'max_value': 'len(image)-1',
+                    'step':'1',
+                    'default_value': 'int(len(image)/2)'
+                },
+                'slider2': {
+                    'name': 'Radius',
+                    'variable_name': 'radius',
+                    'min_value': '1',
+                    'max_value': 'max(len(image), len(image[0]))',
+                    'step':'1',
+                    'default_value': 'int(min(len(image), len(image[0]))/4)'
+                },
+                'slider3': {
+                    'name': 'Red',
+                    'variable_name': 'red',
+                    'min_value': '0',
+                    'max_value': '255',
+                    'step':'1',
+                    'default_value': '255'
+                },
+                'slider4': {
+                    'name': 'Green',
+                    'variable_name': 'green',
+                    'min_value': '0',
+                    'max_value': '255',
+                    'step':'1',
+                    'default_value': '0'
+                },
+                'slider5': {
+                    'name': 'Blue',
+                    'variable_name': 'blue',
+                    'min_value': '0',
+                    'max_value': '255',
+                    'step':'1',
+                    'default_value': '0'
+                },
+                'slider6': {
+                    'name': 'Thickness',
+                    'variable_name': 'thickness',
+                    'min_value': '-1',
+                    'max_value': 'min(len(image), len(image[0]))',
+                    'step':'1',
+                    'default_value': '4'
+                }
+            },
+            'menu': {
+                'number_menu': 1,
+                'menu0': {
+                    'name': 'Line Type',
+                    'variable_name': 'linetype',
+                    'menu_item':{
+                        '4 Connected Line': cv.LINE_4,
+                        '8 Connected Line': cv.LINE_8,
+                        'Antialised Line': cv.LINE_AA
+                    }
+                }
+            }
+        }
+    },
+    'DRAWING - Ellipse': {
+        'command': 'cv.ellipse(image, (x_center, y_center), (major_axis, minor_axis), angle, 0, 360, (red, green, blue), thickness, linetype)',
+        'number_parameters': 11,
+        'condition': 'True',
+        'gui': {
+            'slider': {
+                'number_slider': 9,
+                'slider0': {
+                    'name': 'X Center',
+                    'variable_name': 'x_center',
+                    'min_value': '0',
+                    'max_value': 'len(image[0])-1',
+                    'step':'1',
+                    'default_value': 'int(len(image[0])/2)'
+                },
+                'slider1': {
+                    'name': 'Y Center',
+                    'variable_name': 'y_center',
+                    'min_value': '0',
+                    'max_value': 'len(image)-1',
+                    'step':'1',
+                    'default_value': 'int(len(image)/2)'
+                },
+                'slider2': {
+                    'name': 'Major Axis',
+                    'variable_name': 'major_axis',
+                    'min_value': '1',
+                    'max_value': 'max(len(image), len(image[0]))',
+                    'step':'1',
+                    'default_value': 'int(len(image[0])/4)'
+                },
+                'slider3': {
+                    'name': 'Minor Axis',
+                    'variable_name': 'minor_axis',
+                    'min_value': '1',
+                    'max_value': 'max(len(image), len(image[0]))',
+                    'step':'1',
+                    'default_value': 'int(len(image)/4)'
+                },
+                'slider4': {
+                    'name': 'Angle',
+                    'variable_name': 'angle',
+                    'min_value': '0',
+                    'max_value': '360',
+                    'step':'1',
+                    'default_value': '180'
+                },
+                'slider5': {
+                    'name': 'Red',
+                    'variable_name': 'red',
+                    'min_value': '0',
+                    'max_value': '255',
+                    'step':'1',
+                    'default_value': '255'
+                },
+                'slider6': {
+                    'name': 'Green',
+                    'variable_name': 'green',
+                    'min_value': '0',
+                    'max_value': '255',
+                    'step':'1',
+                    'default_value': '0'
+                },
+                'slider7': {
+                    'name': 'Blue',
+                    'variable_name': 'blue',
+                    'min_value': '0',
+                    'max_value': '255',
+                    'step':'1',
+                    'default_value': '0'
+                },
+                'slider8': {
+                    'name': 'Thickness',
+                    'variable_name': 'thickness',
+                    'min_value': '-1',
+                    'max_value': 'min(len(image), len(image[0]))',
+                    'step':'1',
+                    'default_value': '4'
+                }
+            },
+            'menu': {
+                'number_menu': 1,
+                'menu0': {
+                    'name': 'Line Type',
+                    'variable_name': 'linetype',
+                    'menu_item':{
                         '4 Connected Line': cv.LINE_4,
                         '8 Connected Line': cv.LINE_8,
                         'Antialised Line': cv.LINE_AA

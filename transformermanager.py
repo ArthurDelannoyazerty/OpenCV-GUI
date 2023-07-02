@@ -10,6 +10,9 @@ class TransformerManager():
         self.transformer = transformer
         self.list_function_transformation = [
             self.alert_draw_line,
+            self.alert_draw_rectangle,
+            self.alert_draw_circle,
+            self.alert_draw_ellipse,
             self.alert_colorspacechange,
             self.alert_gaussian_blur
         ]
@@ -78,13 +81,28 @@ class TransformerManager():
         """Send a string to "transformation_saver" that contains info about the new transformation"""
         key_command = list(self.main_window.transformer.commands.keys())[0]
         self.transformation_saver(key_command)
+    
+    def alert_draw_rectangle(self):
+        """Send a string to "transformation_saver" that contains info about the new transformation"""
+        key_command = list(self.main_window.transformer.commands.keys())[1]
+        self.transformation_saver(key_command)
+    
+    def alert_draw_circle(self):
+        """Send a string to "transformation_saver" that contains info about the new transformation"""
+        key_command = list(self.main_window.transformer.commands.keys())[2]
+        self.transformation_saver(key_command)
+    
+    def alert_draw_ellipse(self):
+        """Send a string to "transformation_saver" that contains info about the new transformation"""
+        key_command = list(self.main_window.transformer.commands.keys())[3]
+        self.transformation_saver(key_command)
 
     def alert_colorspacechange(self):
         """Send a string to "transformation_saver" that contains info about the new transformation"""
-        key_command = list(self.main_window.transformer.commands.keys())[1]
+        key_command = list(self.main_window.transformer.commands.keys())[4]
         self.transformation_saver(key_command)
 
     def alert_gaussian_blur(self):
         """Send a string to "transformation_saver" that contains info about the new transformation"""
-        key_command = list(self.main_window.transformer.commands.keys())[2]
+        key_command = list(self.main_window.transformer.commands.keys())[5]
         self.transformation_saver(key_command)

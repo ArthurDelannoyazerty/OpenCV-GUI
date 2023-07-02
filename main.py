@@ -1,8 +1,10 @@
 import sys
-from PySide6.QtWidgets import QApplication, QComboBox, QMainWindow, QRadioButton, QVBoxLayout, QHBoxLayout, QLabel, QFrame, QPushButton, QFileDialog, QWidget, QScrollArea
-from PySide6.QtGui import QPixmap, Qt, QImage
+from PySide6.QtWidgets import QApplication, QCheckBox, QMainWindow, QRadioButton, QVBoxLayout, QHBoxLayout, QLabel, QFrame, QPushButton, QFileDialog, QWidget, QScrollArea
+from PySide6.QtGui import Qt
 from PySide6.QtCore import Qt, QSize
 import cv2 as cv
+from pathlib import Path
+import numpy as np
 
 from transformermanager import TransformerManager
 from transformer import Transformer
@@ -16,6 +18,8 @@ WIDTH_RIGHT_FRAME = 200
 HEIGHT_UPPER_FRAME = 170
 HEIGHT_TILES = HEIGHT_UPPER_FRAME - 60
 WIDTH_TILES = 150
+PADDING_HEIGHT_MAIN_IMAGE = 60
+PADDING_WIDTH_MAIN_IMAGE = 20
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -64,12 +68,30 @@ class MainWindow(QMainWindow):
         image_frame_layout.addWidget(self.image)
         self.image_frame.hide()
 
-        self.image_shape_label = QLabel()
-        self.image_shape_label.setFixedHeight(15)
-        image_frame_layout.addWidget(self.image_shape_label)
-        
         self.import_button = QPushButton("Import Image")
         self.import_button.clicked.connect(self.open_image_dialog)
+
+        # -----|-------- Description image frame------------------------------------------
+        self.description_image_frame = QFrame()
+        self.description_image_layout = QHBoxLayout(self.description_image_frame)
+        self.description_image_frame.setMaximumHeight(35)
+        image_frame_layout.addWidget(self.description_image_frame)
+
+        label_checkbox_show_last = QLabel()
+        label_checkbox_show_last.setText("Show last")
+        label_checkbox_show_last.setFixedWidth(50)
+        self.description_image_layout.addWidget(label_checkbox_show_last)
+
+        self.button_show_last_image = QCheckBox()
+        self.button_show_last_image.hide()
+        self.button_show_last_image.setFixedWidth(30)
+        self.button_show_last_image.clicked.connect(self.update_image_show)
+        self.description_image_layout.addWidget(self.button_show_last_image)
+
+        self.image_shape_label = QLabel()
+        # self.image_shape_label.setFixedHeight(15)
+        self.description_image_layout.addWidget(self.image_shape_label)
+        
 
         # ----- Middle frame  --------------------------------------------------------------
         pipeline_manage_frame = QFrame()
@@ -194,19 +216,14 @@ class MainWindow(QMainWindow):
         self.update_transformation_buttons()
 
     def change_original_image(self):
-        options = QFileDialog.Options()
-        options |= QFileDialog.ReadOnly
-        file_name, _ = QFileDialog.getOpenFileName(self, "Choisir une image", "", "Images (*.png *.jpg *.jpeg *.bmp)", options=options)
-
-        if file_name:
-            img_array = cv.imread(file_name, cv.IMREAD_COLOR)
-            img_array = cv.cvtColor(img_array, cv.COLOR_BGR2RGB)
-            self.pipeline[0].img_array = img_array
+        img_array = self.open_image()
+        self.pipeline[0].img_array = img_array
+        if len(self.pipeline)>1:
             self.pipeline.update_from_index(1)
-            self.refresh_upper_transformation()
-            self.update_image_show()
-            self.update_transformation_buttons()
-            self.update_transformation_parameters_frame()
+        self.refresh_upper_transformation()
+        self.update_image_show()
+        self.update_transformation_buttons()
+        self.update_transformation_parameters_frame()
 
 
 
@@ -249,38 +266,41 @@ class MainWindow(QMainWindow):
         self.update_transformation_buttons()
         self.update_transformation_parameters_frame()
 
-    def open_image_dialog(self):
-        """Open a Choose File dialog box to choose the image"""
+    def open_image(self):
         options = QFileDialog.Options()
         options |= QFileDialog.ReadOnly
+        str_path, _ = QFileDialog.getOpenFileName(self, "Choisir une image", "", "Images (*.png *.jpg *.jpeg *.bmp)", options=options)
 
-        file_name, _ = QFileDialog.getOpenFileName(self, "Choisir une image", "", "Images (*.png *.jpg *.jpeg *.bmp)", options=options)
-
-        if file_name:
-            img_array = cv.imread(file_name, cv.IMREAD_COLOR)
+        if str_path:
+            img_array = cv.imdecode(np.fromfile(str_path, dtype=np.uint8), cv.IMREAD_UNCHANGED)
             img_array = cv.cvtColor(img_array, cv.COLOR_BGR2RGB)
-            self.index_current_img = 0
-            self.pipeline.append(PipelineItem(img_array))
+        return img_array
 
-            self.import_button.hide()
-            self.image_frame.setHidden(False)
-            self.update_image_show()
+    def open_image_dialog(self):
+        img_array = self.open_image()
+        self.index_current_img = 0
+        self.pipeline.append(PipelineItem(img_array))
 
-            self.refresh_upper_transformation()
-            self.frame_mode_manage.setHidden(False)
-            self.update_transformation_buttons()  
-            self.index_current_img = 0
-            self.update_transformation_parameters_frame()
+        self.import_button.hide()
+        self.image_frame.setHidden(False)
+        self.button_show_last_image.setHidden(False)
+        self.update_image_show()
+
+        self.refresh_upper_transformation()
+        self.frame_mode_manage.setHidden(False)
+        self.update_transformation_buttons()  
+        self.index_current_img = 0
+        self.update_transformation_parameters_frame()
 
     def resize_main_image_event(self, event):
         """Change the size of the main image we the main window is resized"""
         if self.index_current_img == -1:
             return
 
-        frame_height = self.image_frame.height() - 20   # magic number because of the margin of the parent QFrame
-        frame_width = self.image_frame.width() - 20
+        frame_height = self.image_frame.height() - PADDING_HEIGHT_MAIN_IMAGE   # magic number because of the margin of the parent QFrame
+        frame_width = self.image_frame.width() - PADDING_WIDTH_MAIN_IMAGE
 
-        pixmap = self.get_current_pixmap()
+        pixmap = self.image.pixmap()
         pixmap_ratio = pixmap.width() / pixmap.height()
         frame_ratio = frame_width / frame_height
     
@@ -293,19 +313,21 @@ class MainWindow(QMainWindow):
         self.image.setAlignment(Qt.AlignCenter)
 
         super().resizeEvent(event)
-    
-    def get_current_pixmap(self):
-        return self.pipeline[self.index_current_img].get_pixmap()
 
     def update_image_show(self):
         """Show the main image based on the "index_current_img" """
         if self.index_current_img<0 or self.index_current_img>=len(self.pipeline):
             raise Exception("Wrong index to update pipeline, index sent : " + str(self.index_current_img) + ". Valid index : [0, "+ str(len(self.pipeline)) + "]")
-        pixmap = self.get_current_pixmap()
+        
+        if self.button_show_last_image.isChecked():
+            index_image_to_show = len(self.pipeline)-1
+        else:
+            index_image_to_show = self.index_current_img
+        pixmap = self.pipeline[index_image_to_show].get_pixmap()
         self.image.setPixmap(pixmap.scaledToWidth(self.image_frame.width(), Qt.SmoothTransformation))
         self.image.setAlignment(Qt.AlignCenter)
         
-        shape = self.pipeline[self.index_current_img].img_array.shape
+        shape = self.pipeline[index_image_to_show].img_array.shape
         split_shape_values = str(shape).replace("(","").replace(")","").split(", ")
         text_dimension = "h : " + split_shape_values[0] + ", w : " + split_shape_values[1]
         if len(split_shape_values)==3:
