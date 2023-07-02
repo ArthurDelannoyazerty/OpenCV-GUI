@@ -300,7 +300,11 @@ class MainWindow(QMainWindow):
         frame_height = self.image_frame.height() - PADDING_HEIGHT_MAIN_IMAGE   # magic number because of the margin of the parent QFrame
         frame_width = self.image_frame.width() - PADDING_WIDTH_MAIN_IMAGE
 
-        pixmap = self.image.pixmap()
+        if self.button_show_last_image.isChecked():
+            index_image_to_show = len(self.pipeline)-1
+        else:
+            index_image_to_show = self.index_current_img
+        pixmap = self.pipeline[index_image_to_show].get_pixmap()
         pixmap_ratio = pixmap.width() / pixmap.height()
         frame_ratio = frame_width / frame_height
     
@@ -323,10 +327,6 @@ class MainWindow(QMainWindow):
             index_image_to_show = len(self.pipeline)-1
         else:
             index_image_to_show = self.index_current_img
-        pixmap = self.pipeline[index_image_to_show].get_pixmap()
-        self.image.setPixmap(pixmap.scaledToWidth(self.image_frame.width(), Qt.SmoothTransformation))
-        self.image.setAlignment(Qt.AlignCenter)
-        
         shape = self.pipeline[index_image_to_show].img_array.shape
         split_shape_values = str(shape).replace("(","").replace(")","").split(", ")
         text_dimension = "h : " + split_shape_values[0] + ", w : " + split_shape_values[1]
