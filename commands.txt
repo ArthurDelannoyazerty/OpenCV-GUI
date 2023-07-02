@@ -343,7 +343,7 @@
             }
         }
     },
-    'Crop': {
+    'CROP': {
         'command': 'image[y_begin:y_end, x_begin:x_end]',
         'number_parameters': 5,
         'condition': 'True',
@@ -388,7 +388,7 @@
             }
         }
     },
-    'Select Channel': {
+    'COLOR - Channel': {
         'command': 'image[:,:,channel]',
         'number_parameters' : 2,
         'condition': 'len(image.shape)==3',
@@ -410,7 +410,7 @@
             }
         }
     },
-    'Change Colorspace': {
+    'COLOR - Colorspace': {
         'command': 'cv.cvtColor(image, colorspace_mode)',
         'number_parameters' : 2,
         'condition': 'len(image.shape)==3 and image.shape[2]==3',
@@ -445,7 +445,7 @@
             }
         }
     },
-    'Add Gaussian Noise': {
+    'NOISE - Gaussian': {
         'command': 'cv.add(image, np.random.normal(mean, std, image.shape), dtype=cv.CV_8U)',
         'number_parameters': 3,
         'condition': 'True',
@@ -474,7 +474,7 @@
             }
         }
     },
-    'Add Salt And Pepper Noise': {
+    'NOISE - Salt And Pepper': {
         'command': 'np.where(np.random.random(image.shape) < (low_thresh/100), 0, np.where(np.random.random(image.shape) < (high_thresh/100), 255, image))',
         'number_parameters': 3,
         'condition': 'len(image.shape)==2',
@@ -503,7 +503,7 @@
             }
         }
     },
-    'Add Poisson Noise': {
+    'NOISE - Poisson': {
         'command': 'np.random.poisson(image).astype("uint8")',
         'number_parameters': 2,
         'condition': 'len(image.shape)==2',
@@ -516,7 +516,7 @@
             }
         }
     },
-    'Add Speckle Noise': {
+    'NOISE - Speckle': {
         'command': 'image + image * np.random.normal(loc=mean/100, scale=std/100, size=image.shape).astype("uint8")',
         'number_parameters': 2,
         'condition': 'len(image.shape)==2',
@@ -545,7 +545,7 @@
             }
         }
     },
-    'Simple Blur': {
+    'BLUR - Simple': {
         'command': 'cv.blur(image, (kernel_size, kernel_size))',
         'number_parameters': 2,
         'condition': 'True',
@@ -566,7 +566,7 @@
             }
         }
     },
-    'Gaussian Blur': {
+    'BLUR - Gaussian': {
         'command': 'cv.GaussianBlur(image, (kernel_size, kernel_size), 0)',
         'number_parameters': 2,
         'condition': 'True',
@@ -587,7 +587,7 @@
             }
         }
     },
-    'Median Blur': {
+    'BLUR - Median': {
         'command': 'cv.medianBlur(image, kernel_size)',
         'number_parameters': 2,
         'condition': 'True',
@@ -608,7 +608,7 @@
             }
         }
     },
-    'Bilateral Filtering': {
+    'BLUR - Bilateral Filtering': {
         'command': 'cv.bilateralFilter(image, diameter, sigma_color, sigma_space)',
         'number_parameters': 4,
         'condition': 'True',
@@ -645,7 +645,7 @@
             }
         }
     },
-    'Threshold 1D': {
+    'THRESH - Simple': {
         'command': 'cv.threshold(image, thresh_value, max_value, thresh_type)',
         'number_parameters' : 4,
         'condition': 'len(image.shape)==2',
@@ -658,7 +658,7 @@
                     'min_value': '0',
                     'max_value': '255',
                     'step':'1',
-                    'default_value': '0'
+                    'default_value': '128'
                 },
                 'slider1': {
                     'name': 'Max Value',
@@ -686,7 +686,7 @@
             }
         }
     },
-    'Adaptive Threshold 1D': {
+    'THRESH - Adaptive': {
         'command': 'cv.adaptiveThreshold(image, max_value, adaptive_threshold, thresh_type, block_size, constant_mean)',
         'number_parameters' : 6,
         'condition': 'len(image.shape)==2',
@@ -739,7 +739,28 @@
             }
         }
     },
-    'Morph': {
+    'GRADIENT - Laplacian': {
+        'command': 'cv.Laplacian(image, cv.CV_64F, ksize=kernel_size).astype("uint8")',
+        'number_parameters': 2,
+        'condition': 'True',
+        'gui': {
+            'slider': {
+                'number_slider': 1,
+                'slider0': {
+                    'name': 'Kernel Size',
+                    'variable_name': 'kernel_size',
+                    'min_value': '1',
+                    'max_value': '15',
+                    'step':'2',
+                    'default_value': '1'
+                }
+            },
+            'menu': {
+                'number_menu': 0
+            }
+        }
+    },
+    'MORPH': {
         'command': 'cv.morphologyEx(image, operation_type, cv.getStructuringElement(morph_type, (kernel_size, kernel_size)), iterations=iterations)',
         'number_parameters' : 5,
         'condition': 'len(image.shape)==2',
