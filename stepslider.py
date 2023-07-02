@@ -2,13 +2,13 @@ from PySide6.QtWidgets import QSlider
 from PySide6.QtCore import Qt
 
 class StepSlider(QSlider):
-    def __init__(self, min_value, max_value, step, value, event_to_call):
+    def __init__(self, image, min_value, max_value, step, value, event_to_call):
         super().__init__()
-        self.setRange(min_value, max_value) 
+        self.setRange(eval(min_value), eval(max_value)) 
         self.setOrientation(Qt.Horizontal)  
         
         self.event_to_call = event_to_call
-        self.step = step
+        self.step = eval(step)
         self.setValue(value)
         self.old_value = 0
         

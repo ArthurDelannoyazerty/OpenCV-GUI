@@ -5,7 +5,7 @@ from stepslider import StepSlider
 MAXIMUM_HEIGHT = 65
 
 class SliderWithText(QFrame):
-    def __init__(self, slider_parameters, value, event_to_call):
+    def __init__(self, image, slider_parameters, value, event_to_call):
         super().__init__()
         self.setMaximumHeight(MAXIMUM_HEIGHT)
 
@@ -19,7 +19,7 @@ class SliderWithText(QFrame):
         self.label = QLabel()
         self.update_label()
 
-        self.slider = StepSlider(slider_parameters['min_value'], slider_parameters['max_value'], slider_parameters['step'], value, self.update_value_changed)
+        self.slider = StepSlider(image, slider_parameters['min_value'], slider_parameters['max_value'], slider_parameters['step'], value, self.update_value_changed)
 
         self.layout = QVBoxLayout(self)
         self.layout.addWidget(self.label)

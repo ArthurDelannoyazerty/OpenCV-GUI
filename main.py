@@ -152,11 +152,12 @@ class MainWindow(QMainWindow):
 
             name_current_transformation = self.pipeline[self.index_current_img].transformation_item.name
             command = self.transformer.commands[name_current_transformation]
+            image = self.pipeline[self.index_current_img].img_array
 
             for i in range(command['gui']['slider']['number_slider']):
                 slider_parameters = command['gui']['slider']['slider'+str(i)]
                 slider_value = self.pipeline[self.index_current_img].transformation_item.parameters[slider_parameters['variable_name']]
-                frame_slider = SliderWithText(slider_parameters, slider_value, self.value_changed_parameters)
+                frame_slider = SliderWithText(image, slider_parameters, slider_value, self.value_changed_parameters)
                 self.container_transformation_parameters_layout.addWidget(frame_slider)
                 self.current_parameters_widget.append(frame_slider)
         

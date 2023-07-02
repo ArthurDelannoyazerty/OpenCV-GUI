@@ -57,7 +57,7 @@ class TransformerManager():
         for i in range(dict_gui['slider']['number_slider']):
             current_slider = dict_gui['slider']['slider'+str(i)]
             var_name = current_slider['variable_name']
-            default_value = current_slider['default_value']
+            default_value = eval(current_slider['default_value'])
             dict_default_values[var_name] = default_value
         
         for i in range(dict_gui['menu']['number_menu']):

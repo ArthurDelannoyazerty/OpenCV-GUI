@@ -1,64 +1,77 @@
 import cv2 as cv
-command_dict = {
-            'Change Colorspace': {
-                'command': 'cv.cvtColor(image, colorspace_mode)',
-                'number_parameters' : 2,
-                'condition': 'len(image.shape)==3 and image.shape[2]==3',
-                'gui':{
-                    'slider':{
-                        'number_slider': 0
-                    },
-                    'menu':{
-                        'number_menu': 1,
-                        'menu0': {
-                            'name': 'Choose the conversion',
-                            'variable_name': 'colorspace_mode',
-                            'menu_item':[
-                                ('Grayscale',  cv.COLOR_BGR2GRAY),
-                                ('HSV to RGB', cv.COLOR_HSV2RGB),
-                                ('LAB to RGB', cv.COLOR_LAB2RGB),
-                                ('BGR to RGB', cv.COLOR_BGR2RGB),
-                                ('RGB to BGR', cv.COLOR_RGB2BGR),
-                                ('BGR to HSV', cv.COLOR_BGR2HSV),
-                                ('HSV to BGR', cv.COLOR_HSV2BGR),
-                                ('BGR to LAB', cv.COLOR_BGR2LAB),
-                                ('LAB to BGR', cv.COLOR_LAB2BGR),
-                                ('RGB to YUV', cv.COLOR_RGB2YUV),
-                                ('YUV to RGB', cv.COLOR_YUV2RGB)
-                            ]
-                        }
-                    }
-                }
-            },
-            'Gaussian Blur': {
-                'command': 'cv.GaussianBlur(image, (kernel_size, kernel_size), 0)',
-                'number_parameters': 2,
-                'condition': 'True',
-                'gui': {
-                    'slider': {
-                        'number_slider': 1,
-                        'slider0': {
-                            'name': 'Kernel Size',
-                            'variable_name': 'kernel_size',
-                            'min_value': 1,
-                            'max_value': 101,
-                            'step':2,
-                            'default_value': 3
-                        }
-                    },
-                    'menu': {
-                        'number_menu': 0
-                    }
-                }
-            }
-        }
+# command_dict = {
+#             'Change Colorspace': {
+#                 'command': 'cv.cvtColor(image, colorspace_mode)',
+#                 'number_parameters' : 2,
+#                 'condition': 'len(image.shape)==3 and image.shape[2]==3',
+#                 'gui':{
+#                     'slider':{
+#                         'number_slider': 0
+#                     },
+#                     'menu':{
+#                         'number_menu': 1,
+#                         'menu0': {
+#                             'name': 'Choose the conversion',
+#                             'variable_name': 'colorspace_mode',
+#                             'menu_item':[
+#                                 ('Grayscale',  cv.COLOR_BGR2GRAY),
+#                                 ('HSV to RGB', cv.COLOR_HSV2RGB),
+#                                 ('LAB to RGB', cv.COLOR_LAB2RGB),
+#                                 ('BGR to RGB', cv.COLOR_BGR2RGB),
+#                                 ('RGB to BGR', cv.COLOR_RGB2BGR),
+#                                 ('BGR to HSV', cv.COLOR_BGR2HSV),
+#                                 ('HSV to BGR', cv.COLOR_HSV2BGR),
+#                                 ('BGR to LAB', cv.COLOR_BGR2LAB),
+#                                 ('LAB to BGR', cv.COLOR_LAB2BGR),
+#                                 ('RGB to YUV', cv.COLOR_RGB2YUV),
+#                                 ('YUV to RGB', cv.COLOR_YUV2RGB)
+#                             ]
+#                         }
+#                     }
+#                 }
+#             },
+#             'Gaussian Blur': {
+#                 'command': 'cv.GaussianBlur(image, (kernel_size, kernel_size), 0)',
+#                 'number_parameters': 2,
+#                 'condition': 'True',
+#                 'gui': {
+#                     'slider': {
+#                         'number_slider': 1,
+#                         'slider0': {
+#                             'name': 'Kernel Size',
+#                             'variable_name': 'kernel_size',
+#                             'min_value': 1,
+#                             'max_value': 101,
+#                             'step':2,
+#                             'default_value': 3
+#                         }
+#                     },
+#                     'menu': {
+#                         'number_menu': 0
+#                     }
+#                 }
+#             }
+#         }
+import json
+
+with open('commands.txt', 'r') as file:
+    file_content = file.read()
+
+print(file_content)
+
+file_content = file_content.replace("\n", "")#.replace(" ","")
+
+command = eval(file_content)
+
+print(command)
 
 
-for i in range(0):
-    exec('a=1')
+
+# for i in range(0):
+#     exec('a=1')
 
 
-print(a)
+# print(a)
 
 
 # print(list(command_dict.keys())[0])
