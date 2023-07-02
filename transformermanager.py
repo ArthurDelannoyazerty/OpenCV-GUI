@@ -20,6 +20,7 @@ class TransformerManager():
             self.alert_gaussian_blur,
             self.alert_median_blur,
             self.alert_bilateral_filtering,
+            self.alert_luminosity_contrast,
             self.alert_gaussian_noise,
             self.alert_salt_pepper_noise,
             self.alert_poisson_noise,
@@ -147,52 +148,57 @@ class TransformerManager():
         key_command = list(self.main_window.transformer.commands.keys())[10]
         self.transformation_saver(key_command)
 
-    def alert_gaussian_noise(self):
+    def alert_luminosity_contrast(self):
         """Send a string to "transformation_saver" that contains info about the new transformation"""
         key_command = list(self.main_window.transformer.commands.keys())[11]
         self.transformation_saver(key_command)
 
-    def alert_salt_pepper_noise(self):
+    def alert_gaussian_noise(self):
         """Send a string to "transformation_saver" that contains info about the new transformation"""
         key_command = list(self.main_window.transformer.commands.keys())[12]
         self.transformation_saver(key_command)
 
-    def alert_poisson_noise(self):
+    def alert_salt_pepper_noise(self):
         """Send a string to "transformation_saver" that contains info about the new transformation"""
         key_command = list(self.main_window.transformer.commands.keys())[13]
         self.transformation_saver(key_command)
 
-    def alert_speckle_noise(self):
+    def alert_poisson_noise(self):
         """Send a string to "transformation_saver" that contains info about the new transformation"""
         key_command = list(self.main_window.transformer.commands.keys())[14]
         self.transformation_saver(key_command)
 
-    def alert_threshold1d(self):
+    def alert_speckle_noise(self):
         """Send a string to "transformation_saver" that contains info about the new transformation"""
         key_command = list(self.main_window.transformer.commands.keys())[15]
         self.transformation_saver(key_command)
 
-    def alert_adaptive_threshold1d(self):
+    def alert_threshold1d(self):
         """Send a string to "transformation_saver" that contains info about the new transformation"""
         key_command = list(self.main_window.transformer.commands.keys())[16]
         self.transformation_saver(key_command)
 
-    def alert_gradient_laplacian(self):
+    def alert_adaptive_threshold1d(self):
         """Send a string to "transformation_saver" that contains info about the new transformation"""
         key_command = list(self.main_window.transformer.commands.keys())[17]
         self.transformation_saver(key_command)
 
-    def alert_gradient_sobel(self):
+    def alert_gradient_laplacian(self):
         """Send a string to "transformation_saver" that contains info about the new transformation"""
         key_command = list(self.main_window.transformer.commands.keys())[18]
         self.transformation_saver(key_command)
 
-    def alert_gradient_canny(self):
+    def alert_gradient_sobel(self):
         """Send a string to "transformation_saver" that contains info about the new transformation"""
         key_command = list(self.main_window.transformer.commands.keys())[19]
         self.transformation_saver(key_command)
 
-    def alert_morph(self):
+    def alert_gradient_canny(self):
         """Send a string to "transformation_saver" that contains info about the new transformation"""
         key_command = list(self.main_window.transformer.commands.keys())[20]
+        self.transformation_saver(key_command)
+
+    def alert_morph(self):
+        """Send a string to "transformation_saver" that contains info about the new transformation"""
+        key_command = list(self.main_window.transformer.commands.keys())[21]
         self.transformation_saver(key_command)

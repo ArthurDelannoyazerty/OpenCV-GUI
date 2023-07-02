@@ -445,6 +445,35 @@
             }
         }
     },
+    'COLOR - Light Contrast': {
+        'command': 'cv.addWeighted(image, (float(131 * (contrast + 127)) / (127 * (131 - contrast))), image, 0, (127 * (1 - (float(131 * (contrast + 127)) / (127 * (131 - contrast))))) + int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255))) if (brightness != 0 or contrast != 0) else image',
+        'number_parameters': 3,
+        'condition': 'True',
+        'gui': {
+            'slider': {
+                'number_slider': 2,
+                'slider0': {
+                    'name': 'Luminosity',
+                    'variable_name': 'brightness',
+                    'min_value': '-100',
+                    'max_value': '100',
+                    'step':'1',
+                    'default_value': '0'
+                },
+                'slider1': {
+                    'name': 'Contrast',
+                    'variable_name': 'contrast',
+                    'min_value': '0',
+                    'max_value': '1000',
+                    'step':'1',
+                    'default_value': '100'
+                }
+            },
+            'menu': {
+                'number_menu': 0
+            }
+        }
+    },
     'NOISE - Gaussian': {
         'command': 'cv.add(image, np.random.normal(mean, std, image.shape), dtype=cv.CV_8U)',
         'number_parameters': 3,
