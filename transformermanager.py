@@ -16,7 +16,8 @@ class TransformerManager():
             self.alert_crop,
             self.alert_select_channel,
             self.alert_colorspacechange,
-            self.alert_gaussian_blur
+            self.alert_gaussian_blur,
+            self.alert_threshold1d
         ]
 
     def transformation_saver(self, key_command):
@@ -117,4 +118,9 @@ class TransformerManager():
     def alert_gaussian_blur(self):
         """Send a string to "transformation_saver" that contains info about the new transformation"""
         key_command = list(self.main_window.transformer.commands.keys())[7]
+        self.transformation_saver(key_command)
+
+    def alert_threshold1d(self):
+        """Send a string to "transformation_saver" that contains info about the new transformation"""
+        key_command = list(self.main_window.transformer.commands.keys())[8]
         self.transformation_saver(key_command)

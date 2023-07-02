@@ -465,5 +465,46 @@
                 'number_menu': 0
             }
         }
+    },
+    'Threshold 1D': {
+        'command': 'cv.threshold(image, thresh_value, max_value, thresh_type)',
+        'number_parameters' : 4,
+        'condition': 'len(image.shape)==2',
+        'gui':{
+            'slider':{
+                'number_slider': 2,
+                'slider0': {
+                    'name': 'Thresh Value',
+                    'variable_name': 'thresh_value',
+                    'min_value': '0',
+                    'max_value': '255',
+                    'step':'1',
+                    'default_value': '0'
+                },
+                'slider1': {
+                    'name': 'Max Value',
+                    'variable_name': 'max_value',
+                    'min_value': '0',
+                    'max_value': '255',
+                    'step':'1',
+                    'default_value': '255'
+                }
+            },
+            'menu':{
+                'number_menu': 1,
+                'menu0': {
+                    'name': 'Threshold Type',
+                    'variable_name': 'thresh_type',
+                    'menu_item':{
+                        'Binary' : cv.THRESH_BINARY,
+                        'Binary Inverted': cv.THRESH_BINARY_INV,
+                        'Truncate': cv.THRESH_TRUNC,
+                        'To Zero': cv.THRESH_TOZERO,
+                        'To Zero Inverted': cv.THRESH_TOZERO_INV,
+                        'Otsu': cv.THRESH_OTSU
+                    }
+                }
+            }
+        }
     }
 }

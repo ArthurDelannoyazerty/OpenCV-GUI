@@ -32,5 +32,7 @@ class Transformer():
         for index, (key, value) in enumerate(transform_item.parameters.items()):
             exec(str(key) +  "=" + str(value))
         
-        img_arrays_transformed = eval(self.commands[transform_item.name]['command'])
-        return img_arrays_transformed.copy()
+        result = eval(self.commands[transform_item.name]['command'])
+        if type(result).__name__=="tuple":
+            result = result[1]
+        return result.copy()
