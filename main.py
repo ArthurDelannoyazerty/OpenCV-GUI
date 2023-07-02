@@ -78,6 +78,11 @@ class MainWindow(QMainWindow):
         self.pipeline_manage_layout = QVBoxLayout(pipeline_manage_frame)
 
         # ------|------ Mode manage ---------------------------------------------------------
+        self.btn_delete_current_transformation = QPushButton(text="Delete transformation")
+        self.btn_delete_current_transformation.clicked.connect(self.action_delete_current_transformation)
+        self.btn_delete_current_transformation.hide()
+        self.pipeline_manage_layout.addWidget(self.btn_delete_current_transformation)
+        
         btn_change_current = QRadioButton("Change next")
         self.btn_add_after = QRadioButton("Add")
         self.btn_add_after.setChecked(True)
@@ -163,7 +168,17 @@ class MainWindow(QMainWindow):
                 frame_menu = MenuWithText(menu_parameters, index_in_menu, self.value_changed_parameters)
                 self.container_transformation_parameters_layout.addWidget(frame_menu)
                 self.current_parameters_widget.append(frame_menu)
-            
+    
+    def action_delete_current_transformation(self):
+        self.pipeline.pop(self.index_current_img)
+        self.index_current_img = min(self.index_current_img, len(self.pipeline)-1)
+        if self.index_current_img!=0:
+            self.pipeline.update_from_index(self.index_current_img)
+        self.refresh_upper_transformation()
+        self.update_image_show()
+        self.update_transformation_buttons()
+        self.update_transformation_parameters_frame()
+
             
     def value_changed_parameters(self):
         new_parameters = dict()
@@ -204,7 +219,8 @@ class MainWindow(QMainWindow):
             frame.setFixedSize(QSize(WIDTH_TILES, HEIGHT_TILES))
             frame.setFrameShape(QFrame.Box)
             frame.clicked.connect(self.frame_clicked)
-            if i==self.index_current_img : frame.setStyleSheet("background-color: green;")
+            if i==self.index_current_img: 
+                frame.setStyleSheet("background-color: green;")
 
             layout = QVBoxLayout(frame)
 
@@ -213,11 +229,11 @@ class MainWindow(QMainWindow):
             layout.addWidget(pixmap_label)
 
             transformation_item = self.pipeline[i].transformation_item
-            text = ""
+            text = str(i) + " : "
             if transformation_item==None:
-                text = "Original Image"
+                text += "Original Image"
             else:
-                text = transformation_item.name
+                text += transformation_item.name
             index_label = QLabel(text)
             index_label.setAlignment(Qt.AlignCenter)
             layout.addWidget(index_label)
@@ -299,6 +315,8 @@ class MainWindow(QMainWindow):
     
     def update_transformation_buttons(self):
         self.delete_all_from_layout(self.container_transformation_buttons_layout)
+
+        self.btn_delete_current_transformation.setHidden(self.index_current_img==0)
 
         list_transformation = list(self.transformer.commands.keys())
         for index, transformation in enumerate(list_transformation):
