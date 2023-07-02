@@ -487,6 +487,27 @@
             }
         }
     },
+    'Median Blur': {
+        'command': 'cv.medianBlur(image, kernel_size)',
+        'number_parameters': 2,
+        'condition': 'True',
+        'gui': {
+            'slider': {
+                'number_slider': 1,
+                'slider0': {
+                    'name': 'Kernel Size',
+                    'variable_name': 'kernel_size',
+                    'min_value': '1',
+                    'max_value': 'int(min(len(image[0]), len(image))/2)',
+                    'step':'2',
+                    'default_value': '3'
+                }
+            },
+            'menu': {
+                'number_menu': 0
+            }
+        }
+    },
     'Threshold 1D': {
         'command': 'cv.threshold(image, thresh_value, max_value, thresh_type)',
         'number_parameters' : 4,
