@@ -1,4 +1,13 @@
 class Pipeline(list):
+    """List of the PipelineItem.
+        
+    
+        First Item  : PipelineItem = (original array, No transformation)
+
+        Second Item : PipelineItem = (second array, first transformation)
+
+        The PipelineItem n take the image from n-1, apply the transformation n and save the image n in itself
+    """
     def __init__(self, transformer):
         self.transformer = transformer
 

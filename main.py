@@ -37,7 +37,7 @@ class MainWindow(QMainWindow):
         self.resizeEvent = self.resize_main_image_event
 
     def initiate_frames(self):
-        """Create the main QFrame"""
+        """Create the QFrames"""
 
         # Upper Frame --------------------------------------------------------------------
         upper_frame = QFrame()
@@ -156,55 +156,94 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(central_widget)
 
     def delete_all_from_layout(self, layout):
+        """Remove all widgets in the given layout"""
         for i in reversed(range(layout.count())):
             item = layout.itemAt(i)
             widget = item.widget()
             layout.removeWidget(widget)
             widget.deleteLater()
 
-    def update_transformation_parameters_frame(self):
-        self.delete_all_from_layout(self.container_transformation_parameters_layout)
+# Choose Image
 
-        if self.index_current_img==0:
-            btn = QPushButton()
-            btn.setText("Change Image")
-            btn.clicked.connect(self.change_original_image)
-            self.container_transformation_parameters_layout.addWidget(btn)
+    def open_image(self):
+        """Open a Choose File Dialog to let the user choose an image. return the RGB of this image"""
+        options = QFileDialog.Options()
+        options |= QFileDialog.ReadOnly
+        str_path, _ = QFileDialog.getOpenFileName(self, "Choisir une image", "", "Images (*.png *.jpg *.jpeg *.bmp)", options=options)
+
+        if str_path:
+            img_array = cv.imdecode(np.fromfile(str_path, dtype=np.uint8), cv.IMREAD_UNCHANGED)
+            img_array = cv.cvtColor(img_array, cv.COLOR_BGR2RGB)
+        return img_array
+
+    def open_image_dialog(self):
+        """First time the user select an image for the first item of the pipeline"""
+        img_array = self.open_image()
+        self.index_current_img = 0
+        self.pipeline.append(PipelineItem(img_array))
+
+        self.import_button.hide()
+        self.image_frame.setHidden(False)
+        self.button_show_last_image.setHidden(False)
+        self.update_image_show()
+
+        self.update_upper_transformation()
+        self.frame_mode_manage.setHidden(False)
+        self.update_transformation_buttons()  
+        self.index_current_img = 0
+        self.update_transformation_parameters_frame()
+
+    def change_original_image(self):
+        """Change the first image in the pipeline by asking the user"""
+        img_array = self.open_image()
+        self.pipeline[0].img_array = img_array
+        if len(self.pipeline)>1:
+            self.pipeline.update_from_index(1)
+        self.update_all_qframes()
+
+# Events
+
+    def frame_clicked(self, index):
+        """update all qframes (to call when a frame in the pipeline is clicked)"""
+        self.index_current_img = index
+        self.update_all_qframes()
+
+    def resize_main_image_event(self, event):
+        """Change the size of the main image when the main window is resized"""
+        if self.index_current_img == -1:
+            return
+
+        frame_height = self.image_frame.height() - PADDING_HEIGHT_MAIN_IMAGE   # magic number because of the margin of the parent QFrame
+        frame_width = self.image_frame.width() - PADDING_WIDTH_MAIN_IMAGE
+
+        if self.button_show_last_image.isChecked():
+            index_image_to_show = len(self.pipeline)-1
         else:
-            self.current_parameters_widget = []
-
-            name_current_transformation = self.pipeline[self.index_current_img].transformation_item.name
-            command = self.transformer.commands[name_current_transformation]
-            image = self.pipeline[self.index_current_img-1].img_array
-
-            for i in range(command['gui']['slider']['number_slider']):
-                slider_parameters = command['gui']['slider']['slider'+str(i)]
-                slider_value = self.pipeline[self.index_current_img].transformation_item.parameters[slider_parameters['variable_name']]
-                frame_slider = SliderWithText(image, slider_parameters, slider_value, self.value_changed_parameters)
-                self.container_transformation_parameters_layout.addWidget(frame_slider)
-                self.current_parameters_widget.append(frame_slider)
-        
-            for i in range(command['gui']['menu']['number_menu']):
-                menu_parameters = command['gui']['menu']['menu'+str(i)]
-                value_in_pipeline = self.pipeline[self.index_current_img].transformation_item.parameters[menu_parameters['variable_name']]
-                list_values_menu = list(menu_parameters['menu_item'].values())
-                index_in_menu = list_values_menu.index(value_in_pipeline)
-                frame_menu = MenuWithText(menu_parameters, index_in_menu, self.value_changed_parameters)
-                self.container_transformation_parameters_layout.addWidget(frame_menu)
-                self.current_parameters_widget.append(frame_menu)
+            index_image_to_show = self.index_current_img
+        pixmap = self.pipeline[index_image_to_show].get_pixmap()
+        pixmap_ratio = pixmap.width() / pixmap.height()
+        frame_ratio = frame_width / frame_height
     
+        if pixmap_ratio > frame_ratio:
+            scaled_pixmap = pixmap.scaledToWidth(frame_width, Qt.SmoothTransformation)
+        else:
+            scaled_pixmap = pixmap.scaledToHeight(frame_height, Qt.SmoothTransformation)
+
+        self.image.setPixmap(scaled_pixmap)
+        self.image.setAlignment(Qt.AlignCenter)
+
+        super().resizeEvent(event)
+
     def action_delete_current_transformation(self):
+        """Method called to delete the current transformation then refresh all qframes"""
         self.pipeline.pop(self.index_current_img)
         self.index_current_img = min(self.index_current_img, len(self.pipeline)-1)
         if self.index_current_img!=0:
             self.pipeline.update_from_index(self.index_current_img)
-        self.refresh_upper_transformation()
-        self.update_image_show()
-        self.update_transformation_buttons()
-        self.update_transformation_parameters_frame()
+        self.update_all_qframes()
 
-            
     def value_changed_parameters(self):
+        """Scan the widgets that contains information about the current transformation and refresh all qframes"""
         new_parameters = dict()
         for widget in self.current_parameters_widget:
             variable_name = widget.parameters['variable_name']
@@ -212,24 +251,21 @@ class MainWindow(QMainWindow):
             new_parameters[variable_name] = value
         self.pipeline[self.index_current_img].transformation_item.parameters = new_parameters
         self.pipeline.update_from_index(self.index_current_img)
-        self.refresh_upper_transformation()
+        self.update_upper_transformation()
         self.update_image_show()
         self.update_transformation_buttons()
 
-    def change_original_image(self):
-        img_array = self.open_image()
-        self.pipeline[0].img_array = img_array
-        if len(self.pipeline)>1:
-            self.pipeline.update_from_index(1)
-        self.refresh_upper_transformation()
+# Update display
+
+    def update_all_qframes(self):
+        """Call every update methods for qframes"""
+        self.update_upper_transformation()
         self.update_image_show()
         self.update_transformation_buttons()
         self.update_transformation_parameters_frame()
 
-
-
-    def refresh_upper_transformation(self):
-        """Update the pipeline of image at the top of the window"""
+    def update_upper_transformation(self):
+        """Update the qframe that display the pipeline of image at the top of the window"""
         self.delete_all_from_layout(self.container_upper_layout)
 
         for i in range(len(self.pipeline)):
@@ -259,68 +295,8 @@ class MainWindow(QMainWindow):
 
             self.container_upper_layout.addWidget(frame)
 
-    def frame_clicked(self, index):
-        """Print a message (index) when clicking on the pipeline of images"""
-        self.index_current_img = index
-        self.refresh_upper_transformation()
-        self.update_image_show()
-        self.update_transformation_buttons()
-        self.update_transformation_parameters_frame()
-
-    def open_image(self):
-        options = QFileDialog.Options()
-        options |= QFileDialog.ReadOnly
-        str_path, _ = QFileDialog.getOpenFileName(self, "Choisir une image", "", "Images (*.png *.jpg *.jpeg *.bmp)", options=options)
-
-        if str_path:
-            img_array = cv.imdecode(np.fromfile(str_path, dtype=np.uint8), cv.IMREAD_UNCHANGED)
-            img_array = cv.cvtColor(img_array, cv.COLOR_BGR2RGB)
-        return img_array
-
-    def open_image_dialog(self):
-        img_array = self.open_image()
-        self.index_current_img = 0
-        self.pipeline.append(PipelineItem(img_array))
-
-        self.import_button.hide()
-        self.image_frame.setHidden(False)
-        self.button_show_last_image.setHidden(False)
-        self.update_image_show()
-
-        self.refresh_upper_transformation()
-        self.frame_mode_manage.setHidden(False)
-        self.update_transformation_buttons()  
-        self.index_current_img = 0
-        self.update_transformation_parameters_frame()
-
-    def resize_main_image_event(self, event):
-        """Change the size of the main image we the main window is resized"""
-        if self.index_current_img == -1:
-            return
-
-        frame_height = self.image_frame.height() - PADDING_HEIGHT_MAIN_IMAGE   # magic number because of the margin of the parent QFrame
-        frame_width = self.image_frame.width() - PADDING_WIDTH_MAIN_IMAGE
-
-        if self.button_show_last_image.isChecked():
-            index_image_to_show = len(self.pipeline)-1
-        else:
-            index_image_to_show = self.index_current_img
-        pixmap = self.pipeline[index_image_to_show].get_pixmap()
-        pixmap_ratio = pixmap.width() / pixmap.height()
-        frame_ratio = frame_width / frame_height
-    
-        if pixmap_ratio > frame_ratio:
-            scaled_pixmap = pixmap.scaledToWidth(frame_width, Qt.SmoothTransformation)
-        else:
-            scaled_pixmap = pixmap.scaledToHeight(frame_height, Qt.SmoothTransformation)
-
-        self.image.setPixmap(scaled_pixmap)
-        self.image.setAlignment(Qt.AlignCenter)
-
-        super().resizeEvent(event)
-
     def update_image_show(self):
-        """Show the main image based on the "index_current_img" """
+        """Display the current image (or last if checkbox checked) in the main qframe. Resfresh the display of shape of the image."""
         if self.index_current_img<0 or self.index_current_img>=len(self.pipeline):
             raise Exception("Wrong index to update pipeline, index sent : " + str(self.index_current_img) + ". Valid index : [0, "+ str(len(self.pipeline)) + "]")
         
@@ -336,8 +312,9 @@ class MainWindow(QMainWindow):
         self.image_shape_label.setText(text_dimension)
 
         self.resize_main_image_event(None)
-    
+
     def update_transformation_buttons(self):
+        """Resfresh the qframe that contains the button for the next transformation"""
         self.delete_all_from_layout(self.container_transformation_buttons_layout)
 
         self.btn_delete_current_transformation.setHidden(self.index_current_img==0)
@@ -350,7 +327,38 @@ class MainWindow(QMainWindow):
                 button = QPushButton(transformation)
                 button.clicked.connect(self.transformer_manager.list_function_transformation[index])
                 self.container_transformation_buttons_layout.addWidget(button)
-            
+
+    def update_transformation_parameters_frame(self):
+        """Refresh the Qframe that contains the parameters as sliders and menus"""
+        self.delete_all_from_layout(self.container_transformation_parameters_layout)
+
+        if self.index_current_img==0:
+            btn = QPushButton()
+            btn.setText("Change Image")
+            btn.clicked.connect(self.change_original_image)
+            self.container_transformation_parameters_layout.addWidget(btn)
+        else:
+            self.current_parameters_widget = []
+
+            name_current_transformation = self.pipeline[self.index_current_img].transformation_item.name
+            command = self.transformer.commands[name_current_transformation]
+            image = self.pipeline[self.index_current_img-1].img_array
+
+            for i in range(command['gui']['slider']['number_slider']):
+                slider_parameters = command['gui']['slider']['slider'+str(i)]
+                slider_value = self.pipeline[self.index_current_img].transformation_item.parameters[slider_parameters['variable_name']]
+                frame_slider = SliderWithText(image, slider_parameters, slider_value, self.value_changed_parameters)
+                self.container_transformation_parameters_layout.addWidget(frame_slider)
+                self.current_parameters_widget.append(frame_slider)
+        
+            for i in range(command['gui']['menu']['number_menu']):
+                menu_parameters = command['gui']['menu']['menu'+str(i)]
+                value_in_pipeline = self.pipeline[self.index_current_img].transformation_item.parameters[menu_parameters['variable_name']]
+                list_values_menu = list(menu_parameters['menu_item'].values())
+                index_in_menu = list_values_menu.index(value_in_pipeline)
+                frame_menu = MenuWithText(menu_parameters, index_in_menu, self.value_changed_parameters)
+                self.container_transformation_parameters_layout.addWidget(frame_menu)
+                self.current_parameters_widget.append(frame_menu)
 
 
 if __name__ == '__main__':

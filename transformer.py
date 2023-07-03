@@ -1,9 +1,9 @@
-import cv2 as cv
+import cv2 as cv        # used in eval()
+import numpy as np      # used in eval()
 from PySide6.QtWidgets import QMessageBox
-import numpy as np
 
 class Transformer():
-    """An objet that transform a given image with the specified transforamtion with opencv"""
+    """An objet that transform a given image with the specified transformation with opencv"""
     def __init__(self):
         #load commands
         try:
@@ -24,15 +24,20 @@ class Transformer():
             raise SyntaxError("Error while loading commands, either file not found or error in parsing file.")
             
     def transform(self, item_before, item_current):
+        """Transform the image from item_before with the transformation item of item_current"""
         img_array_to_transform = item_before.img_array
         image = img_array_to_transform.copy()
         transform_item = item_current.transformation_item
 
-        # Creation variable for the command
+        # Creation variables for the command
         for index, (key, value) in enumerate(transform_item.parameters.items()):
             exec(str(key) +  "=" + str(value))
         
+        # Execute command
         result = eval(self.commands[transform_item.name]['command'])
+
+        # If command return a tuple, we take the second item (used in the threshold case shere the second item is the threshold image)
         if type(result).__name__=="tuple":
             result = result[1]
         return result.copy()
+    

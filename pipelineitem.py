@@ -2,6 +2,7 @@ from PySide6.QtGui import QPixmap, QImage, qRgb
 import numpy as np
 
 class PipelineItem():
+    """Object that contains the image in an array and the corresponding transformation item"""
     def __init__(self, img_array=None, transformation_item=None):
         self.img_array = img_array
         self.transformation_item = transformation_item
@@ -13,6 +14,7 @@ class PipelineItem():
 
     # from https://gist.github.com/fepegar/c85e1c64c36934628507588037dba41b
     def to_q_image(self, im, copy=False):
+        """array in uint8 to a QImage"""
         gray_color_table = [qRgb(i, i, i) for i in range(256)]
         
         if im is None:

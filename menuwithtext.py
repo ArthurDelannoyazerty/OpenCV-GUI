@@ -5,7 +5,9 @@ from stepslider import StepSlider
 MAXIMUM_HEIGHT = 65
 
 class MenuWithText(QFrame):
+    """A qframe with text on top of a QCombobox"""
     def __init__(self, menu_parameters, index, event_to_call):
+        # event_to_call is calling parent object in order to have synchronous event
         super().__init__()
         self.setMaximumHeight(MAXIMUM_HEIGHT)
 

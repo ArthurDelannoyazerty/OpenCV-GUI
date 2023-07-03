@@ -4,11 +4,12 @@ from PySide6.QtWidgets import QApplication, QMessageBox
 
 
 class TransformerManager():
+    """Manage the events and modify the transformation in pipeline"""
     def __init__(self, main_window, pipeline, transformer):
         self.main_window = main_window
         self.pipeline = pipeline
         self.transformer = transformer
-        self.list_function_transformation = [
+        self.list_function_transformation = [   # Used from main.py to connect to the transformation button to the right function below
             self.alert_draw_line,
             self.alert_draw_rectangle,
             self.alert_draw_circle,
@@ -34,7 +35,7 @@ class TransformerManager():
         ]
         
     def transformation_saver(self, key_command):
-        """Add a string in "transformations" that represent the transformations of the pixmaps"""
+        """Modify the transformation in pipeline"""
         dict_parameters = self.get_default_transformation_parameters(key_command)
         transformation_item = TransformationItem(key_command, dict_parameters)
         new_item = PipelineItem(None, transformation_item)
@@ -66,16 +67,14 @@ class TransformerManager():
             # Show the message box
             message_box.exec()
             raise Exception("An error occured in the pipeline, reboot the program.")
-        self.main_window.refresh_upper_transformation()
-        self.main_window.update_image_show()
-        self.main_window.update_transformation_buttons()
-        self.main_window.update_transformation_parameters_frame()
+        self.main_window.update_all_qframes()
     
     def get_default_transformation_parameters(self, key_command):
+        """Return a dict with default transformation values"""
         dict_gui = self.transformer.commands[key_command]['gui']
         dict_default_values = dict()
 
-        image = self.pipeline[self.main_window.index_current_img].img_array
+        image = self.pipeline[self.main_window.index_current_img].img_array     #used in eval()
         
         for i in range(dict_gui['slider']['number_slider']):
             current_slider = dict_gui['slider']['slider'+str(i)]
@@ -91,114 +90,92 @@ class TransformerManager():
         
         return dict_default_values
 
-
+# All these functions takes the main name of the commands file and send it to the 'transformation_saver' method
 
     def alert_draw_line(self):
-        """Send a string to "transformation_saver" that contains info about the new transformation"""
         key_command = list(self.main_window.transformer.commands.keys())[0]
         self.transformation_saver(key_command)
     
     def alert_draw_rectangle(self):
-        """Send a string to "transformation_saver" that contains info about the new transformation"""
         key_command = list(self.main_window.transformer.commands.keys())[1]
         self.transformation_saver(key_command)
     
     def alert_draw_circle(self):
-        """Send a string to "transformation_saver" that contains info about the new transformation"""
         key_command = list(self.main_window.transformer.commands.keys())[2]
         self.transformation_saver(key_command)
     
     def alert_draw_ellipse(self):
-        """Send a string to "transformation_saver" that contains info about the new transformation"""
         key_command = list(self.main_window.transformer.commands.keys())[3]
         self.transformation_saver(key_command)
     
     def alert_crop(self):
-        """Send a string to "transformation_saver" that contains info about the new transformation"""
         key_command = list(self.main_window.transformer.commands.keys())[4]
         self.transformation_saver(key_command)
     
     def alert_select_channel(self):
-        """Send a string to "transformation_saver" that contains info about the new transformation"""
         key_command = list(self.main_window.transformer.commands.keys())[5]
         self.transformation_saver(key_command)
 
     def alert_colorspacechange(self):
-        """Send a string to "transformation_saver" that contains info about the new transformation"""
         key_command = list(self.main_window.transformer.commands.keys())[6]
         self.transformation_saver(key_command)
 
     def alert_simple_blur(self):
-        """Send a string to "transformation_saver" that contains info about the new transformation"""
         key_command = list(self.main_window.transformer.commands.keys())[7]
         self.transformation_saver(key_command)
 
     def alert_gaussian_blur(self):
-        """Send a string to "transformation_saver" that contains info about the new transformation"""
         key_command = list(self.main_window.transformer.commands.keys())[8]
         self.transformation_saver(key_command)
 
     def alert_median_blur(self):
-        """Send a string to "transformation_saver" that contains info about the new transformation"""
         key_command = list(self.main_window.transformer.commands.keys())[9]
         self.transformation_saver(key_command)
 
     def alert_bilateral_filtering(self):
-        """Send a string to "transformation_saver" that contains info about the new transformation"""
         key_command = list(self.main_window.transformer.commands.keys())[10]
         self.transformation_saver(key_command)
 
     def alert_luminosity_contrast(self):
-        """Send a string to "transformation_saver" that contains info about the new transformation"""
         key_command = list(self.main_window.transformer.commands.keys())[11]
         self.transformation_saver(key_command)
 
     def alert_gaussian_noise(self):
-        """Send a string to "transformation_saver" that contains info about the new transformation"""
         key_command = list(self.main_window.transformer.commands.keys())[12]
         self.transformation_saver(key_command)
 
     def alert_salt_pepper_noise(self):
-        """Send a string to "transformation_saver" that contains info about the new transformation"""
         key_command = list(self.main_window.transformer.commands.keys())[13]
         self.transformation_saver(key_command)
 
     def alert_poisson_noise(self):
-        """Send a string to "transformation_saver" that contains info about the new transformation"""
         key_command = list(self.main_window.transformer.commands.keys())[14]
         self.transformation_saver(key_command)
 
     def alert_speckle_noise(self):
-        """Send a string to "transformation_saver" that contains info about the new transformation"""
         key_command = list(self.main_window.transformer.commands.keys())[15]
         self.transformation_saver(key_command)
 
     def alert_threshold1d(self):
-        """Send a string to "transformation_saver" that contains info about the new transformation"""
         key_command = list(self.main_window.transformer.commands.keys())[16]
         self.transformation_saver(key_command)
 
     def alert_adaptive_threshold1d(self):
-        """Send a string to "transformation_saver" that contains info about the new transformation"""
         key_command = list(self.main_window.transformer.commands.keys())[17]
         self.transformation_saver(key_command)
 
     def alert_gradient_laplacian(self):
-        """Send a string to "transformation_saver" that contains info about the new transformation"""
         key_command = list(self.main_window.transformer.commands.keys())[18]
         self.transformation_saver(key_command)
 
     def alert_gradient_sobel(self):
-        """Send a string to "transformation_saver" that contains info about the new transformation"""
         key_command = list(self.main_window.transformer.commands.keys())[19]
         self.transformation_saver(key_command)
 
     def alert_gradient_canny(self):
-        """Send a string to "transformation_saver" that contains info about the new transformation"""
         key_command = list(self.main_window.transformer.commands.keys())[20]
         self.transformation_saver(key_command)
 
     def alert_morph(self):
-        """Send a string to "transformation_saver" that contains info about the new transformation"""
         key_command = list(self.main_window.transformer.commands.keys())[21]
         self.transformation_saver(key_command)
