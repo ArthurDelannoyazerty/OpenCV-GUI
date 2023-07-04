@@ -1,25 +1,31 @@
+import numpy as np
 import cv2 as cv
 
-def controller(img, brightness=255, contrast=127):
-    brightness = int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255))
+def controller(image, brightness=128, contrast=255):
+    # brightness = int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255))
   
-    contrast = int((contrast - 0) * (127 - (-127)) / (254 - 0) + (-127))
+    # contrast = int((contrast - 0) * (127 - (-127)) / (254 - 0) + (-127))
+
+    cal = (cv.addWeighted(((cv.addWeighted(image, ((255 if (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255)))>0 else 255+(int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255)))) - ((int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255))) if (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255)))>0 else 0)) / 255, image, 0, (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255))) if (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255)))>0 else 0) if (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255))) != 0 else image)), float(131 * ((int((contrast - 0) * (127 - (-127)) / (254 - 0) + (-127))) + 127)) / (127 * (131 - (int((contrast - 0) * (127 - (-127)) / (254 - 0) + (-127))))), ((cv.addWeighted(image, ((255 if (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255)))>0 else 255+(int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255)))) - ((int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255))) if (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255)))>0 else 0)) / 255, image, 0, (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255))) if (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255)))>0 else 0) if (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255))) != 0 else image)), 0, 127 * (1 - float(131 * ((int((contrast - 0) * (127 - (-127)) / (254 - 0) + (-127))) + 127)) / (127 * (131 - (int((contrast - 0) * (127 - (-127)) / (254 - 0) + (-127)))))))) if (int((contrast - 0) * (127 - (-127)) / (254 - 0) + (-127)))!=0 else (cv.addWeighted(image, ((255 if (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255)))>0 else 255+(int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255)))) - ((int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255))) if (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255)))>0 else 0)) / 255, image, 0, (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255))) if (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255)))>0 else 0) if (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255))) != 0 else image)
   
-    if brightness != 0:
+    # if brightness != 0:
   
-        (shadow, max) = (brightness, 255) if brightness>0 else (0, 255+brightness)
+    #     cal = cv.addWeighted(image, ((255 if brightness>0 else 255+brightness) - (brightness if brightness>0 else 0)) / 255, image, 0, brightness if brightness>0 else 0)
   
-        cal = cv.addWeighted(img, (max - shadow) / 255, img, 0, shadow)
+    # else:
+    #     cal = image
   
-    else:
-        cal = img
+    # if contrast != 0:
   
-    if contrast != 0:
-        Alpha = float(131 * (contrast + 127)) / (127 * (131 - contrast))
-        Gamma = 127 * (1 - Alpha)
-  
-        cal = cv.addWeighted(cal, Alpha, cal, 0, Gamma)
+    #     cal = cv.addWeighted(((cv.addWeighted(image, ((255 if brightness>0 else 255+brightness) - (brightness if brightness>0 else 0)) / 255, image, 0, brightness if brightness>0 else 0) if brightness != 0 else image)), float(131 * (contrast + 127)) / (127 * (131 - contrast)), ((cv.addWeighted(image, ((255 if brightness>0 else 255+brightness) - (brightness if brightness>0 else 0)) / 255, image, 0, brightness if brightness>0 else 0) if brightness != 0 else image)), 0, 127 * (1 - float(131 * (contrast + 127)) / (127 * (131 - contrast))))
   
   
     return cal
 
+
+
+
+image = cv.imread("img_test.png")
+result = controller(image)
+cv.imshow("t", result)
+cv.waitKey()

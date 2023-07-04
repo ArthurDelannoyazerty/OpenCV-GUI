@@ -446,7 +446,7 @@
         }
     },
     'COLOR - Light Contrast': {
-        'command': 'cv.addWeighted(image, (float(131 * (contrast + 127)) / (127 * (131 - contrast))), image, 0, (127 * (1 - (float(131 * (contrast + 127)) / (127 * (131 - contrast))))) + int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255))) if (brightness != 0 or contrast != 0) else image',
+        'command': '(cv.addWeighted(((cv.addWeighted(image, ((255 if (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255)))>0 else 255+(int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255)))) - ((int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255))) if (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255)))>0 else 0)) / 255, image, 0, (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255))) if (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255)))>0 else 0) if (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255))) != 0 else image)), float(131 * ((int((contrast - 0) * (127 - (-127)) / (254 - 0) + (-127))) + 127)) / (127 * (131 - (int((contrast - 0) * (127 - (-127)) / (254 - 0) + (-127))))), ((cv.addWeighted(image, ((255 if (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255)))>0 else 255+(int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255)))) - ((int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255))) if (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255)))>0 else 0)) / 255, image, 0, (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255))) if (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255)))>0 else 0) if (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255))) != 0 else image)), 0, 127 * (1 - float(131 * ((int((contrast - 0) * (127 - (-127)) / (254 - 0) + (-127))) + 127)) / (127 * (131 - (int((contrast - 0) * (127 - (-127)) / (254 - 0) + (-127)))))))) if (int((contrast - 0) * (127 - (-127)) / (254 - 0) + (-127)))!=0 else (cv.addWeighted(image, ((255 if (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255)))>0 else 255+(int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255)))) - ((int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255))) if (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255)))>0 else 0)) / 255, image, 0, (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255))) if (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255)))>0 else 0) if (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255))) != 0 else image)',
         'number_parameters': 3,
         'condition': 'True',
         'gui': {
@@ -455,18 +455,18 @@
                 'slider0': {
                     'name': 'Luminosity',
                     'variable_name': 'brightness',
-                    'min_value': '-100',
-                    'max_value': '100',
+                    'min_value': '0',
+                    'max_value': '255',
                     'step':'1',
-                    'default_value': '0'
+                    'default_value': '255'
                 },
                 'slider1': {
                     'name': 'Contrast',
                     'variable_name': 'contrast',
                     'min_value': '0',
-                    'max_value': '1000',
+                    'max_value': '255',
                     'step':'1',
-                    'default_value': '100'
+                    'default_value': '128'
                 }
             },
             'menu': {
