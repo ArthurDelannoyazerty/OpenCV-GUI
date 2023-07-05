@@ -117,6 +117,11 @@ class MainWindow(QMainWindow):
         self.btn_delete_current_transformation.clicked.connect(self.action_delete_current_transformation)
         self.btn_delete_current_transformation.hide()
         self.pipeline_manage_layout.addWidget(self.btn_delete_current_transformation)
+
+        self.btn_export_code = QPushButton(text="Export pipeline to code")
+        self.btn_export_code.clicked.connect(self.action_export_to_code)
+        self.btn_export_code.hide()
+        self.pipeline_manage_layout.addWidget(self.btn_export_code)
         
         btn_change_current = QRadioButton("Change next")
         self.btn_add_after = QRadioButton("Add")
@@ -195,6 +200,7 @@ class MainWindow(QMainWindow):
         self.pipeline.append(PipelineItem(img_array))
 
         self.import_button.hide()
+        self.btn_export_code.setHidden(False)
         self.image_frame.setHidden(False)
         self.button_show_last_image.setHidden(False)
         self.update_image_show()
@@ -254,6 +260,42 @@ class MainWindow(QMainWindow):
             self.pipeline.update_from_index(self.index_current_img)
         self.update_all_qframes()
 
+    def action_export_to_code(self):
+        string_code = ""
+        for index, pipeline_item in enumerate(self.pipeline):
+            if pipeline_item.transformation_item==None: continue
+
+            transformation_name = pipeline_item.transformation_item.name
+            string_code += "\n" + "#" + transformation_name + "\n"
+
+            variable_name = str(index) + "_" + transformation_name.split(" ")[-1]
+
+            command = self.transformer.commands[transformation_name]["command"]
+
+            transformation_parameters = pipeline_item.transformation_item.parameters.items()
+            for _, (parameter_name, parameters_value) in enumerate(transformation_parameters):
+                string_code += parameter_name +" = "+ str(parameters_value) +"\n"
+            
+            string_code += variable_name + " = " + command + "\n"
+        
+        print(string_code)
+        file_dialog = QFileDialog()
+        file_dialog.setAcceptMode(QFileDialog.AcceptSave)
+        file_dialog.setDefaultSuffix("txt")
+        file_dialog.setNameFilter("Text Files (*.txt)")
+        if file_dialog.exec():
+            file_path = file_dialog.selectedFiles()[0]
+            try:
+                with open(file_path, 'w') as file:
+                    file.write(string_code)
+                print("File saved successfully.")
+            except Exception as e:
+                print(f"Error saving file: {str(e)}")
+        else:
+            print("Save operation canceled.")
+
+            
+
     def value_changed_parameters(self):
         """Scan the widgets that contains information about the current transformation and refresh all qframes"""
         new_parameters = dict()
@@ -305,7 +347,7 @@ class MainWindow(QMainWindow):
             layout = QVBoxLayout(frame)
 
             pixmap_label = QLabel()
-            pixmap_label.setPixmap(pixmap.scaled(WIDTH_TILES, HEIGHT_TILES, Qt.AspectRatioMode.KeepAspectRatio))
+            pixmap_label.setPixmap(pixmap.scaled(WIDTH_TILES-20, HEIGHT_TILES-20, Qt.AspectRatioMode.KeepAspectRatio))  #FIXME
             layout.addWidget(pixmap_label)
 
             transformation_item = self.pipeline[i].transformation_item
