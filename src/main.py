@@ -261,6 +261,7 @@ class MainWindow(QMainWindow):
         self.update_all_qframes()
 
     def action_export_to_code(self):
+        """Transform the pipeline int a text file and let the user choose the save location"""
         string_code = ""
         for index, pipeline_item in enumerate(self.pipeline):
             if pipeline_item.transformation_item==None: continue
@@ -278,7 +279,6 @@ class MainWindow(QMainWindow):
             
             string_code += variable_name + " = " + command + "\n"
         
-        print(string_code)
         file_dialog = QFileDialog()
         file_dialog.setAcceptMode(QFileDialog.AcceptSave)
         file_dialog.setDefaultSuffix("txt")

@@ -15,6 +15,7 @@ class TransformerManager():
             self.alert_draw_circle,
             self.alert_draw_ellipse,
             self.alert_crop,
+            self.alert_rotation_zoom,
             self.alert_select_channel,
             self.alert_colorspacechange,
             self.alert_simple_blur,
@@ -108,70 +109,74 @@ class TransformerManager():
         key_command = list(self.main_window.transformer.commands.keys())[4]
         self.transformation_saver(key_command)
     
-    def alert_select_channel(self):
+    def alert_rotation_zoom(self):
         key_command = list(self.main_window.transformer.commands.keys())[5]
         self.transformation_saver(key_command)
-
-    def alert_colorspacechange(self):
+    
+    def alert_select_channel(self):
         key_command = list(self.main_window.transformer.commands.keys())[6]
         self.transformation_saver(key_command)
 
-    def alert_simple_blur(self):
+    def alert_colorspacechange(self):
         key_command = list(self.main_window.transformer.commands.keys())[7]
         self.transformation_saver(key_command)
 
-    def alert_gaussian_blur(self):
+    def alert_simple_blur(self):
         key_command = list(self.main_window.transformer.commands.keys())[8]
         self.transformation_saver(key_command)
 
-    def alert_median_blur(self):
+    def alert_gaussian_blur(self):
         key_command = list(self.main_window.transformer.commands.keys())[9]
         self.transformation_saver(key_command)
 
-    def alert_bilateral_filtering(self):
+    def alert_median_blur(self):
         key_command = list(self.main_window.transformer.commands.keys())[10]
         self.transformation_saver(key_command)
 
-    def alert_luminosity_contrast(self):
+    def alert_bilateral_filtering(self):
         key_command = list(self.main_window.transformer.commands.keys())[11]
         self.transformation_saver(key_command)
 
-    def alert_gaussian_noise(self):
+    def alert_luminosity_contrast(self):
         key_command = list(self.main_window.transformer.commands.keys())[12]
         self.transformation_saver(key_command)
 
-    def alert_salt_pepper_noise(self):
+    def alert_gaussian_noise(self):
         key_command = list(self.main_window.transformer.commands.keys())[13]
         self.transformation_saver(key_command)
 
-    def alert_poisson_noise(self):
+    def alert_salt_pepper_noise(self):
         key_command = list(self.main_window.transformer.commands.keys())[14]
         self.transformation_saver(key_command)
 
-    def alert_speckle_noise(self):
+    def alert_poisson_noise(self):
         key_command = list(self.main_window.transformer.commands.keys())[15]
         self.transformation_saver(key_command)
 
-    def alert_threshold1d(self):
+    def alert_speckle_noise(self):
         key_command = list(self.main_window.transformer.commands.keys())[16]
         self.transformation_saver(key_command)
 
-    def alert_adaptive_threshold1d(self):
+    def alert_threshold1d(self):
         key_command = list(self.main_window.transformer.commands.keys())[17]
         self.transformation_saver(key_command)
 
-    def alert_gradient_laplacian(self):
+    def alert_adaptive_threshold1d(self):
         key_command = list(self.main_window.transformer.commands.keys())[18]
         self.transformation_saver(key_command)
 
-    def alert_gradient_sobel(self):
+    def alert_gradient_laplacian(self):
         key_command = list(self.main_window.transformer.commands.keys())[19]
         self.transformation_saver(key_command)
 
-    def alert_gradient_canny(self):
+    def alert_gradient_sobel(self):
         key_command = list(self.main_window.transformer.commands.keys())[20]
         self.transformation_saver(key_command)
 
-    def alert_morph(self):
+    def alert_gradient_canny(self):
         key_command = list(self.main_window.transformer.commands.keys())[21]
+        self.transformation_saver(key_command)
+
+    def alert_morph(self):
+        key_command = list(self.main_window.transformer.commands.keys())[22]
         self.transformation_saver(key_command)

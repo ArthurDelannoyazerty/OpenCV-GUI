@@ -388,6 +388,51 @@
             }
         }
     },
+        'ROTATION ZOOM': {
+        'command': 'cv.warpAffine(image, cv.getRotationMatrix2D((center_x, center_y), angle, scale/100), (image.shape[:2][1], image.shape[:2][0]))',
+        'number_parameters': 5,
+        'condition': 'True',
+        'gui': {
+            'slider': {
+                'number_slider': 4,
+                'slider0': {
+                    'name': 'Center X',
+                    'variable_name': 'center_x',
+                    'min_value': '0',
+                    'max_value': 'len(image[0])-1',
+                    'step':'1',
+                    'default_value': 'int((len(image[0])-1)/2)'
+                },
+                'slider1': {
+                    'name': 'Center Y',
+                    'variable_name': 'center_y',
+                    'min_value': '0',
+                    'max_value': 'len(image)-1',
+                    'step':'1',
+                    'default_value': 'int((len(image)-1)/2)'
+                },
+                'slider2': {
+                    'name': 'Angle',
+                    'variable_name': 'angle',
+                    'min_value': '0',
+                    'max_value': '360',
+                    'step':'1',
+                    'default_value': '0'
+                },
+                'slider3': {
+                    'name': 'Scale (%)',
+                    'variable_name': 'scale',
+                    'min_value': '1',
+                    'max_value': '1500',
+                    'step':'1',
+                    'default_value': '100'
+                }
+            },
+            'menu': {
+                'number_menu': 0
+            }
+        }
+    },
     'COLOR - Channel': {
         'command': 'image[:,:,channel]',
         'number_parameters' : 2,
