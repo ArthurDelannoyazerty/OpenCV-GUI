@@ -1,9 +1,8 @@
 import sys
 from PySide6.QtWidgets import QApplication, QCheckBox, QMainWindow, QRadioButton, QVBoxLayout, QHBoxLayout, QLabel, QFrame, QPushButton, QFileDialog, QWidget, QScrollArea
 from PySide6.QtGui import Qt
-from PySide6.QtCore import Qt, QSize
+from PySide6.QtCore import Qt, QSize, QTimer
 import cv2 as cv
-from pathlib import Path
 import numpy as np
 
 from transformermanager import TransformerManager
@@ -17,7 +16,7 @@ from menuwithtext import MenuWithText
 WIDTH_RIGHT_FRAME = 220
 HEIGHT_UPPER_FRAME = 170
 HEIGHT_TILES = HEIGHT_UPPER_FRAME - 60
-WIDTH_TILES = 150
+WIDTH_TILES = 180
 PADDING_HEIGHT_MAIN_IMAGE = 60
 PADDING_WIDTH_MAIN_IMAGE = 20
 
@@ -28,7 +27,7 @@ class MainWindow(QMainWindow):
         self.current_parameters_widget = []
 
         self.transformer = Transformer()
-        self.pipeline = Pipeline(self.transformer)
+        self.pipeline = Pipeline(self.transformer, self.display_error_message)
         self.transformer_manager = TransformerManager(self, self.pipeline, self.transformer)
         self.index_current_img = -1
 
@@ -62,6 +61,19 @@ class MainWindow(QMainWindow):
         # ----- Left frame  --------------------------------------------------------------
         self.image_frame = QFrame()
         image_frame_layout = QVBoxLayout(self.image_frame)
+
+        self.error_frame = QFrame()
+        self.error_frame.setMaximumHeight(75)
+        self.error_frame.setStyleSheet("background-color: #ff2424;")
+        self.error_frame.setAutoFillBackground(True)
+        self.error_frame.hide()
+        error_layout = QVBoxLayout(self.error_frame)
+        image_frame_layout.addWidget(self.error_frame)
+
+        self.error_label = QLabel("Error")
+        self.error_label.setStyleSheet("font-size: 12px; color: white;")
+        error_layout.addWidget(self.error_label)
+
         self.image = QLabel()
         self.image.setAlignment(Qt.AlignCenter)
         self.image.setMinimumSize(1, 1)
@@ -254,6 +266,19 @@ class MainWindow(QMainWindow):
         self.update_upper_transformation()
         self.update_image_show()
         self.update_transformation_buttons()
+
+    def display_error_message(self, text_error):
+        """Set the qframe containing an error message visible."""
+        time_before_hide = 10000     # ms
+        self.error_frame.setHidden(False)
+        self.error_label.setText(text_error + "\nThis message will disappear after "+ str(int(time_before_hide/1000)) + "s.")
+
+        QTimer.singleShot(time_before_hide, self.hide_error_frame)
+
+    def hide_error_frame(self):
+        """Set the qframe containing an error message unvisible."""
+        self.error_frame.setHidden(True)
+
 
 # Update display
 
