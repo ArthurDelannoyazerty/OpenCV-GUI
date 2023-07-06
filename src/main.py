@@ -81,7 +81,7 @@ class MainWindow(QMainWindow):
         self.image_frame.hide()
 
         self.import_button = QPushButton("Import Image")
-        self.import_button.clicked.connect(self.open_image_dialog)
+        self.import_button.clicked.connect(self.open_first_image)
 
         # -----|-------- Description image frame------------------------------------------
         self.description_image_frame = QFrame()
@@ -189,11 +189,12 @@ class MainWindow(QMainWindow):
         str_path, _ = QFileDialog.getOpenFileName(self, "Choisir une image", "", "Images (*.png *.jpg *.jpeg *.bmp)", options=options)
 
         if str_path:
+            self.img_path = str_path
             img_array = cv.imdecode(np.fromfile(str_path, dtype=np.uint8), cv.IMREAD_UNCHANGED)
             img_array = cv.cvtColor(img_array, cv.COLOR_BGR2RGB)
         return img_array
 
-    def open_image_dialog(self):
+    def open_first_image(self):
         """First time the user select an image for the first item of the pipeline"""
         img_array = self.open_image()
         self.index_current_img = 0
@@ -262,16 +263,24 @@ class MainWindow(QMainWindow):
 
     def action_export_to_code(self):
         """Transform the pipeline int a text file and let the user choose the save location"""
-        string_code = ""
+        old_image_name = "original_image_0"
+        
+        string_code =  "import cv2 as cv\nimport numpy as np\n\n"
+        string_code += old_image_name + " = cv.imdecode(np.fromfile(\"" + self.img_path +"\", dtype=np.uint8), cv.IMREAD_UNCHANGED)" + "\n"
+        string_code += old_image_name + " = cv.cvtColor(" + old_image_name +", cv.COLOR_BGR2RGB)" + "\n"
+
         for index, pipeline_item in enumerate(self.pipeline):
             if pipeline_item.transformation_item==None: continue
 
             transformation_name = pipeline_item.transformation_item.name
             string_code += "\n" + "#" + transformation_name + "\n"
 
-            variable_name = str(index) + "_" + transformation_name.split(" ")[-1]
+            variable_name = transformation_name.split(" ")[-1] + "_" + str(index)
+            variable_name = variable_name.lower()
 
             command = self.transformer.commands[transformation_name]["command"]
+            command = command.replace("image", old_image_name)
+            old_image_name = variable_name
 
             transformation_parameters = pipeline_item.transformation_item.parameters.items()
             for _, (parameter_name, parameters_value) in enumerate(transformation_parameters):
@@ -279,14 +288,16 @@ class MainWindow(QMainWindow):
             
             string_code += variable_name + " = " + command + "\n"
         
+        string_code += "\ncv.imshow('Result', " + old_image_name + ")\ncv.waitKey()"
+
         file_dialog = QFileDialog()
         file_dialog.setAcceptMode(QFileDialog.AcceptSave)
-        file_dialog.setDefaultSuffix("txt")
-        file_dialog.setNameFilter("Text Files (*.txt)")
+        file_dialog.setDefaultSuffix("py")
+        # file_dialog.setNameFilter("Python Files (*.py)")
         if file_dialog.exec():
             file_path = file_dialog.selectedFiles()[0]
             try:
-                with open(file_path, 'w') as file:
+                with open(file_path, 'w', encoding='utf-8') as file:
                     file.write(string_code)
                 print("File saved successfully.")
             except Exception as e:
