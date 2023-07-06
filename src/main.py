@@ -305,8 +305,6 @@ class MainWindow(QMainWindow):
         else:
             print("Save operation canceled.")
 
-            
-
     def value_changed_parameters(self):
         """Scan the widgets that contains information about the current transformation and refresh all qframes"""
         new_parameters = dict()
