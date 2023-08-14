@@ -4,6 +4,12 @@ A graphical interface for the OpenCV functions and more. This let you create int
 # Getting started
 Just download the latest release and execute the *.exe* file. Make sure that the *commands.txt* file is in the same directory as the *.exe* file (You can create a shortcut by right clicking).
 
+### Create the environment : 
+```
+conda env create -f environment/environment.yml
+```
+(default name = "opencv-gui-env")
+
 # Want to help the project ?
 You can clone or fork the repo as you wish. The pulls request still need the approval of the admin for security.
 
