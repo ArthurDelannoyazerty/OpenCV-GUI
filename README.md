@@ -12,15 +12,18 @@ conda env create -f environment/environment.yml
 ```
 (default name = "opencv-gui-env")
 
+# GUI explanation
+
+![GUI Explained](assets/gui_explained.jpg)
+
+# A detail
+If you want to use some functions that only apply to 1 channel image like Canny, Threshold, Gradient, Morph... You need to transform a RGB image to a 1 channel image using "COLOR - Colorspace (grayscale)" or "COLOR - Channel".  
+
 # Want to help the project ?
 You can clone or fork the repo as you wish. The pulls request still need the approval of the admin for security.
 
 # Questions/Issue ?
 Don't hesitate to ask in the github page of this project.
-
-# GUI explanation
-
-![GUI Explained](assets/gui_explained.jpg)
 
 # Command file
 The command file located in the same directory as the *.exe* file contains all the functions that transform the image. 
