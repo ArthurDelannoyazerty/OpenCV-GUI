@@ -77,9 +77,9 @@
                     'name': 'Line Type',
                     'variable_name': 'linetype',
                     'menu_item':{
+                        'Antialised Line': cv.LINE_AA,
                         '4 Connected Line': cv.LINE_4,
-                        '8 Connected Line': cv.LINE_8,
-                        'Antialised Line': cv.LINE_AA
+                        '8 Connected Line': cv.LINE_8
                     }
                 }
             }
@@ -163,9 +163,9 @@
                     'name': 'Line Type',
                     'variable_name': 'linetype',
                     'menu_item':{
+                        'Antialised Line': cv.LINE_AA,
                         '4 Connected Line': cv.LINE_4,
-                        '8 Connected Line': cv.LINE_8,
-                        'Antialised Line': cv.LINE_AA
+                        '8 Connected Line': cv.LINE_8
                     }
                 }
             }
@@ -241,9 +241,9 @@
                     'name': 'Line Type',
                     'variable_name': 'linetype',
                     'menu_item':{
+                        'Antialised Line': cv.LINE_AA,
                         '4 Connected Line': cv.LINE_4,
-                        '8 Connected Line': cv.LINE_8,
-                        'Antialised Line': cv.LINE_AA
+                        '8 Connected Line': cv.LINE_8
                     }
                 }
             }
@@ -335,9 +335,9 @@
                     'name': 'Line Type',
                     'variable_name': 'linetype',
                     'menu_item':{
+                        'Antialised Line': cv.LINE_AA,
                         '4 Connected Line': cv.LINE_4,
-                        '8 Connected Line': cv.LINE_8,
-                        'Antialised Line': cv.LINE_AA
+                        '8 Connected Line': cv.LINE_8
                     }
                 }
             }
