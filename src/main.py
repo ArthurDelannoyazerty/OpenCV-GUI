@@ -321,7 +321,9 @@ class MainWindow(QMainWindow):
         if file_dialog.exec():
             file_path = file_dialog.selectedFiles()[0]
             try:
-                cv.imwrite(file_path, cv.cvtColor(self.pipeline[self.index_current_img].img_array, cv.COLOR_BGR2RGB))
+                array_to_save = cv.cvtColor(self.pipeline[self.index_current_img].img_array, cv.COLOR_BGR2RGB)
+                _, im_buf_arr = cv.imencode(".png", array_to_save)
+                im_buf_arr.tofile(file_path)
                 print("Image saved successfully.")
             except Exception as e:
                 print(f"Error saving image: {str(e)}")
