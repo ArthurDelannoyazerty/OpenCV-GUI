@@ -1,9 +1,10 @@
-import sys
 from PySide6.QtWidgets import QApplication, QCheckBox, QMainWindow, QRadioButton, QVBoxLayout, QHBoxLayout, QLabel, QFrame, QPushButton, QFileDialog, QWidget, QScrollArea
 from PySide6.QtGui import Qt
 from PySide6.QtCore import Qt, QSize, QTimer
-import cv2 as cv
-import numpy as np
+
+from cv2 import cvtColor, imdecode, imencode, COLOR_BGR2RGB, IMREAD_UNCHANGED
+from numpy import fromfile, uint8
+from sys import argv, exit
 
 from transformermanager import TransformerManager
 from transformer import Transformer
@@ -195,8 +196,8 @@ class MainWindow(QMainWindow):
 
         if str_path:
             self.img_path = str_path
-            img_array = cv.imdecode(np.fromfile(str_path, dtype=np.uint8), cv.IMREAD_UNCHANGED)
-            img_array = cv.cvtColor(img_array, cv.COLOR_BGR2RGB)
+            img_array = imdecode(fromfile(str_path, dtype=uint8), IMREAD_UNCHANGED)
+            img_array = cvtColor(img_array, COLOR_BGR2RGB)
         return img_array
 
     def open_first_image(self):
@@ -321,8 +322,8 @@ class MainWindow(QMainWindow):
         if file_dialog.exec():
             file_path = file_dialog.selectedFiles()[0]
             try:
-                array_to_save = cv.cvtColor(self.pipeline[self.index_current_img].img_array, cv.COLOR_BGR2RGB)
-                _, im_buf_arr = cv.imencode(".png", array_to_save)
+                array_to_save = cvtColor(self.pipeline[self.index_current_img].img_array, COLOR_BGR2RGB)
+                _, im_buf_arr = imencode(".png", array_to_save)
                 im_buf_arr.tofile(file_path)
                 print("Image saved successfully.")
             except Exception as e:
@@ -463,7 +464,7 @@ class MainWindow(QMainWindow):
 
 
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
+    app = QApplication(argv)
     window = MainWindow()
     window.show()
-    sys.exit(app.exec())
+    exit(app.exec())

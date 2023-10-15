@@ -1,5 +1,5 @@
 from PySide6.QtGui import QPixmap, QImage, qRgb
-import numpy as np
+from numpy import uint8, require
 
 class PipelineItem():
     """Object that contains the image in an array and the corresponding transformation item"""
@@ -20,8 +20,8 @@ class PipelineItem():
         if im is None:
             return QImage()
 
-        if im.dtype == np.uint8:
-            im = np.require(im, np.uint8, 'C')
+        if im.dtype == uint8:
+            im = require(im, uint8, 'C')
             if len(im.shape) == 2:
                 qim = QImage(im.data, im.shape[1], im.shape[0], im.strides[0], QImage.Format_Indexed8)
                 qim.setColorTable(gray_color_table)

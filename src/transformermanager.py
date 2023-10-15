@@ -1,6 +1,5 @@
 from pipelineitem import PipelineItem
 from transformationitem import TransformationItem
-from PySide6.QtWidgets import QApplication, QMessageBox
 
 
 class TransformerManager():
