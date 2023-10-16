@@ -5,6 +5,7 @@ from PySide6.QtCore import Qt, QSize, QTimer
 from cv2 import cvtColor, imdecode, imencode, COLOR_BGR2RGB, IMREAD_UNCHANGED
 from numpy import fromfile, uint8
 from sys import argv, exit
+from functools import partial
 
 from transformermanager import TransformerManager
 from transformer import Transformer
@@ -427,7 +428,7 @@ class MainWindow(QMainWindow):
             image = self.pipeline[self.index_current_img].img_array             # used for eval(condition)
             if eval(condition_str):
                 button = QPushButton(transformation)
-                button.clicked.connect(self.transformer_manager.list_function_transformation[index])
+                button.clicked.connect(partial(self.transformer_manager.transformation_saver,transformation))   # send "transformation" to the function "transformation_saver"
                 self.container_transformation_buttons_layout.addWidget(button)
 
     def update_transformation_parameters_frame(self):

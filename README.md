@@ -1,10 +1,10 @@
 # OpenCV-GUI
-A graphical interface for the OpenCV functions and more. This let you create interactively a pipeline of transformation for the seleted image. 
+A graphical interface for the OpenCV functions and more. This let you create an interactive pipeline of transformation for the selected image. 
 
-**The pipeline of transformation can be exported to python code by just pressing a button !!**
+**You can export the pipeline to python code or download the images by just pressing a button !!**
 
 # Getting started
-Just download the latest release and execute the *.exe* file. Make sure that the *commands.txt* file is in the same directory as the *.exe* file (You can create a shortcut by right clicking).
+Just download the latest release and execute the *.exe* file. Make sure that the *commands.txt* file is in the same directory as the *.exe* file.
 
 ### Create the environment : 
 ```
@@ -17,7 +17,7 @@ conda env create -f environment/environment.yml
 ![GUI Explained](assets/gui_explained.jpg)
 
 # A detail
-If you want to use some functions that only apply to 1 channel image like Canny, Threshold, Gradient, Morph... You need to transform a RGB image to a 1 channel image using "COLOR - Colorspace (grayscale)" or "COLOR - Channel".  
+If you want to use some functions that only apply to 1 channel image like Canny, Threshold, Gradient, Morph... You need to transform your RGB image to a 1 channel image using "COLOR - Colorspace (grayscale)" or "COLOR - Channel".
 
 # Want to help the project ?
 You can clone or fork the repo as you wish. The pulls request still need the approval of the admin for security.
@@ -28,7 +28,7 @@ Don't hesitate to ask in the github page of this project.
 # Command file
 The command file located in the same directory as the *.exe* file contains all the functions that transform the image. 
 
-This file is made to be modified by the user if needed. For now the code still need to be modified by hand for each new transformation that the user add. The user can still modify the current transforamtions. There is a particular structure that needs to be followed. 
+This file is made to be modified by the user if needed. There is a particular structure that needs to be followed. 
 
 This file contains a series of nested python dictionnary that provide information about how the image is transformed, with which parameters and at what condition. Because of the nature of Python dictionnaries, each name must be differents from another in the same level of dictionnaries
 
@@ -74,5 +74,53 @@ Here is the structure :
         }
     },
     # Other transformations ...
+}
+```
+
+And here is an example :
+
+```python
+{
+    'THRESH - Simple': {
+        'command': 'cv.threshold(image, thresh_value, max_value, thresh_type)',
+        'number_parameters' : 4,            # 4 parameters : 1 image, 2 sliders, 1 menu 
+        'condition': 'len(image.shape)==2', # Image in 1 dimension
+        'gui':{
+            'slider':{
+                'number_slider': 2,
+                'slider0': {
+                    'name': 'Thresh Value',             # visual name
+                    'variable_name': 'thresh_value',    # name used in 'command'
+                    'min_value': '0',
+                    'max_value': '255',
+                    'step':'1',
+                    'default_value': '128'
+                },
+                'slider1': {
+                    'name': 'Max Value',
+                    'variable_name': 'max_value',
+                    'min_value': '0',
+                    'max_value': '255',
+                    'step':'1',
+                    'default_value': '255'
+                }
+            },
+            'menu':{
+                'number_menu': 1,
+                'menu0': {
+                    'name': 'Threshold Type',
+                    'variable_name': 'thresh_type',
+                    'menu_item':{
+                        'Binary' : cv.THRESH_BINARY,
+                        'Binary Inverted': cv.THRESH_BINARY_INV,
+                        'Truncate': cv.THRESH_TRUNC,
+                        'To Zero': cv.THRESH_TOZERO,
+                        'To Zero Inverted': cv.THRESH_TOZERO_INV,
+                        'Otsu': cv.THRESH_OTSU
+                    }
+                }
+            }
+        }
+    }, ...# Other transformations ...
 }
 ```
