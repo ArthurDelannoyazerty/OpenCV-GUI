@@ -1,18 +1,29 @@
 # OpenCV-GUI
 A graphical interface for the OpenCV functions and more. This let you create interactively a pipeline of transformation for the seleted image. 
 
+**The pipeline of transformation can be exported to python code by just pressing a button !!**
+
 # Getting started
 Just download the latest release and execute the *.exe* file. Make sure that the *commands.txt* file is in the same directory as the *.exe* file (You can create a shortcut by right clicking).
+
+### Create the environment : 
+```
+conda env create -f environment/environment.yml
+```
+(default name = "opencv-gui-env")
+
+# GUI explanation
+
+![GUI Explained](assets/gui_explained.jpg)
+
+# A detail
+If you want to use some functions that only apply to 1 channel image like Canny, Threshold, Gradient, Morph... You need to transform a RGB image to a 1 channel image using "COLOR - Colorspace (grayscale)" or "COLOR - Channel".  
 
 # Want to help the project ?
 You can clone or fork the repo as you wish. The pulls request still need the approval of the admin for security.
 
 # Questions/Issue ?
 Don't hesitate to ask in the github page of this project.
-
-# GUI explanation
-
-![GUI Explained](assets/gui_explained.jpg)
 
 # Command file
 The command file located in the same directory as the *.exe* file contains all the functions that transform the image. 

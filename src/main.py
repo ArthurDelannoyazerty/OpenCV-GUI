@@ -1,9 +1,10 @@
-import sys
 from PySide6.QtWidgets import QApplication, QCheckBox, QMainWindow, QRadioButton, QVBoxLayout, QHBoxLayout, QLabel, QFrame, QPushButton, QFileDialog, QWidget, QScrollArea
 from PySide6.QtGui import Qt
 from PySide6.QtCore import Qt, QSize, QTimer
-import cv2 as cv
-import numpy as np
+
+from cv2 import cvtColor, imdecode, imencode, COLOR_BGR2RGB, IMREAD_UNCHANGED
+from numpy import fromfile, uint8
+from sys import argv, exit
 
 from transformermanager import TransformerManager
 from transformer import Transformer
@@ -122,6 +123,11 @@ class MainWindow(QMainWindow):
         self.btn_export_code.clicked.connect(self.action_export_to_code)
         self.btn_export_code.hide()
         self.pipeline_manage_layout.addWidget(self.btn_export_code)
+
+        self.btn_download_image = QPushButton(text="Download current image")
+        self.btn_download_image.clicked.connect(self.action_download_current_image)
+        self.btn_download_image.hide()
+        self.pipeline_manage_layout.addWidget(self.btn_download_image)
         
         btn_change_current = QRadioButton("Change next")
         self.btn_add_after = QRadioButton("Add")
@@ -190,8 +196,8 @@ class MainWindow(QMainWindow):
 
         if str_path:
             self.img_path = str_path
-            img_array = cv.imdecode(np.fromfile(str_path, dtype=np.uint8), cv.IMREAD_UNCHANGED)
-            img_array = cv.cvtColor(img_array, cv.COLOR_BGR2RGB)
+            img_array = imdecode(fromfile(str_path, dtype=uint8), IMREAD_UNCHANGED)
+            img_array = cvtColor(img_array, COLOR_BGR2RGB)
         return img_array
 
     def open_first_image(self):
@@ -202,6 +208,7 @@ class MainWindow(QMainWindow):
 
         self.import_button.hide()
         self.btn_export_code.setHidden(False)
+        self.btn_download_image.setHidden(False)
         self.image_frame.setHidden(False)
         self.button_show_last_image.setHidden(False)
         self.update_image_show()
@@ -254,7 +261,7 @@ class MainWindow(QMainWindow):
         super().resizeEvent(event)
 
     def action_delete_current_transformation(self):
-        """Method called to delete the current transformation then refresh all qframes"""
+        """Method called to delete the current transformation then refresh all qframes."""
         self.pipeline.pop(self.index_current_img)
         self.index_current_img = min(self.index_current_img, len(self.pipeline)-1)
         if self.index_current_img!=0:
@@ -305,8 +312,27 @@ class MainWindow(QMainWindow):
         else:
             print("Save operation canceled.")
 
+    def action_download_current_image(self):
+        """Download the current image. Location choosen by the user."""
+        file_dialog = QFileDialog()
+        file_dialog.setAcceptMode(QFileDialog.AcceptSave)
+        file_dialog.setDefaultSuffix("png")
+        file_dialog.setNameFilters(["Image (*.png)"])
+        file_dialog.setNameFilter("Image (*.png)")
+        if file_dialog.exec():
+            file_path = file_dialog.selectedFiles()[0]
+            try:
+                array_to_save = cvtColor(self.pipeline[self.index_current_img].img_array, COLOR_BGR2RGB)
+                _, im_buf_arr = imencode(".png", array_to_save)
+                im_buf_arr.tofile(file_path)
+                print("Image saved successfully.")
+            except Exception as e:
+                print(f"Error saving image: {str(e)}")
+        else:
+            print("Save operation canceled.")
+
     def value_changed_parameters(self):
-        """Scan the widgets that contains information about the current transformation and refresh all qframes"""
+        """Scan the widgets that contains information about the current transformation and refresh all qframes."""
         new_parameters = dict()
         for widget in self.current_parameters_widget:
             variable_name = widget.parameters['variable_name']
@@ -438,7 +464,7 @@ class MainWindow(QMainWindow):
 
 
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
+    app = QApplication(argv)
     window = MainWindow()
     window.show()
-    sys.exit(app.exec())
+    exit(app.exec())

@@ -77,9 +77,9 @@
                     'name': 'Line Type',
                     'variable_name': 'linetype',
                     'menu_item':{
+                        'Antialised Line': cv.LINE_AA,
                         '4 Connected Line': cv.LINE_4,
-                        '8 Connected Line': cv.LINE_8,
-                        'Antialised Line': cv.LINE_AA
+                        '8 Connected Line': cv.LINE_8
                     }
                 }
             }
@@ -163,9 +163,9 @@
                     'name': 'Line Type',
                     'variable_name': 'linetype',
                     'menu_item':{
+                        'Antialised Line': cv.LINE_AA,
                         '4 Connected Line': cv.LINE_4,
-                        '8 Connected Line': cv.LINE_8,
-                        'Antialised Line': cv.LINE_AA
+                        '8 Connected Line': cv.LINE_8
                     }
                 }
             }
@@ -241,9 +241,9 @@
                     'name': 'Line Type',
                     'variable_name': 'linetype',
                     'menu_item':{
+                        'Antialised Line': cv.LINE_AA,
                         '4 Connected Line': cv.LINE_4,
-                        '8 Connected Line': cv.LINE_8,
-                        'Antialised Line': cv.LINE_AA
+                        '8 Connected Line': cv.LINE_8
                     }
                 }
             }
@@ -335,9 +335,9 @@
                     'name': 'Line Type',
                     'variable_name': 'linetype',
                     'menu_item':{
+                        'Antialised Line': cv.LINE_AA,
                         '4 Connected Line': cv.LINE_4,
-                        '8 Connected Line': cv.LINE_8,
-                        'Antialised Line': cv.LINE_AA
+                        '8 Connected Line': cv.LINE_8
                     }
                 }
             }
@@ -715,6 +715,99 @@
                 }
             },
             'menu': {
+                'number_menu': 0
+            }
+        }
+    },
+    'Filter - Convolution': {
+        'command': 'np.array(cv.filter2D(image, -1, np.array([[up_left, up_middle, up_right], [middle_left, middle_middle,middle_right], [down_left,down_middle,down_right]]))/division).astype(np.uint8)',
+        'number_parameters' : 10,
+        'condition': 'True',
+        'gui':{
+            'slider':{
+                'number_slider': 10,
+                'slider0': {
+                    'name': 'Value Up Left',
+                    'variable_name': 'up_left',
+                    'min_value': '-16',
+                    'max_value': '16',
+                    'step':'1',
+                    'default_value': '0'
+                },
+                'slider1': {
+                    'name': 'Value Up Middle',
+                    'variable_name': 'up_middle',
+                    'min_value': '-16',
+                    'max_value': '16',
+                    'step':'1',
+                    'default_value': '0'
+                },
+                'slider2': {
+                    'name': 'Value Up Right',
+                    'variable_name': 'up_right',
+                    'min_value': '-16',
+                    'max_value': '16',
+                    'step':'1',
+                    'default_value': '0'
+                },
+                'slider3': {
+                    'name': 'Value Middle Left',
+                    'variable_name': 'middle_left',
+                    'min_value': '-16',
+                    'max_value': '16',
+                    'step':'1',
+                    'default_value': '0'
+                },
+                'slider4': {
+                    'name': 'Value Middle Middle',
+                    'variable_name': 'middle_middle',
+                    'min_value': '-16',
+                    'max_value': '16',
+                    'step':'1',
+                    'default_value': '1'
+                },
+                'slider5': {
+                    'name': 'Value Middle Right',
+                    'variable_name': 'middle_right',
+                    'min_value': '-16',
+                    'max_value': '16',
+                    'step':'1',
+                    'default_value': '0'
+                },
+                'slider6': {
+                    'name': 'Value Down Left',
+                    'variable_name': 'down_left',
+                    'min_value': '-16',
+                    'max_value': '16',
+                    'step':'1',
+                    'default_value': '0'
+                },
+                'slider7': {
+                    'name': 'Value Down Middle',
+                    'variable_name': 'down_middle',
+                    'min_value': '-16',
+                    'max_value': '16',
+                    'step':'1',
+                    'default_value': '0'
+                },
+                'slider8': {
+                    'name': 'Value Down Right',
+                    'variable_name': 'down_right',
+                    'min_value': '-16',
+                    'max_value': '16',
+                    'step':'1',
+                    'default_value': '0'
+                },
+                'slider9': {
+                    'name': 'Divided By',
+                    'variable_name': 'division',
+                    'min_value': '-16',
+                    'max_value': '16',
+                    'step':'1',
+                    'default_value': '1'
+                }
+            },
+            'menu':{
                 'number_menu': 0
             }
         }
