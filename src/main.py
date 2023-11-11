@@ -5,6 +5,7 @@ from PySide6.QtCore import Qt, QSize, QTimer
 from cv2 import cvtColor, imdecode, imencode, COLOR_BGR2RGB, IMREAD_UNCHANGED
 from numpy import fromfile, uint8
 from sys import argv, exit
+import os
 from functools import partial
 
 from transformermanager import TransformerManager
@@ -204,6 +205,10 @@ class MainWindow(QMainWindow):
     def open_first_image(self):
         """First time the user select an image for the first item of the pipeline"""
         img_array = self.open_image()
+        ui_after_image_loaded(self, img_array)
+
+    def ui_after_image_loaded(self, img_array):
+        """UI changes after the first image is loaded"""
         self.index_current_img = 0
         self.pipeline.append(PipelineItem(img_array))
 
@@ -468,4 +473,9 @@ if __name__ == '__main__':
     app = QApplication(argv)
     window = MainWindow()
     window.show()
+    if len(argv) > 1 and os.path.exists(argv[1]):
+        window.img_path = argv[1]
+        img_array = imdecode(fromfile(argv[1], dtype=uint8), IMREAD_UNCHANGED)
+        img_array = cvtColor(img_array, COLOR_BGR2RGB)
+        window.ui_after_image_loaded(img_array)
     exit(app.exec())
