@@ -1,6 +1,6 @@
-from PySide6.QtWidgets import QApplication, QCheckBox, QMainWindow, QRadioButton, QVBoxLayout, QHBoxLayout, QLabel, QFrame, QPushButton, QFileDialog, QWidget, QScrollArea
-from PySide6.QtGui import Qt
-from PySide6.QtCore import Qt, QSize, QTimer
+from qtpy.QtWidgets import QApplication, QCheckBox, QMainWindow, QRadioButton, QVBoxLayout, QHBoxLayout, QLabel, QFrame, QPushButton, QFileDialog, QWidget, QScrollArea
+from qtpy import QtGui
+from qtpy.QtCore import Qt, QSize, QTimer
 
 from cv2 import cvtColor, imdecode, imencode, COLOR_BGR2RGB, IMREAD_UNCHANGED
 from numpy import fromfile, uint8

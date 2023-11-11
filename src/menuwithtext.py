@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QComboBox, QLabel, QFrame, QVBoxLayout
+from qtpy.QtWidgets import QComboBox, QLabel, QFrame, QVBoxLayout
 
 MAXIMUM_HEIGHT = 65
 

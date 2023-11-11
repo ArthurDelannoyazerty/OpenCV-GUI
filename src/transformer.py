@@ -1,6 +1,6 @@
 import cv2 as cv        # used in eval()
 import numpy as np      # used in eval()
-from PySide6.QtWidgets import QMessageBox
+from qtpy.QtWidgets import QMessageBox
 
 class Transformer():
     """An objet that transform a given image with the specified transformation with opencv"""

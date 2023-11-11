@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QLabel, QFrame, QVBoxLayout
+from qtpy.QtWidgets import QLabel, QFrame, QVBoxLayout
 from stepslider import StepSlider
 
 MAXIMUM_HEIGHT = 65

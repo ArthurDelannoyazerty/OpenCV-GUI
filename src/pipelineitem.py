@@ -1,4 +1,4 @@
-from PySide6.QtGui import QPixmap, QImage, qRgb
+from qtpy.QtGui import QPixmap, QImage, qRgb
 from numpy import uint8, require
 
 class PipelineItem():

@@ -1,5 +1,5 @@
-from PySide6.QtWidgets import QSlider
-from PySide6.QtCore import Qt
+from qtpy.QtWidgets import QSlider
+from qtpy.QtCore import Qt
 
 class StepSlider(QSlider):
     """A 'working' qslider with steps (working with steps of 2 and int values)"""

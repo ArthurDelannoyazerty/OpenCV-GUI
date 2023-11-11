@@ -6,4 +6,4 @@ dependencies:
   - pip:
     - opencv-python==4.7.0.68
     - numpy==1.25.0
-    - PySide6==6.5.1.1
+    - qtpy>=2.0.0
