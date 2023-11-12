@@ -20,6 +20,7 @@ class TransformerManager():
         self.main_window.index_current_img += 1
         if is_current_last:
             self.pipeline.append(new_item)
+            self.main_window.nodegraph.add_node(new_item)
         elif add_after:
             self.pipeline.insert(self.main_window.index_current_img, new_item)
         elif not add_after:

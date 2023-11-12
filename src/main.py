@@ -13,6 +13,7 @@ from transformer import Transformer
 from clickableframe import ClickableFrame
 from pipelineitem import PipelineItem
 from pipeline import Pipeline
+from cvnodegraph import CvNodeGraph
 from sliderwithtext import SliderWithText
 from menuwithtext import MenuWithText
 
@@ -33,6 +34,7 @@ class MainWindow(QMainWindow):
         self.pipeline = Pipeline(self.transformer, self.display_error_message)
         self.transformer_manager = TransformerManager(self, self.pipeline, self.transformer)
         self.index_current_img = -1
+        self.nodegraph = CvNodeGraph(self)
 
         self.setGeometry(100, 100, 700, 700)
         self.initiate_frames()
@@ -130,6 +132,7 @@ class MainWindow(QMainWindow):
         self.btn_download_image.clicked.connect(self.action_download_current_image)
         self.btn_download_image.hide()
         self.pipeline_manage_layout.addWidget(self.btn_download_image)
+        self.addDockWidget(Qt.RightDockWidgetArea, self.nodegraph.panel)
         
         btn_change_current = QRadioButton("Change next")
         self.btn_add_after = QRadioButton("Add")
