@@ -1,5 +1,5 @@
-from PySide6.QtWidgets import QFrame
-from PySide6.QtCore import Signal
+from qtpy.QtWidgets import QFrame
+from qtpy.QtCore import Signal
 
 class ClickableFrame(QFrame):
     """qframe that call an event when the user click on it"""
