@@ -7,3 +7,4 @@ dependencies:
     - opencv-python==4.7.0.68
     - numpy==1.25.0
     - qtpy>=2.0.0
+    - NodeGraphQt
