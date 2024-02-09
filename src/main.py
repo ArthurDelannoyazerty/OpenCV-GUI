@@ -205,7 +205,7 @@ class MainWindow(QMainWindow):
     def open_first_image(self):
         """First time the user select an image for the first item of the pipeline"""
         img_array = self.open_image()
-        ui_after_image_loaded(self, img_array)
+        self.ui_after_image_loaded(img_array)
 
     def ui_after_image_loaded(self, img_array):
         """UI changes after the first image is loaded"""
