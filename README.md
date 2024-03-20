@@ -1,7 +1,11 @@
 # OpenCV-GUI
 A graphical interface for the OpenCV functions and more. This let you create an interactive pipeline of transformation for the selected image. 
 
-**You can export the pipeline to python code or download the images by just pressing a button !!**
+Do you want to rapidly apply transformations to an image ? This program is made for that ! 
+
+You can test in all functions given by OpenCV and more with an instant refresh of the result image. All the parameters of each transformations can be easily and rapidly changed with user friendly UI. You can even change previous transformations while observing the change for the result image !
+
+**You can export the pipeline of transformation to python code or download the selected image by just pressing a button !**
 
 # Getting started
 Just download the latest release and execute the *.exe* file. Make sure that the *commands.txt* file is in the same directory as the *.exe* file.
