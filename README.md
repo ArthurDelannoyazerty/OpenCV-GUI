@@ -1,4 +1,4 @@
-# OpenCV-GUI
+# OpenCV-GUI [![Downloads](https://img.shields.io/github/downloads/ArthurDelannoyazerty/OpenCV-GUI/total.svg)](https://github.com/ArthurDelannoyazerty/OpenCV-GUI/releases)
 A graphical interface for the OpenCV functions and more. This let you create an interactive pipeline of transformation for the selected image. 
 
 Do you want to rapidly apply transformations to an image ? This program is made for that ! 
