@@ -4,6 +4,8 @@ channels:
 dependencies:
   - python==3.9.0
   - pip:
-    - opencv-python==4.7.0.68
+    - opencv-python==4.6.0.66
+    - opencv-contrib-python==4.6.0.66
     - numpy==1.25.0
     - qtpy>=2.0.0
+    - pyside6

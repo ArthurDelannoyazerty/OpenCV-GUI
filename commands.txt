@@ -388,7 +388,7 @@
             }
         }
     },
-        'ROTATION ZOOM': {
+    'ROTATION ZOOM': {
         'command': 'cv.warpAffine(image, cv.getRotationMatrix2D((center_x, center_y), angle, scale/100), (image.shape[:2][1], image.shape[:2][0]))',
         'number_parameters': 5,
         'condition': 'True',
@@ -430,6 +430,99 @@
             },
             'menu': {
                 'number_menu': 0
+            }
+        }
+    },
+    'Contours': {
+        'command': 'cv.drawContours(image, cv.findContours(cv.threshold(cv.cvtColor(image, cv.COLOR_BGR2GRAY), thresh_value, max_value, thresh_type)[1], contour_mode, contour_approximation)[0], -1, (contour_red,contour_green,contour_blue), contour_thickness)',
+        'number_parameters' : 10,
+        'condition': 'True',
+        'gui':{
+            'slider':{
+                'number_slider': 6,
+                'slider0': {
+                    'name': 'Thresh Value',
+                    'variable_name': 'thresh_value',
+                    'min_value': '0',
+                    'max_value': '255',
+                    'step':'1',
+                    'default_value': '128'
+                },
+                'slider1': {
+                    'name': 'Thresh Max Value',
+                    'variable_name': 'max_value',
+                    'min_value': '0',
+                    'max_value': '255',
+                    'step':'1',
+                    'default_value': '255'
+                },
+                'slider2': {
+                    'name': 'Contour Red',
+                    'variable_name': 'contour_red',
+                    'min_value': '0',
+                    'max_value': '255',
+                    'step':'1',
+                    'default_value': '0'
+                },
+                'slider3': {
+                    'name': 'Contour Green',
+                    'variable_name': 'contour_green',
+                    'min_value': '0',
+                    'max_value': '255',
+                    'step':'1',
+                    'default_value': '255'
+                },
+                'slider4': {
+                    'name': 'Contour Blue',
+                    'variable_name': 'contour_blue',
+                    'min_value': '0',
+                    'max_value': '255',
+                    'step':'1',
+                    'default_value': '0'
+                },
+                'slider5': {
+                    'name': 'Contour Thickness',
+                    'variable_name': 'contour_thickness',
+                    'min_value': '0',
+                    'max_value': '25',
+                    'step':'1',
+                    'default_value': '1'
+                }
+            },
+            'menu':{
+                'number_menu': 3,
+                'menu0': {
+                    'name': 'Thresh Type',
+                    'variable_name': 'thresh_type',
+                    'menu_item':{
+                        'Binary' : cv.THRESH_BINARY,
+                        'Binary Inverted': cv.THRESH_BINARY_INV,
+                        'Truncate': cv.THRESH_TRUNC,
+                        'To Zero': cv.THRESH_TOZERO,
+                        'To Zero Inverted': cv.THRESH_TOZERO_INV,
+                        'Otsu': cv.THRESH_OTSU
+                    },
+                },
+                'menu1': {
+                    'name': 'Find Contour Mode',
+                    'variable_name': 'contour_mode',
+                    'menu_item':{
+                        'Retrieval External' : cv.RETR_EXTERNAL,
+                        'Retrieval List': cv.RETR_LIST,
+                        'Retrieval CCOMP': cv.RETR_CCOMP,
+                        'Retrieval Tree': cv.RETR_TREE
+                    },
+                },
+                'menu2': {
+                    'name': 'Find Contour Approximation',
+                    'variable_name': 'contour_approximation',
+                    'menu_item':{
+                        'None' : cv.CHAIN_APPROX_NONE,
+                        'Simple': cv.CHAIN_APPROX_SIMPLE,
+                        'TC89 L1': cv.CHAIN_APPROX_TC89_L1,
+                        'TC89 KCOS': cv.CHAIN_APPROX_TC89_KCOS
+                    }
+                }
             }
         }
     },
