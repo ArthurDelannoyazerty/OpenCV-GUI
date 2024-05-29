@@ -57,8 +57,6 @@ conda env create -f environment/environment.yml
 _`(*)` means that this transformation is only available when the image have 1 depth (i.e the image is in grayscale). For that, you need to activate the transformation "Color - Colorspace(grayscale)" or "Color - Channel"._
 
 
-# A detail
-If you want to use some functions that only apply to 1 channel image like Canny, Threshold, Gradient, Morph... You need to transform your RGB image to a 1 channel image using "COLOR - Colorspace (grayscale)" or "COLOR - Channel".
 
 # Want to help the project ?
 You can clone or fork the repo as you wish. The pulls request still need the approval of the admin for security.
@@ -72,6 +70,8 @@ The command file located in the same directory as the *.exe* file contains all t
 This file is made to be modified by the user if needed. There is a particular structure that needs to be followed. 
 
 This file contains a series of nested python dictionnary that provide information about how the image is transformed, with which parameters and at what condition. Because of the nature of Python dictionnaries, each name must be differents from another in the same level of dictionnaries
+
+The `'command'` field contains the function. This must be in 1 line of code. You have access to all python/numpy/opencv functions. The input is the previous image stored in the variable named `image`. The field must return an image in the type of a numpy array.  
 
 Here is the structure :
 
