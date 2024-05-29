@@ -20,6 +20,43 @@ conda env create -f environment/environment.yml
 
 ![GUI Explained](assets/gui_explained.jpg)
 
+# Transformations Available
+
+- Drawing
+  - Line
+  - Rectangle
+  - Circle
+  - Ellipse
+- Crop
+- Rotation & Zoom
+- Countours
+- Color
+  - Select Channel (R/G/B)
+  - Change Colorspace (Grayscale/BRG/HSV...)
+  - Luminosity & Contrast
+- Noise
+  - Gaussian
+  - Salt & Pepper (*)
+  - Poisson (*)
+  - Speckle (*)
+- Blur
+  - Simple
+  - Gaussian
+  - Median
+  - Bilateral Filtering
+- Custom 3x3 Convolution
+- Thresh (*)
+  - Simple (*)
+  - Adaptative (*)
+- Gradient (*)
+  - Laplacian (*)
+  - Sobel (*)
+  - Canny (*)
+- Morph (Dilate/erosion...) (*)
+
+_`(*)` means that this transformation is only available when the image have 1 depth (i.e the image is in grayscale). For that, you need to activate the transformation "Color - Colorspace(grayscale)" or "Color - Channel"._
+
+
 # A detail
 If you want to use some functions that only apply to 1 channel image like Canny, Threshold, Gradient, Morph... You need to transform your RGB image to a 1 channel image using "COLOR - Colorspace (grayscale)" or "COLOR - Channel".
 
