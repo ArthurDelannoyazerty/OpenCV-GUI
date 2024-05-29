@@ -52,7 +52,7 @@ conda env create -f environment/environment.yml
   - Laplacian (*)
   - Sobel (*)
   - Canny (*)
-- Morph (Dilate/erosion...) (*)
+- Morph (Dilate/Erosion...) (*)
 
 _`(*)` means that this transformation is only available when the image have 1 depth (i.e the image is in grayscale). For that, you need to activate the transformation "Color - Colorspace(grayscale)" or "Color - Channel"._
 
