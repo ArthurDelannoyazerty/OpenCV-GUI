@@ -529,7 +529,7 @@
     'Contours (Thresh)': {
         'command': 'cv.drawContours(np.zeros(image.shape).astype("uint8"), cv.findContours(image, contour_mode, contour_approximation)[0], -1, contour_luminosity, contour_thickness)',
         'number_parameters' : 5,
-        'condition': 'len(np.unique(image))==2',
+        'condition': 'len(image.shape)!=3',
         'gui':{
             'slider':{
                 'number_slider': 2,
