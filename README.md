@@ -18,6 +18,10 @@ conda env create -f environment/environment.yml
 
 # GUI explanation
 
+
+https://github.com/ArthurDelannoyazerty/OpenCV-GUI/assets/28599212/4f96dabf-a022-48bc-90cf-75c474df6a60
+
+
 ![GUI Explained](assets/gui_explained.jpg)
 
 # Transformations Available
