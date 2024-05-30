@@ -16,6 +16,8 @@ from pipeline import Pipeline
 from sliderwithtext import SliderWithText
 from menuwithtext import MenuWithText
 
+import numpy as np          # for the eval() in update_transformation_buttons()
+
 WIDTH_RIGHT_FRAME = 220
 HEIGHT_UPPER_FRAME = 170
 HEIGHT_TILES = HEIGHT_UPPER_FRAME - 60
