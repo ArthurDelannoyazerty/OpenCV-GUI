@@ -25,6 +25,7 @@ https://github.com/ArthurDelannoyazerty/OpenCV-GUI/assets/28599212/4f96dabf-a022
 ![GUI Explained](assets/gui_explained.jpg)
 
 # Transformations Available
+_You can add yours easily if needed (see the section 'Command file')._
 
 - Drawing
   - Line
