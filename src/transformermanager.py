@@ -57,6 +57,8 @@ class TransformerManager():
             current_slider = dict_gui['menu']['menu'+str(i)]
             var_name = current_slider['variable_name']
             default_value = list(current_slider['menu_item'].values())[0]
+            if isinstance(default_value, str):
+                default_value = eval(default_value)
             dict_default_values[var_name] = default_value
         
         return dict_default_values
