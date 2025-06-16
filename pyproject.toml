@@ -10,3 +10,8 @@ dependencies = [
     "pyside6>=6.9.1",
     "qtpy>=2.4.3",
 ]
+
+[dependency-groups]
+exe = [
+    "auto-py-to-exe>=2.46.0",
+]
