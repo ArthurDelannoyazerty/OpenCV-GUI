@@ -78,44 +78,46 @@ This file is made to be modified by the user if needed. There is a particular st
 
 This file contains a series of nested python dictionnary that provide information about how the image is transformed, with which parameters and at what condition. Because of the nature of Python dictionnaries, each name must be differents from another in the same level of dictionnaries
 
-The `'command'` field contains the function. This must be in 1 line of code. You have access to all python/numpy/opencv functions. The input is the previous image stored in the variable named `image`. The field must return an image in the type of a numpy array.  
+The `'command'` field contains the function. This must be in 1 line of code. You have access to all python/numpy/opencv functions. The input is the previous image stored in the variable named `image`. The field must return an image in the type of a numpy array. This function line also receive the variables in the the `gui` fields; they have the name of the `variable_name` field and the value of the menu/slider in the gui.
+
+
 
 Here is the structure :
 
-```python
+```json
 {
-    (string)'Name-of-the-transformation': {
-        'command': (string)'Command-to-transform-"image"(using "cv" or "np")',
-        'number_parameters': (int)number-of-parameters("image" included),
-        'condition': (boolean)condition-on-image-to-make-the-transformation-appear-in-the-gui,
-        'gui': {
-            'slider': {
-                'number_slider': (int)number-of-parameter-needing-slider,
-                'slider0': {
-                    'name': (string)'name-of-the-parameters(user)',
-                    'variable_name': (string)'name-of-the-parameters(to put in the "command")',
-                    'min_value': (string)'min-value-of-the-slider(condition with "image" possible)',
-                    'max_value': (string)'max-value-of-the-slider(condition with "image" possible)',
-                    'step': (string)'step-of-the-slider (no tests, working for 1 and 2)',
-                    'default_value': (string)'default-value-of-the-slider(condition with "image" possible)'
+    "Name of the transformation": {
+        "command": "<string>Command to transform the image",
+        "number_parameters": "<int>Number of parameters ('image' included)",
+        "condition": "<boolean>Condition on image to make the transformation appear in the GUI",
+        "gui": {
+            "slider": {
+                "number_slider": "<int>number of parameter needing slider",
+                "slider0": {
+                    "name": "<string>name of the parameters diplayed on the GUI",
+                    "variable_name": "<string>name of the parameters used in the 'command' field",
+                    "min_value": "<string>min value of the slider (condition with 'image' possible)",
+                    "max_value": "<string>max value of the slider (condition with 'image' possible)",
+                    "step": "<string>step of the slider (no tests, working for 1 and 2)",
+                    "default_value": "<string>default value of the slider (condition with 'image' possible)"
                 },
-                'slider1': {
-                    'name': (string)'name-of-the-parameters(user)',
-                    'variable_name': (string)'name-of-the-parameters(to put in the "command")',
-                    'min_value': (string)'min-value-of-the-slider(condition with "image" possible)',
-                    'max_value': (string)'max-value-of-the-slider(condition with "image" possible)',
-                    'step': (string)'step-of-the-slider (no tests, working for 1 and 2)',
-                    'default_value': (string)'default-value-of-the-slider(condition with "image" possible)'
+                "slider1": {
+                    "name": "<string>name of the parameters diplayed on the GUI",
+                    "variable_name": "<string>name of the parameters (to put in the 'command')",
+                    "min_value": "<string>min value of the slider (condition with 'image' possible)",
+                    "max_value": "<string>max value of the slider (condition with 'image' possible)",
+                    "step": "<string>step of the slider (no tests, working for 1 and 2)",
+                    "default_value": "<string>default value of the slider (condition with 'image' possible)"
                 }
             },
-            'menu': {
-                'number_menu': (int)number-of-parameter-needing-menu,
-                'menu0': {
-                    'name': (string)'name-of-the-parameters(user)',
-                    'variable_name': 'name-of-the-parameters(to put in the "command")',
-                    'menu_item':{
-                        (string)'Name-of-the-option(user)': (int)value-of-the-option,
-                        (string)'Name-of-the-option(user)': (int)value-of-the-option
+            "menu": {
+                "number_menu": "<int>number of parameter needing menu",
+                "menu0": {
+                    "name": "<string>name of the parameters diplayed on the GUI",
+                    "variable_name": "<string>name of the parameters (to put in the 'command')",
+                    "menu_item":{
+                        "Name of the option diplayed on the GUI": "<string>value of the option",
+                        "Name of the option diplayed on the GUI": "<string>value of the option"
                     }
                 }
             }
@@ -127,44 +129,44 @@ Here is the structure :
 
 And here is an example :
 
-```python
+```json
 {
-    'THRESH - Simple': {
-        'command': 'cv.threshold(image, thresh_value, max_value, thresh_type)',
-        'number_parameters' : 4,            # 4 parameters : 1 image, 2 sliders, 1 menu 
-        'condition': 'len(image.shape)==2', # Image in 1 dimension
-        'gui':{
-            'slider':{
-                'number_slider': 2,
-                'slider0': {
-                    'name': 'Thresh Value',             # visual name
-                    'variable_name': 'thresh_value',    # name used in 'command'
-                    'min_value': '0',
-                    'max_value': '255',
-                    'step':'1',
-                    'default_value': '128'
+    "THRESH - Simple": {
+        "command": "cv.threshold(image, thresh_value, max_value, thresh_type)",
+        "number_parameters" : 4,            # 4 parameters : 1 image, 2 sliders, 1 menu 
+        "condition": "len(image.shape)==2", # Only displayed if image in 1 dimension
+        "gui":{
+            "slider":{
+                "number_slider": 2,
+                "slider0": {
+                    "name": "Thresh Value",             # visual name
+                    "variable_name": "thresh_value",    # name used in "command"
+                    "min_value": "0",
+                    "max_value": "255",
+                    "step":"1",
+                    "default_value": "128"
                 },
-                'slider1': {
-                    'name': 'Max Value',
-                    'variable_name': 'max_value',
-                    'min_value': '0',
-                    'max_value': '255',
-                    'step':'1',
-                    'default_value': '255'
+                "slider1": {
+                    "name": "Max Value",
+                    "variable_name": "max_value",
+                    "min_value": "0",
+                    "max_value": "255",
+                    "step":"1",
+                    "default_value": "255"
                 }
             },
-            'menu':{
-                'number_menu': 1,
-                'menu0': {
-                    'name': 'Threshold Type',
-                    'variable_name': 'thresh_type',
-                    'menu_item':{
-                        'Binary' : cv.THRESH_BINARY,
-                        'Binary Inverted': cv.THRESH_BINARY_INV,
-                        'Truncate': cv.THRESH_TRUNC,
-                        'To Zero': cv.THRESH_TOZERO,
-                        'To Zero Inverted': cv.THRESH_TOZERO_INV,
-                        'Otsu': cv.THRESH_OTSU
+            "menu":{
+                "number_menu": 1,
+                "menu0": {
+                    "name": "Threshold Type",
+                    "variable_name": "thresh_type",
+                    "menu_item":{
+                        "Binary" : "cv.THRESH_BINARY",
+                        "Binary Inverted": "cv.THRESH_BINARY_INV",
+                        "Truncate": "cv.THRESH_TRUNC",
+                        "To Zero": "cv.THRESH_TOZERO",
+                        "To Zero Inverted": "cv.THRESH_TOZERO_INV",
+                        "Otsu": "cv.THRESH_OTSU"
                     }
                 }
             }
