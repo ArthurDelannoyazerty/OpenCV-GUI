@@ -10,11 +10,7 @@ You can test in all functions given by OpenCV and more with an instant refresh o
 # Getting started
 Just download the latest release and execute the *.exe* file. Make sure that the *commands.txt* file is in the same directory as the *.exe* file.
 
-### Create the environment : 
-```
-conda env create -f environment/environment.yml
-```
-(default name = "opencv-gui-env")
+
 
 # GUI explanation
 
@@ -66,8 +62,14 @@ _`(*)` means that this transformation is only available when the image have 1 de
 # Want to help the project ?
 You can clone or fork the repo as you wish. The pulls request still need the approval of the admin for security.
 
-# Questions/Issue ?
-Don't hesitate to ask in the github page of this project.
+
+
+# Create the environment : 
+This project now use the `uv` python virtual environment manager. When you clone the project you just need to have `uv` installed and execute the command :
+```
+uv sync
+```
+
 
 # Command file
 The command file located in the same directory as the *.exe* file contains all the functions that transform the image. 
@@ -170,3 +172,8 @@ And here is an example :
     }, ...# Other transformations ...
 }
 ```
+
+
+
+# Questions/Issue ?
+Don't hesitate to ask in the github page of this project.
