@@ -8,7 +8,7 @@ You can test in all functions given by OpenCV and more with an instant refresh o
 **You can export the pipeline of transformation to python code or download the selected image by just pressing a button !**
 
 # Getting started
-Just download the latest release and execute the *.exe* file. Make sure that the *commands.txt* file is in the same directory as the *.exe* file.
+Just download the latest release and execute the *.exe* file. Make sure that the *commands.json* file is in the same directory as the *.exe* file.
 
 
 
