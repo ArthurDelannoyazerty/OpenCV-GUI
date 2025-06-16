@@ -30,11 +30,12 @@ class Transformer():
         transform_item = item_current.transformation_item
 
         # Creation variables for the command
+        local_vars = {'image':image}
         for index, (key, value) in enumerate(transform_item.parameters.items()):
-            exec(str(key) +  "=" + str(value))
+            local_vars[str(key)] = value
         
         # Execute command
-        result = eval(self.commands[transform_item.name]['command'])
+        result = eval(self.commands[transform_item.name]['command'], locals=local_vars, globals=globals())
 
         # If command return a tuple, we take the second item (used in the threshold case shere the second item is the threshold image)
         if type(result).__name__=="tuple":
