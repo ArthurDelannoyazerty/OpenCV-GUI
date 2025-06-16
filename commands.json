@@ -1,0 +1,1189 @@
+{
+    "DRAWING - Line": {
+        "command": "cv.line(image, (x_begin, y_begin), (x_end, y_end), (red, green, blue), thickness, linetype)",
+        "number_parameters": 10,
+        "condition": "True",
+        "gui": {
+            "slider": {
+                "number_slider": 8,
+                "slider0": {
+                    "name": "X Begin",
+                    "variable_name": "x_begin",
+                    "min_value": "0",
+                    "max_value": "len(image[0])-1",
+                    "step": "1",
+                    "default_value": "int(len(image[0])/4)"
+                },
+                "slider1": {
+                    "name": "Y Begin",
+                    "variable_name": "y_begin",
+                    "min_value": "0",
+                    "max_value": "len(image)-1",
+                    "step": "1",
+                    "default_value": "int(len(image)/2)"
+                },
+                "slider2": {
+                    "name": "X End",
+                    "variable_name": "x_end",
+                    "min_value": "0",
+                    "max_value": "len(image[0])-1",
+                    "step": "1",
+                    "default_value": "int(len(image[0])/4*3)"
+                },
+                "slider3": {
+                    "name": "Y End",
+                    "variable_name": "y_end",
+                    "min_value": "0",
+                    "max_value": "len(image)-1",
+                    "step": "1",
+                    "default_value": "int(len(image)/2)"
+                },
+                "slider4": {
+                    "name": "Red",
+                    "variable_name": "red",
+                    "min_value": "0",
+                    "max_value": "255",
+                    "step": "1",
+                    "default_value": "255"
+                },
+                "slider5": {
+                    "name": "Green",
+                    "variable_name": "green",
+                    "min_value": "0",
+                    "max_value": "255",
+                    "step": "1",
+                    "default_value": "0"
+                },
+                "slider6": {
+                    "name": "Blue",
+                    "variable_name": "blue",
+                    "min_value": "0",
+                    "max_value": "255",
+                    "step": "1",
+                    "default_value": "0"
+                },
+                "slider7": {
+                    "name": "Thickness",
+                    "variable_name": "thickness",
+                    "min_value": "1",
+                    "max_value": "min(len(image), len(image[0]))",
+                    "step": "1",
+                    "default_value": "4"
+                }
+            },
+            "menu": {
+                "number_menu": 1,
+                "menu0": {
+                    "name": "Line Type",
+                    "variable_name": "linetype",
+                    "menu_item": {
+                        "Antialised Line": "cv.LINE_AA",
+                        "4 Connected Line": "cv.LINE_4",
+                        "8 Connected Line": "cv.LINE_8"
+                    }
+                }
+            }
+        }
+    },
+    "DRAWING - Rectangle": {
+        "command": "cv.rectangle(image, (x_begin, y_begin), (x_end, y_end), (red, green, blue), thickness, linetype)",
+        "number_parameters": 10,
+        "condition": "True",
+        "gui": {
+            "slider": {
+                "number_slider": 8,
+                "slider0": {
+                    "name": "X Begin",
+                    "variable_name": "x_begin",
+                    "min_value": "0",
+                    "max_value": "len(image[0])-1",
+                    "step": "1",
+                    "default_value": "int(len(image[0])/4)"
+                },
+                "slider1": {
+                    "name": "Y Begin",
+                    "variable_name": "y_begin",
+                    "min_value": "0",
+                    "max_value": "len(image)-1",
+                    "step": "1",
+                    "default_value": "int(len(image)/4)"
+                },
+                "slider2": {
+                    "name": "X End",
+                    "variable_name": "x_end",
+                    "min_value": "0",
+                    "max_value": "len(image[0])-1",
+                    "step": "1",
+                    "default_value": "int(len(image[0])/4*3)"
+                },
+                "slider3": {
+                    "name": "Y End",
+                    "variable_name": "y_end",
+                    "min_value": "0",
+                    "max_value": "len(image)-1",
+                    "step": "1",
+                    "default_value": "int(len(image)/4*3)"
+                },
+                "slider4": {
+                    "name": "Red",
+                    "variable_name": "red",
+                    "min_value": "0",
+                    "max_value": "255",
+                    "step": "1",
+                    "default_value": "255"
+                },
+                "slider5": {
+                    "name": "Green",
+                    "variable_name": "green",
+                    "min_value": "0",
+                    "max_value": "255",
+                    "step": "1",
+                    "default_value": "0"
+                },
+                "slider6": {
+                    "name": "Blue",
+                    "variable_name": "blue",
+                    "min_value": "0",
+                    "max_value": "255",
+                    "step": "1",
+                    "default_value": "0"
+                },
+                "slider7": {
+                    "name": "Thickness",
+                    "variable_name": "thickness",
+                    "min_value": "-1",
+                    "max_value": "min(len(image), len(image[0]))",
+                    "step": "1",
+                    "default_value": "4"
+                }
+            },
+            "menu": {
+                "number_menu": 1,
+                "menu0": {
+                    "name": "Line Type",
+                    "variable_name": "linetype",
+                    "menu_item": {
+                        "Antialised Line": "cv.LINE_AA",
+                        "4 Connected Line": "cv.LINE_4",
+                        "8 Connected Line": "cv.LINE_8"
+                    }
+                }
+            }
+        }
+    },
+    "DRAWING - Circle": {
+        "command": "cv.circle(image, (x_center, y_center), radius, (red, green, blue), thickness, linetype)",
+        "number_parameters": 9,
+        "condition": "True",
+        "gui": {
+            "slider": {
+                "number_slider": 7,
+                "slider0": {
+                    "name": "X Center",
+                    "variable_name": "x_center",
+                    "min_value": "0",
+                    "max_value": "len(image[0])-1",
+                    "step": "1",
+                    "default_value": "int(len(image[0])/2)"
+                },
+                "slider1": {
+                    "name": "Y Center",
+                    "variable_name": "y_center",
+                    "min_value": "0",
+                    "max_value": "len(image)-1",
+                    "step": "1",
+                    "default_value": "int(len(image)/2)"
+                },
+                "slider2": {
+                    "name": "Radius",
+                    "variable_name": "radius",
+                    "min_value": "1",
+                    "max_value": "max(len(image), len(image[0]))",
+                    "step": "1",
+                    "default_value": "int(min(len(image), len(image[0]))/4)"
+                },
+                "slider3": {
+                    "name": "Red",
+                    "variable_name": "red",
+                    "min_value": "0",
+                    "max_value": "255",
+                    "step": "1",
+                    "default_value": "255"
+                },
+                "slider4": {
+                    "name": "Green",
+                    "variable_name": "green",
+                    "min_value": "0",
+                    "max_value": "255",
+                    "step": "1",
+                    "default_value": "0"
+                },
+                "slider5": {
+                    "name": "Blue",
+                    "variable_name": "blue",
+                    "min_value": "0",
+                    "max_value": "255",
+                    "step": "1",
+                    "default_value": "0"
+                },
+                "slider6": {
+                    "name": "Thickness",
+                    "variable_name": "thickness",
+                    "min_value": "-1",
+                    "max_value": "min(len(image), len(image[0]))",
+                    "step": "1",
+                    "default_value": "4"
+                }
+            },
+            "menu": {
+                "number_menu": 1,
+                "menu0": {
+                    "name": "Line Type",
+                    "variable_name": "linetype",
+                    "menu_item": {
+                        "Antialised Line": "cv.LINE_AA",
+                        "4 Connected Line": "cv.LINE_4",
+                        "8 Connected Line": "cv.LINE_8"
+                    }
+                }
+            }
+        }
+    },
+    "DRAWING - Ellipse": {
+        "command": "cv.ellipse(image, (x_center, y_center), (major_axis, minor_axis), angle, 0, 360, (red, green, blue), thickness, linetype)",
+        "number_parameters": 11,
+        "condition": "True",
+        "gui": {
+            "slider": {
+                "number_slider": 9,
+                "slider0": {
+                    "name": "X Center",
+                    "variable_name": "x_center",
+                    "min_value": "0",
+                    "max_value": "len(image[0])-1",
+                    "step": "1",
+                    "default_value": "int(len(image[0])/2)"
+                },
+                "slider1": {
+                    "name": "Y Center",
+                    "variable_name": "y_center",
+                    "min_value": "0",
+                    "max_value": "len(image)-1",
+                    "step": "1",
+                    "default_value": "int(len(image)/2)"
+                },
+                "slider2": {
+                    "name": "Major Axis",
+                    "variable_name": "major_axis",
+                    "min_value": "1",
+                    "max_value": "max(len(image), len(image[0]))",
+                    "step": "1",
+                    "default_value": "int(len(image[0])/4)"
+                },
+                "slider3": {
+                    "name": "Minor Axis",
+                    "variable_name": "minor_axis",
+                    "min_value": "1",
+                    "max_value": "max(len(image), len(image[0]))",
+                    "step": "1",
+                    "default_value": "int(len(image)/4)"
+                },
+                "slider4": {
+                    "name": "Angle",
+                    "variable_name": "angle",
+                    "min_value": "0",
+                    "max_value": "360",
+                    "step": "1",
+                    "default_value": "180"
+                },
+                "slider5": {
+                    "name": "Red",
+                    "variable_name": "red",
+                    "min_value": "0",
+                    "max_value": "255",
+                    "step": "1",
+                    "default_value": "255"
+                },
+                "slider6": {
+                    "name": "Green",
+                    "variable_name": "green",
+                    "min_value": "0",
+                    "max_value": "255",
+                    "step": "1",
+                    "default_value": "0"
+                },
+                "slider7": {
+                    "name": "Blue",
+                    "variable_name": "blue",
+                    "min_value": "0",
+                    "max_value": "255",
+                    "step": "1",
+                    "default_value": "0"
+                },
+                "slider8": {
+                    "name": "Thickness",
+                    "variable_name": "thickness",
+                    "min_value": "-1",
+                    "max_value": "min(len(image), len(image[0]))",
+                    "step": "1",
+                    "default_value": "4"
+                }
+            },
+            "menu": {
+                "number_menu": 1,
+                "menu0": {
+                    "name": "Line Type",
+                    "variable_name": "linetype",
+                    "menu_item": {
+                        "Antialised Line": "cv.LINE_AA",
+                        "4 Connected Line": "cv.LINE_4",
+                        "8 Connected Line": "cv.LINE_8"
+                    }
+                }
+            }
+        }
+    },
+    "CROP": {
+        "command": "image[y_begin:y_end, x_begin:x_end]",
+        "number_parameters": 5,
+        "condition": "True",
+        "gui": {
+            "slider": {
+                "number_slider": 4,
+                "slider0": {
+                    "name": "X Begin",
+                    "variable_name": "x_begin",
+                    "min_value": "0",
+                    "max_value": "len(image[0])-1",
+                    "step": "1",
+                    "default_value": "0"
+                },
+                "slider1": {
+                    "name": "Y Begin",
+                    "variable_name": "y_begin",
+                    "min_value": "0",
+                    "max_value": "len(image)-1",
+                    "step": "1",
+                    "default_value": "0"
+                },
+                "slider2": {
+                    "name": "X End",
+                    "variable_name": "x_end",
+                    "min_value": "0",
+                    "max_value": "len(image[0])",
+                    "step": "1",
+                    "default_value": "len(image[0])-1"
+                },
+                "slider3": {
+                    "name": "Y End",
+                    "variable_name": "y_end",
+                    "min_value": "0",
+                    "max_value": "len(image)",
+                    "step": "1",
+                    "default_value": "len(image)-1"
+                }
+            },
+            "menu": {
+                "number_menu": 0
+            }
+        }
+    },
+    "ROTATION ZOOM": {
+        "command": "cv.warpAffine(image, cv.getRotationMatrix2D((center_x, center_y), angle, scale/100), (image.shape[:2][1], image.shape[:2][0]))",
+        "number_parameters": 5,
+        "condition": "True",
+        "gui": {
+            "slider": {
+                "number_slider": 4,
+                "slider0": {
+                    "name": "Center X",
+                    "variable_name": "center_x",
+                    "min_value": "0",
+                    "max_value": "len(image[0])-1",
+                    "step": "1",
+                    "default_value": "int((len(image[0])-1)/2)"
+                },
+                "slider1": {
+                    "name": "Center Y",
+                    "variable_name": "center_y",
+                    "min_value": "0",
+                    "max_value": "len(image)-1",
+                    "step": "1",
+                    "default_value": "int((len(image)-1)/2)"
+                },
+                "slider2": {
+                    "name": "Angle",
+                    "variable_name": "angle",
+                    "min_value": "0",
+                    "max_value": "360",
+                    "step": "1",
+                    "default_value": "0"
+                },
+                "slider3": {
+                    "name": "Scale (%)",
+                    "variable_name": "scale",
+                    "min_value": "1",
+                    "max_value": "1500",
+                    "step": "1",
+                    "default_value": "100"
+                }
+            },
+            "menu": {
+                "number_menu": 0
+            }
+        }
+    },
+    "Contours (RGB)": {
+        "command": "cv.drawContours(image, cv.findContours(cv.threshold(cv.cvtColor(image, cv.COLOR_BGR2GRAY), thresh_value, max_value, thresh_type)[1], contour_mode, contour_approximation)[0], -1, (contour_red,contour_green,contour_blue), contour_thickness)",
+        "number_parameters": 10,
+        "condition": "len(image.shape)==3",
+        "gui": {
+            "slider": {
+                "number_slider": 6,
+                "slider0": {
+                    "name": "Thresh Value",
+                    "variable_name": "thresh_value",
+                    "min_value": "0",
+                    "max_value": "255",
+                    "step": "1",
+                    "default_value": "128"
+                },
+                "slider1": {
+                    "name": "Thresh Max Value",
+                    "variable_name": "max_value",
+                    "min_value": "0",
+                    "max_value": "255",
+                    "step": "1",
+                    "default_value": "255"
+                },
+                "slider2": {
+                    "name": "Contour Red",
+                    "variable_name": "contour_red",
+                    "min_value": "0",
+                    "max_value": "255",
+                    "step": "1",
+                    "default_value": "0"
+                },
+                "slider3": {
+                    "name": "Contour Green",
+                    "variable_name": "contour_green",
+                    "min_value": "0",
+                    "max_value": "255",
+                    "step": "1",
+                    "default_value": "255"
+                },
+                "slider4": {
+                    "name": "Contour Blue",
+                    "variable_name": "contour_blue",
+                    "min_value": "0",
+                    "max_value": "255",
+                    "step": "1",
+                    "default_value": "0"
+                },
+                "slider5": {
+                    "name": "Contour Thickness",
+                    "variable_name": "contour_thickness",
+                    "min_value": "1",
+                    "max_value": "35",
+                    "step": "1",
+                    "default_value": "1"
+                }
+            },
+            "menu": {
+                "number_menu": 3,
+                "menu0": {
+                    "name": "Thresh Type",
+                    "variable_name": "thresh_type",
+                    "menu_item": {
+                        "Binary": "cv.THRESH_BINARY",
+                        "Binary Inverted": "cv.THRESH_BINARY_INV",
+                        "Truncate": "cv.THRESH_TRUNC",
+                        "To Zero": "cv.THRESH_TOZERO",
+                        "To Zero Inverted": "cv.THRESH_TOZERO_INV",
+                        "Otsu": "cv.THRESH_OTSU"
+                    }
+                },
+                "menu1": {
+                    "name": "Find Contour Mode",
+                    "variable_name": "contour_mode",
+                    "menu_item": {
+                        "Retrieval External": "cv.RETR_EXTERNAL",
+                        "Retrieval List": "cv.RETR_LIST",
+                        "Retrieval CCOMP": "cv.RETR_CCOMP",
+                        "Retrieval Tree": "cv.RETR_TREE"
+                    }
+                },
+                "menu2": {
+                    "name": "Find Contour Approximation",
+                    "variable_name": "contour_approximation",
+                    "menu_item": {
+                        "None": "cv.CHAIN_APPROX_NONE",
+                        "Simple": "cv.CHAIN_APPROX_SIMPLE",
+                        "TC89 L1": "cv.CHAIN_APPROX_TC89_L1",
+                        "TC89 KCOS": "cv.CHAIN_APPROX_TC89_KCOS"
+                    }
+                }
+            }
+        }
+    },
+    "Contours (Thresh)": {
+        "command": "cv.drawContours(np.zeros(image.shape).astype(\"uint8\"), cv.findContours(image, contour_mode, contour_approximation)[0], -1, contour_luminosity, contour_thickness)",
+        "number_parameters": 5,
+        "condition": "len(image.shape)!=3",
+        "gui": {
+            "slider": {
+                "number_slider": 2,
+                "slider0": {
+                    "name": "Contour Luminosity",
+                    "variable_name": "contour_luminosity",
+                    "min_value": "0",
+                    "max_value": "255",
+                    "step": "1",
+                    "default_value": "255"
+                },
+                "slider1": {
+                    "name": "Contour Thickness",
+                    "variable_name": "contour_thickness",
+                    "min_value": "1",
+                    "max_value": "35",
+                    "step": "1",
+                    "default_value": "1"
+                }
+            },
+            "menu": {
+                "number_menu": 2,
+                "menu0": {
+                    "name": "Find Contour Mode",
+                    "variable_name": "contour_mode",
+                    "menu_item": {
+                        "Retrieval External": "cv.RETR_EXTERNAL",
+                        "Retrieval List": "cv.RETR_LIST",
+                        "Retrieval CCOMP": "cv.RETR_CCOMP",
+                        "Retrieval Tree": "cv.RETR_TREE"
+                    }
+                },
+                "menu1": {
+                    "name": "Find Contour Approximation",
+                    "variable_name": "contour_approximation",
+                    "menu_item": {
+                        "None": "cv.CHAIN_APPROX_NONE",
+                        "Simple": "cv.CHAIN_APPROX_SIMPLE",
+                        "TC89 L1": "cv.CHAIN_APPROX_TC89_L1",
+                        "TC89 KCOS": "cv.CHAIN_APPROX_TC89_KCOS"
+                    }
+                }
+            }
+        }
+    },
+    "COLOR - Channel": {
+        "command": "image[:,:,channel]",
+        "number_parameters": 2,
+        "condition": "len(image.shape)==3",
+        "gui": {
+            "slider": {
+                "number_slider": 0
+            },
+            "menu": {
+                "number_menu": 1,
+                "menu0": {
+                    "name": "Select channel",
+                    "variable_name": "channel",
+                    "menu_item": {
+                        "0": 0,
+                        "1": 1,
+                        "2": 2
+                    }
+                }
+            }
+        }
+    },
+    "COLOR - Colorspace": {
+        "command": "cv.cvtColor(image, colorspace_mode)",
+        "number_parameters": 2,
+        "condition": "len(image.shape)==3 and image.shape[2]==3",
+        "gui": {
+            "slider": {
+                "number_slider": 0
+            },
+            "menu": {
+                "number_menu": 1,
+                "menu0": {
+                    "name": "Color conversion",
+                    "variable_name": "colorspace_mode",
+                    "menu_item": {
+                        "Grayscale": "cv.COLOR_BGR2GRAY",
+                        "RGB to BGR": "cv.COLOR_RGB2BGR",
+                        "RGB to HSV": "cv.COLOR_RGB2HSV",
+                        "RGB to YUV": "cv.COLOR_RGB2YUV",
+                        "RGB to LAB": "cv.COLOR_RGB2LAB",
+                        "BGR to RGB": "cv.COLOR_BGR2RGB",
+                        "BGR to HSV": "cv.COLOR_BGR2HSV",
+                        "BGR to YUV": "cv.COLOR_BGR2YUV",
+                        "BGR to LAB": "cv.COLOR_BGR2LAB",
+                        "HSV to RGB": "cv.COLOR_HSV2RGB",
+                        "HSV to BGR": "cv.COLOR_HSV2BGR",
+                        "YUV to RGB": "cv.COLOR_YUV2RGB",
+                        "YUV to BGR": "cv.COLOR_YUV2BGR",
+                        "LAB to RGB": "cv.COLOR_LAB2RGB",
+                        "LAB to BGR": "cv.COLOR_LAB2BGR"
+                    }
+                }
+            }
+        }
+    },
+    "COLOR - Light Contrast": {
+        "command": "(cv.addWeighted(((cv.addWeighted(image, ((255 if (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255)))>0 else 255+(int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255)))) - ((int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255))) if (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255)))>0 else 0)) / 255, image, 0, (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255))) if (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255)))>0 else 0) if (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255))) != 0 else image)), float(131 * ((int((contrast - 0) * (127 - (-127)) / (254 - 0) + (-127))) + 127)) / (127 * (131 - (int((contrast - 0) * (127 - (-127)) / (254 - 0) + (-127))))), ((cv.addWeighted(image, ((255 if (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255)))>0 else 255+(int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255)))) - ((int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255))) if (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255)))>0 else 0)) / 255, image, 0, (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255))) if (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255)))>0 else 0) if (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255))) != 0 else image)), 0, 127 * (1 - float(131 * ((int((contrast - 0) * (127 - (-127)) / (254 - 0) + (-127))) + 127)) / (127 * (131 - (int((contrast - 0) * (127 - (-127)) / (254 - 0) + (-127)))))))) if (int((contrast - 0) * (127 - (-127)) / (254 - 0) + (-127)))!=0 else (cv.addWeighted(image, ((255 if (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255)))>0 else 255+(int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255)))) - ((int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255))) if (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255)))>0 else 0)) / 255, image, 0, (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255))) if (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255)))>0 else 0) if (int((brightness - 0) * (255 - (-255)) / (510 - 0) + (-255))) != 0 else image)",
+        "number_parameters": 3,
+        "condition": "True",
+        "gui": {
+            "slider": {
+                "number_slider": 2,
+                "slider0": {
+                    "name": "Luminosity",
+                    "variable_name": "brightness",
+                    "min_value": "0",
+                    "max_value": "255",
+                    "step": "1",
+                    "default_value": "255"
+                },
+                "slider1": {
+                    "name": "Contrast",
+                    "variable_name": "contrast",
+                    "min_value": "0",
+                    "max_value": "255",
+                    "step": "1",
+                    "default_value": "128"
+                }
+            },
+            "menu": {
+                "number_menu": 0
+            }
+        }
+    },
+    "NOISE - Gaussian": {
+        "command": "cv.add(image, np.random.normal(mean, std, image.shape), dtype=cv.CV_8U)",
+        "number_parameters": 3,
+        "condition": "True",
+        "gui": {
+            "slider": {
+                "number_slider": 2,
+                "slider0": {
+                    "name": "Standard deviation",
+                    "variable_name": "std",
+                    "min_value": "0",
+                    "max_value": "50",
+                    "step": "1",
+                    "default_value": "1"
+                },
+                "slider1": {
+                    "name": "Mean",
+                    "variable_name": "mean",
+                    "min_value": "-127",
+                    "max_value": "128",
+                    "step": "1",
+                    "default_value": "0"
+                }
+            },
+            "menu": {
+                "number_menu": 0
+            }
+        }
+    },
+    "NOISE - Salt And Pepper": {
+        "command": "np.where(np.random.random(image.shape) < (low_thresh/100), 0, np.where(np.random.random(image.shape) < (high_thresh/100), 255, image))",
+        "number_parameters": 3,
+        "condition": "len(image.shape)==2",
+        "gui": {
+            "slider": {
+                "number_slider": 2,
+                "slider0": {
+                    "name": "Pepper Thresh (%)",
+                    "variable_name": "low_thresh",
+                    "min_value": "0",
+                    "max_value": "100",
+                    "step": "1",
+                    "default_value": "5"
+                },
+                "slider1": {
+                    "name": "Salt Thresh (%)",
+                    "variable_name": "high_thresh",
+                    "min_value": "0",
+                    "max_value": "100",
+                    "step": "1",
+                    "default_value": "5"
+                }
+            },
+            "menu": {
+                "number_menu": 0
+            }
+        }
+    },
+    "NOISE - Poisson": {
+        "command": "np.random.poisson(image).astype(\"uint8\")",
+        "number_parameters": 2,
+        "condition": "len(image.shape)==2",
+        "gui": {
+            "slider": {
+                "number_slider": 0
+            },
+            "menu": {
+                "number_menu": 0
+            }
+        }
+    },
+    "NOISE - Speckle": {
+        "command": "image + image * np.random.normal(loc=mean/100, scale=std/100, size=image.shape).astype(\"uint8\")",
+        "number_parameters": 2,
+        "condition": "len(image.shape)==2",
+        "gui": {
+            "slider": {
+                "number_slider": 2,
+                "slider0": {
+                    "name": "Standard deviation(*.01)",
+                    "variable_name": "std",
+                    "min_value": "0",
+                    "max_value": "100",
+                    "step": "1",
+                    "default_value": "1"
+                },
+                "slider1": {
+                    "name": "Mean(*.01)",
+                    "variable_name": "mean",
+                    "min_value": "-127",
+                    "max_value": "128",
+                    "step": "1",
+                    "default_value": "0"
+                }
+            },
+            "menu": {
+                "number_menu": 0
+            }
+        }
+    },
+    "BLUR - Simple": {
+        "command": "cv.blur(image, (kernel_size, kernel_size))",
+        "number_parameters": 2,
+        "condition": "True",
+        "gui": {
+            "slider": {
+                "number_slider": 1,
+                "slider0": {
+                    "name": "Kernel Size",
+                    "variable_name": "kernel_size",
+                    "min_value": "1",
+                    "max_value": "int(min(len(image[0]), len(image))/2)",
+                    "step": "2",
+                    "default_value": "3"
+                }
+            },
+            "menu": {
+                "number_menu": 0
+            }
+        }
+    },
+    "BLUR - Gaussian": {
+        "command": "cv.GaussianBlur(image, (kernel_size, kernel_size), 0)",
+        "number_parameters": 2,
+        "condition": "True",
+        "gui": {
+            "slider": {
+                "number_slider": 1,
+                "slider0": {
+                    "name": "Kernel Size",
+                    "variable_name": "kernel_size",
+                    "min_value": "1",
+                    "max_value": "int(min(len(image[0]), len(image))/2)",
+                    "step": "2",
+                    "default_value": "3"
+                }
+            },
+            "menu": {
+                "number_menu": 0
+            }
+        }
+    },
+    "BLUR - Median": {
+        "command": "cv.medianBlur(image, kernel_size)",
+        "number_parameters": 2,
+        "condition": "True",
+        "gui": {
+            "slider": {
+                "number_slider": 1,
+                "slider0": {
+                    "name": "Kernel Size",
+                    "variable_name": "kernel_size",
+                    "min_value": "1",
+                    "max_value": "int(min(len(image[0]), len(image))/2)",
+                    "step": "2",
+                    "default_value": "3"
+                }
+            },
+            "menu": {
+                "number_menu": 0
+            }
+        }
+    },
+    "BLUR - Bilateral Filtering": {
+        "command": "cv.bilateralFilter(image, diameter, sigma_color, sigma_space)",
+        "number_parameters": 4,
+        "condition": "True",
+        "gui": {
+            "slider": {
+                "number_slider": 3,
+                "slider0": {
+                    "name": "Diameter",
+                    "variable_name": "diameter",
+                    "min_value": "1",
+                    "max_value": "51",
+                    "step": "1",
+                    "default_value": "5"
+                },
+                "slider1": {
+                    "name": "Sigma Color",
+                    "variable_name": "sigma_color",
+                    "min_value": "0",
+                    "max_value": "255",
+                    "step": "1",
+                    "default_value": "75"
+                },
+                "slider2": {
+                    "name": "Sigma Space",
+                    "variable_name": "sigma_space",
+                    "min_value": "0",
+                    "max_value": "255",
+                    "step": "1",
+                    "default_value": "75"
+                }
+            },
+            "menu": {
+                "number_menu": 0
+            }
+        }
+    },
+    "Filter - Convolution": {
+        "command": "np.array(cv.filter2D(image, -1, np.array([[up_left, up_middle, up_right], [middle_left, middle_middle,middle_right], [down_left,down_middle,down_right]]))/division).astype(np.uint8)",
+        "number_parameters": 10,
+        "condition": "True",
+        "gui": {
+            "slider": {
+                "number_slider": 10,
+                "slider0": {
+                    "name": "Value Up Left",
+                    "variable_name": "up_left",
+                    "min_value": "-16",
+                    "max_value": "16",
+                    "step": "1",
+                    "default_value": "0"
+                },
+                "slider1": {
+                    "name": "Value Up Middle",
+                    "variable_name": "up_middle",
+                    "min_value": "-16",
+                    "max_value": "16",
+                    "step": "1",
+                    "default_value": "0"
+                },
+                "slider2": {
+                    "name": "Value Up Right",
+                    "variable_name": "up_right",
+                    "min_value": "-16",
+                    "max_value": "16",
+                    "step": "1",
+                    "default_value": "0"
+                },
+                "slider3": {
+                    "name": "Value Middle Left",
+                    "variable_name": "middle_left",
+                    "min_value": "-16",
+                    "max_value": "16",
+                    "step": "1",
+                    "default_value": "0"
+                },
+                "slider4": {
+                    "name": "Value Middle Middle",
+                    "variable_name": "middle_middle",
+                    "min_value": "-16",
+                    "max_value": "16",
+                    "step": "1",
+                    "default_value": "1"
+                },
+                "slider5": {
+                    "name": "Value Middle Right",
+                    "variable_name": "middle_right",
+                    "min_value": "-16",
+                    "max_value": "16",
+                    "step": "1",
+                    "default_value": "0"
+                },
+                "slider6": {
+                    "name": "Value Down Left",
+                    "variable_name": "down_left",
+                    "min_value": "-16",
+                    "max_value": "16",
+                    "step": "1",
+                    "default_value": "0"
+                },
+                "slider7": {
+                    "name": "Value Down Middle",
+                    "variable_name": "down_middle",
+                    "min_value": "-16",
+                    "max_value": "16",
+                    "step": "1",
+                    "default_value": "0"
+                },
+                "slider8": {
+                    "name": "Value Down Right",
+                    "variable_name": "down_right",
+                    "min_value": "-16",
+                    "max_value": "16",
+                    "step": "1",
+                    "default_value": "0"
+                },
+                "slider9": {
+                    "name": "Divided By",
+                    "variable_name": "division",
+                    "min_value": "-16",
+                    "max_value": "16",
+                    "step": "1",
+                    "default_value": "1"
+                }
+            },
+            "menu": {
+                "number_menu": 0
+            }
+        }
+    },
+    "THRESH - Simple": {
+        "command": "cv.threshold(image, thresh_value, max_value, thresh_type)",
+        "number_parameters": 4,
+        "condition": "len(image.shape)==2",
+        "gui": {
+            "slider": {
+                "number_slider": 2,
+                "slider0": {
+                    "name": "Thresh Value",
+                    "variable_name": "thresh_value",
+                    "min_value": "0",
+                    "max_value": "255",
+                    "step": "1",
+                    "default_value": "128"
+                },
+                "slider1": {
+                    "name": "Max Value",
+                    "variable_name": "max_value",
+                    "min_value": "0",
+                    "max_value": "255",
+                    "step": "1",
+                    "default_value": "255"
+                }
+            },
+            "menu": {
+                "number_menu": 1,
+                "menu0": {
+                    "name": "Threshold Type",
+                    "variable_name": "thresh_type",
+                    "menu_item": {
+                        "Binary": "cv.THRESH_BINARY",
+                        "Binary Inverted": "cv.THRESH_BINARY_INV",
+                        "Truncate": "cv.THRESH_TRUNC",
+                        "To Zero": "cv.THRESH_TOZERO",
+                        "To Zero Inverted": "cv.THRESH_TOZERO_INV",
+                        "Otsu": "cv.THRESH_OTSU"
+                    }
+                }
+            }
+        }
+    },
+    "THRESH - Adaptive": {
+        "command": "cv.adaptiveThreshold(image, max_value, adaptive_threshold, thresh_type, block_size, constant_mean)",
+        "number_parameters": 6,
+        "condition": "len(image.shape)==2",
+        "gui": {
+            "slider": {
+                "number_slider": 3,
+                "slider0": {
+                    "name": "Max Value",
+                    "variable_name": "max_value",
+                    "min_value": "0",
+                    "max_value": "255",
+                    "step": "1",
+                    "default_value": "255"
+                },
+                "slider1": {
+                    "name": "Block Size",
+                    "variable_name": "block_size",
+                    "min_value": "1",
+                    "max_value": "int(min(len(image[0]), len(image))/4)",
+                    "step": "2",
+                    "default_value": "11"
+                },
+                "slider2": {
+                    "name": "Constant",
+                    "variable_name": "constant_mean",
+                    "min_value": "-10",
+                    "max_value": "10",
+                    "step": "1",
+                    "default_value": "0"
+                }
+            },
+            "menu": {
+                "number_menu": 2,
+                "menu0": {
+                    "name": "Adaptive Threshold",
+                    "variable_name": "adaptive_threshold",
+                    "menu_item": {
+                        "Thresh Mean": "cv.ADAPTIVE_THRESH_MEAN_C",
+                        "Gaussian Thresh Mean": "cv.ADAPTIVE_THRESH_GAUSSIAN_C"
+                    }
+                },
+                "menu1": {
+                    "name": "Threshold Type",
+                    "variable_name": "thresh_type",
+                    "menu_item": {
+                        "Binary": "cv.THRESH_BINARY",
+                        "Binary Inverted": "cv.THRESH_BINARY_INV"
+                    }
+                }
+            }
+        }
+    },
+    "GRADIENT - Laplacian": {
+        "command": "cv.Laplacian(image, cv.CV_64F, ksize=kernel_size).astype(\"uint8\")",
+        "number_parameters": 2,
+        "condition": "len(image.shape)==2",
+        "gui": {
+            "slider": {
+                "number_slider": 1,
+                "slider0": {
+                    "name": "Kernel Size",
+                    "variable_name": "kernel_size",
+                    "min_value": "1",
+                    "max_value": "15",
+                    "step": "2",
+                    "default_value": "1"
+                }
+            },
+            "menu": {
+                "number_menu": 0
+            }
+        }
+    },
+    "GRADIENT - Sobel": {
+        "command": "np.uint8(np.absolute(cv.Sobel(image, cv.CV_64F, dx, 1-dx, ksize=kernel_size)))",
+        "number_parameters": 4,
+        "condition": "len(image.shape)==2",
+        "gui": {
+            "slider": {
+                "number_slider": 1,
+                "slider0": {
+                    "name": "Kernel Size",
+                    "variable_name": "kernel_size",
+                    "min_value": "1",
+                    "max_value": "15",
+                    "step": "2",
+                    "default_value": "1"
+                }
+            },
+            "menu": {
+                "number_menu": 1,
+                "menu0": {
+                    "name": "Orientation",
+                    "variable_name": "dx",
+                    "menu_item": {
+                        "Horizontal": 0,
+                        "Vertical": 1
+                    }
+                }
+            }
+        }
+    },
+    "GRADIENT - Canny": {
+        "command": "cv.Canny(image, thresh1, thresh2, L2gradient=norm_type)",
+        "number_parameters": 4,
+        "condition": "len(image.shape)==2",
+        "gui": {
+            "slider": {
+                "number_slider": 2,
+                "slider0": {
+                    "name": "Low Thresh",
+                    "variable_name": "thresh1",
+                    "min_value": "0",
+                    "max_value": "255",
+                    "step": "1",
+                    "default_value": "85"
+                },
+                "slider1": {
+                    "name": "High Thresh",
+                    "variable_name": "thresh2",
+                    "min_value": "0",
+                    "max_value": "255",
+                    "step": "1",
+                    "default_value": "255"
+                }
+            },
+            "menu": {
+                "number_menu": 1,
+                "menu0": {
+                    "name": "Norm Type",
+                    "variable_name": "norm_type",
+                    "menu_item": {
+                        "L2": true,
+                        "L1": false
+                    }
+                }
+            }
+        }
+    },
+    "MORPH": {
+        "command": "cv.morphologyEx(image, operation_type, cv.getStructuringElement(morph_type, (kernel_size, kernel_size)), iterations=iterations)",
+        "number_parameters": 5,
+        "condition": "len(image.shape)==2",
+        "gui": {
+            "slider": {
+                "number_slider": 2,
+                "slider0": {
+                    "name": "Kernel Size",
+                    "variable_name": "kernel_size",
+                    "min_value": "1",
+                    "max_value": "21",
+                    "step": "2",
+                    "default_value": "3"
+                },
+                "slider1": {
+                    "name": "Iterations",
+                    "variable_name": "iterations",
+                    "min_value": "1",
+                    "max_value": "10",
+                    "step": "1",
+                    "default_value": "1"
+                }
+            },
+            "menu": {
+                "number_menu": 2,
+                "menu0": {
+                    "name": "Operation Type",
+                    "variable_name": "operation_type",
+                    "menu_item": {
+                        "Erode": "cv.MORPH_ERODE",
+                        "Dilate": "cv.MORPH_DILATE",
+                        "Open": "cv.MORPH_OPEN",
+                        "Close": "cv.MORPH_CLOSE",
+                        "Gradient": "cv.MORPH_GRADIENT",
+                        "Top Hat": "cv.MORPH_TOPHAT",
+                        "Black Hat": "cv.MORPH_BLACKHAT",
+                        "Hit Miss": "cv.MORPH_HITMISS"
+                    }
+                },
+                "menu1": {
+                    "name": "Kernel Type",
+                    "variable_name": "morph_type",
+                    "menu_item": {
+                        "Rectangle": "cv.MORPH_RECT",
+                        "Cross": "cv.MORPH_CROSS",
+                        "Ellipse": "cv.MORPH_ELLIPSE"
+                    }
+                }
+            }
+        }
+    }
+}

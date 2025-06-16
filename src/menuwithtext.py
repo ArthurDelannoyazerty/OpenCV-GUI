@@ -17,7 +17,10 @@ class MenuWithText(QFrame):
         self.menu.currentIndexChanged.connect(self.update_value_changed)
         self.menu.currentIndexChanged.connect(event_to_call)
 
-        self.value = list(menu_parameters['menu_item'].values())[0]
+        first_val = list(menu_parameters['menu_item'].values())[0]
+        if isinstance(first_val, str):
+            first_val = eval(first_val)
+        self.value = first_val
 
         self.variable_name = self.parameters['variable_name']
 
@@ -32,4 +35,7 @@ class MenuWithText(QFrame):
 
     def update_value_changed(self):
         current_index_menu = self.menu.currentIndex()
-        self.value = list(self.parameters['menu_item'].values())[current_index_menu]
+        val = list(self.parameters['menu_item'].values())[current_index_menu]
+        if isinstance(val, str):
+            val = eval(val)
+        self.value = val

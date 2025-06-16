@@ -1,5 +1,6 @@
 import cv2 as cv        # used in eval()
 import numpy as np      # used in eval()
+import json
 from qtpy.QtWidgets import QMessageBox
 
 class Transformer():
@@ -7,15 +8,22 @@ class Transformer():
     def __init__(self):
         #load commands
         try:
-            with open('commands.txt', 'r') as file:
-                file_content = file.read()
-            file_content = file_content.replace("\n", "")
-            self.commands = eval(file_content)
-        except:
+            with open('commands.json', 'r') as file:
+                self.commands = json.load(file)
+            # Evaluate menu item values such as cv constants
+            for command in self.commands.values():
+                menus = command.get('gui', {}).get('menu', {})
+                for i in range(menus.get('number_menu', 0)):
+                    menu = menus.get('menu'+str(i), {})
+                    items = menu.get('menu_item', {})
+                    for k, v in items.items():
+                        if isinstance(v, str) and (v.startswith('cv.') or v.startswith('np.')):
+                            items[k] = eval(v)
+        except Exception:
             # Create a QMessageBox
             message_box = QMessageBox()
             message_box.setWindowTitle("Error")
-            message_box.setText("Error while loading commands (commands.txt), either file not found or error in parsing file. Please reboot the program")
+            message_box.setText("Error while loading commands (commands.json), either file not found or error in parsing file. Please reboot the program")
 
             # Set the message box icon and buttons
             message_box.setIcon(QMessageBox.Critical)
@@ -30,11 +38,12 @@ class Transformer():
         transform_item = item_current.transformation_item
 
         # Creation variables for the command
+        local_vars = {'image':image}
         for index, (key, value) in enumerate(transform_item.parameters.items()):
-            exec(str(key) +  "=" + str(value))
+            local_vars[str(key)] = value
         
         # Execute command
-        result = eval(self.commands[transform_item.name]['command'])
+        result = eval(self.commands[transform_item.name]['command'], locals=local_vars, globals=globals())
 
         # If command return a tuple, we take the second item (used in the threshold case shere the second item is the threshold image)
         if type(result).__name__=="tuple":
